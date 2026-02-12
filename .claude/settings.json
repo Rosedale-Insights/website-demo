@@ -1,0 +1,43 @@
+{
+	"permissions": {
+		"allow": [
+			"Bash(pnpm *)",
+			"Bash(npx drizzle-kit *)",
+			"Bash(git status)",
+			"Bash(git diff *)",
+			"Bash(git log *)",
+			"Bash(git branch *)",
+			"Bash(git add *)",
+			"Bash(git commit *)",
+			"Bash(git checkout *)",
+			"Bash(git switch *)",
+			"Bash(git stash *)"
+		],
+		"deny": [
+			"Read(.env)",
+			"Read(.env.*)",
+			"Read(.env.local)",
+			"Edit(.env)",
+			"Edit(.env.*)",
+			"Edit(.env.local)",
+			"Bash(rm -rf *)",
+			"Bash(npm *)",
+			"Bash(yarn *)"
+		],
+		"ask": ["Bash(git push *)", "Bash(git merge *)", "Bash(git rebase *)"]
+	},
+	"hooks": {
+		"PostToolUse": [
+			{
+				"matcher": "Edit|Write",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/biome-format.sh\"",
+						"timeout": 30
+					}
+				]
+			}
+		]
+	}
+}

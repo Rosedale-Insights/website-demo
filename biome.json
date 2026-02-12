@@ -1,0 +1,59 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.3.15/schema.json",
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineWidth": 100
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"correctness": {
+				"useHookAtTopLevel": "error",
+				"noUnusedVariables": "warn",
+				"noUnusedImports": "warn"
+			},
+			"suspicious": {
+				"noDebugger": "warn",
+				"noConsole": "warn"
+			},
+			"style": {
+				"useConst": "error",
+				"noNonNullAssertion": "warn"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"trailingCommas": "all",
+			"semicolons": "always"
+		}
+	},
+	"css": {
+		"formatter": {
+			"enabled": false
+		},
+		"parser": {
+			"cssModules": true,
+			"tailwindDirectives": true
+		}
+	},
+	"files": {
+		"includes": [
+			"**",
+			"!**/node_modules",
+			"!**/.next",
+			"!**/dist",
+			"!**/build",
+			"!**/.vercel",
+			"!**/drizzle/meta",
+			"!**/*.min.js",
+			"!**/.pnpm-store",
+			"!**/.claude/settings.local.json"
+		]
+	}
+}
