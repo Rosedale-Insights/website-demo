@@ -60,6 +60,28 @@ Next.js application using the App Router, deployed on Vercel.
 - After mutations: `revalidatePath()` or `revalidateTag()`
 - Drizzle typed exports: `$inferInsert` and `$inferSelect`
 
+## Working Loop
+1. **Read context first** — always read `CLAUDE.md` and relevant docs before coding
+2. **Plan before implementing** — outline steps and files before writing code
+3. **Code** — implement the plan, following project conventions
+4. **Update docs before finishing** — any changed data model or architecture must be reflected in `docs/`
+5. Use `/start-task` at the beginning of work to read context and create a plan
+6. Use `/finish-task` at the end of work to summarise changes, update docs, and prepare the PR
+
+## Documentation Rules
+
+**When to create a new doc:**
+- A new major app area is added (e.g. `app/billing/`)
+- A new external integration is introduced (e.g. Stripe, email provider)
+- A significant new system is built (auth, background jobs, etc.)
+
+**How to keep docs updated:**
+- `/finish-task` always checks which docs need updating
+- Any PR that changes the data model must update `docs/data-model.md`
+- Any PR that changes system architecture or key flows must update `docs/architecture.md`
+- New docs should follow the same heading structure as the starter placeholders
+- Docs should be concise and factual — describe what exists, not aspirations
+
 ## IMPORTANT
 - Do NOT use `npm` or `yarn` — pnpm only
 - Do NOT read `.env` or `.env.local` files
