@@ -1,8 +1,6 @@
-import { Clock, Plus, Settings } from 'lucide-react';
+import { Plus, Settings } from 'lucide-react';
 import { ChatInterface } from '@/components/knowledge/ChatInterface';
-import { SourceCards } from '@/components/knowledge/SourceCards';
 import { PageHeader } from '@/components/PageHeader';
-import { recentQueries } from '@/lib/mock-data';
 
 export default function KnowledgeBasePage() {
 	return (
@@ -23,40 +21,8 @@ export default function KnowledgeBasePage() {
 				</button>
 			</PageHeader>
 
-			{/* Hero */}
-			<div className="mt-8 text-center">
-				<h2 className="text-3xl font-semibold text-forge-primary">How can I help you today?</h2>
-				<p className="mt-2 text-sm text-forge-secondary">
-					Search across 1,240 technical manuals, safety protocols, and maintenance logs.
-				</p>
-			</div>
-
-			{/* Source Cards */}
-			<div className="mt-8">
-				<SourceCards />
-			</div>
-
 			{/* Chat */}
 			<div className="mt-8 flex min-h-0 flex-1">
-				{/* Recent Queries sidebar */}
-				<div className="w-48 shrink-0 pr-6">
-					<p className="mb-3 text-[10px] font-medium uppercase tracking-widest text-forge-hint">
-						Recent Queries
-					</p>
-					<div className="space-y-2">
-						{recentQueries.map((q) => (
-							<button
-								type="button"
-								key={q}
-								className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-sm text-forge-secondary transition-colors hover:bg-black/[0.03] hover:text-forge-primary"
-							>
-								<Clock className="h-3.5 w-3.5 shrink-0 text-forge-hint" />
-								{q}
-							</button>
-						))}
-					</div>
-				</div>
-				{/* Chat Interface */}
 				<div className="flex-1">
 					<ChatInterface />
 				</div>

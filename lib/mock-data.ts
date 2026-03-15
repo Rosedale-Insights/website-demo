@@ -708,20 +708,26 @@ export const agentConfigDefaults = {
 
 /* ── Insights Chart Data ──────────────────────────────── */
 
-export const productionOutputData = [
-	{ day: 'Mon', units: 142, efficiency: 78 },
-	{ day: 'Tue', units: 156, efficiency: 82 },
-	{ day: 'Wed', units: 138, efficiency: 76 },
-	{ day: 'Thu', units: 168, efficiency: 85 },
-	{ day: 'Fri', units: 172, efficiency: 84 },
-	{ day: 'Sat', units: 165, efficiency: 88 },
-	{ day: 'Sun', units: 178, efficiency: 90 },
+export const onTimeDeliveryData = [
+	{ week: 'W1', otd: 96, target: 95 },
+	{ week: 'W2', otd: 94, target: 95 },
+	{ week: 'W3', otd: 97, target: 95 },
+	{ week: 'W4', otd: 93, target: 95 },
+	{ week: 'W5', otd: 91, target: 95 },
+	{ week: 'W6', otd: 88, target: 95 },
+	{ week: 'W7', otd: 90, target: 95 },
+	{ week: 'W8', otd: 92, target: 95 },
+	{ week: 'W9', otd: 94, target: 95 },
+	{ week: 'W10', otd: 93, target: 95 },
+	{ week: 'W11', otd: 95, target: 95 },
+	{ week: 'W12', otd: 91, target: 95 },
 ];
 
-export const energyAllocationData = [
-	{ name: 'Milling', value: 40, color: '#7C9CB4' },
-	{ name: 'Assembly', value: 35, color: '#4A6741' },
-	{ name: 'HVAC', value: 25, color: '#1A1A1A' },
+export const lateOrderCausesData = [
+	{ name: 'Material Delays', value: 38, color: '#B85C3A' },
+	{ name: 'Machine Downtime', value: 27, color: '#7C9CB4' },
+	{ name: 'Quality Holds', value: 20, color: '#4A6741' },
+	{ name: 'Scheduling Conflicts', value: 15, color: '#1A1A1A' },
 ];
 
 export const insightsKpis = [

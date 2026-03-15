@@ -3,10 +3,10 @@ import { quoteTableRows } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 
 const statusStyles: Record<string, string> = {
-	Draft: 'text-forge-primary',
-	Pending: 'text-forge-accent-warm',
-	Sent: 'text-forge-success',
-	Expired: 'text-forge-error',
+	Draft: 'bg-forge-primary/[0.08] text-forge-primary',
+	Pending: 'bg-forge-accent-warm/[0.12] text-forge-accent-warm',
+	Sent: 'bg-forge-success/[0.12] text-forge-success',
+	Expired: 'bg-forge-error/[0.12] text-forge-error',
 };
 
 export function QuoteTable() {
@@ -42,7 +42,7 @@ export function QuoteTable() {
 					<p className="text-sm font-medium text-forge-primary">
 						${row.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
 					</p>
-					<span className={cn('text-sm font-medium', statusStyles[row.status])}>{row.status}</span>
+					<span className={cn('inline-flex w-fit items-center rounded-full px-2.5 py-0.5 text-xs font-semibold', statusStyles[row.status])}>{row.status}</span>
 					<button
 						type="button"
 						className="flex h-8 w-8 items-center justify-center rounded-lg text-forge-hint transition-colors hover:bg-black/[0.03] hover:text-forge-primary"
