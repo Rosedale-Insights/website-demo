@@ -2,4 +2,45 @@
 
 @theme {
 	--font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+	/* Colors — from design spec */
+	--color-forge-bg: #F2F4F5;
+	--color-forge-bg-wash: #E0E7FF;
+	--color-forge-surface: #FFFFFFB3;
+	--color-forge-surface-solid: #FFFFFF;
+	--color-forge-primary: #1A1A1A;
+	--color-forge-secondary: #666666;
+	--color-forge-hint: #A0A0A0;
+	--color-forge-accent-blue: #7C9CB4;
+	--color-forge-accent-warm: #C4836A;
+	--color-forge-success: #4A6741;
+	--color-forge-error: #BC4B41;
+	--color-forge-divider: #0000000A;
+
+	/* Shadows */
+	--shadow-glass: 0 1px 3px #0000000A;
+	--shadow-glass-md: 0 4px 12px #0000000D;
+	--shadow-glass-lg: 0 8px 24px -4px #00000014;
+	--shadow-glass-xl: 0 12px 32px -8px #0000001A;
+}
+
+/* Base atmospheric background applied in layout */
+.forge-atmosphere {
+	background: radial-gradient(ellipse at top right, var(--color-forge-bg-wash) 0%, var(--color-forge-bg) 70%);
+	min-height: 100vh;
+}
+
+/* Glass surface utility */
+.glass {
+	background: var(--color-forge-surface);
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
+	border: 1px solid rgba(255, 255, 255, 0.6);
+	box-shadow: var(--shadow-glass);
+}
+
+.glass-solid {
+	background: var(--color-forge-surface-solid);
+	border: 1px solid rgba(0, 0, 0, 0.04);
+	box-shadow: var(--shadow-glass);
 }
