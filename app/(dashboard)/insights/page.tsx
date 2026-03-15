@@ -1,4 +1,5 @@
 import { Calendar, Download } from 'lucide-react';
+import { DueJobsTable } from '@/components/insights/DueJobsTable';
 import { EnergyDonut } from '@/components/insights/EnergyDonut';
 import { IntelligenceBrief } from '@/components/insights/IntelligenceBrief';
 import { ProductionChart } from '@/components/insights/ProductionChart';
@@ -44,6 +45,9 @@ export default function InsightsPage() {
 
 			{/* Intelligence Brief */}
 			<IntelligenceBrief />
+
+			{/* Due Jobs */}
+			<DueJobsTable />
 		</div>
 	);
 }

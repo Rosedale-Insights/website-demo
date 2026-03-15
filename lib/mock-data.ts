@@ -35,11 +35,11 @@ export const initialChatMessages: ChatMessage[] = [
 ];
 
 export const cannedResponses = [
-	'Based on the **CNC Machine Operating Manual**, the recommended spindle speed for aluminum alloys is **8,000–12,000 RPM** depending on the tooling diameter.\n\n• For end mills under 1/2", use the higher range\n• For face mills, stay closer to 8,000 RPM\n• Always verify with the **Tolerance Standards** document for your specific part.',
-	'According to the **Quality Control Checklist**, every batch requires:\n\n• First-article inspection before full production\n• Dimensional verification at 10% sample rate\n• Surface finish measurement per **Material Specifications** doc\n• Sign-off from shift lead before shipping',
-	'The **Pricing Matrix Q1 2024** shows our standard markup tiers:\n\n• Under $10K: 35% margin\n• $10K–$50K: 28% margin\n• Over $50K: custom quote required\n\nSee the **Quoting Procedures** document for volume discount guidelines.',
-	'Per the **Employee Handbook**, PTO policy is:\n\n• 15 days for 0–3 years tenure\n• 20 days for 3–7 years\n• 25 days for 7+ years\n\nAll requests go through the HR portal. The **Benefits Overview** has details on carryover limits.',
-	'The **Safety Protocols 2024** document requires:\n\n• PPE check before entering any machining area\n• Lockout/tagout procedures for all maintenance\n• Incident reporting within 24 hours\n• Monthly safety audits by floor supervisors',
+	'According to the **Preventive Maintenance Schedule (Rev 7)**, the Mazak VTC-800 on Line 3 is due for a full spindle bearing inspection at **4,500 hours**. Current runtime is 4,312 hours.\n\n• Estimated time to threshold: ~8 operating days\n• Required parts: Angular contact bearing set (P/N MZ-SPB-4500)\n• Downtime estimate: 6–8 hours with pre-staged parts\n\nRecommendation: Schedule during the next planned weekend shutdown to avoid impacting WO-4821.',
+	'The **Incoming Material Inspection Log** shows the Ti-6Al-4V bar stock for WO-4835 (Raytheon Avionics Housing) was received on March 10 and passed dimensional and chemical certification.\n\n• Mill cert: Heat #TI-2026-0441, meets AMS 4928 spec\n• Bar diameter: 4.500" ± 0.005" — within tolerance\n• Material status: Released to production, staged at raw stores Bay C\n\nNo holds or NCRs on this lot.',
+	'Per the **Tooling Crib Inventory Report**, current insert stock for the Kennametal CNMG 432 carbide inserts is **24 units**.\n\n• Average consumption: 8 inserts/week on the 5-axis cells\n• Reorder point: 16 units (auto-PO triggers at this level)\n• Lead time from distributor: 3 business days\n\nYou have approximately 3 weeks of coverage. No action needed at this time.',
+	'Based on the **First Article Inspection Report (FAIR)** for WO-4807 Hydraulic Manifold:\n\n• 14 of 16 critical dimensions passed on first measurement\n• Two features (bore ID and O-ring groove depth) required remeasurement after deburring\n• Both passed on second check — within ±0.001" tolerance\n• Surface finish: 32 Ra achieved vs. 63 Ra max callout\n\nFAIR is signed off. Job is cleared for full production run.',
+	'The **ISO 9001:2015 Internal Audit Checklist** for Q1 2026 flagged two minor observations on the shop floor:\n\n1. Calibration sticker on Mitutoyo CMM #3 expires March 22 — schedule recalibration this week\n2. Two traveler cards on Line 2 were missing operator sign-off at Op 20\n\nNeither is a nonconformance, but both need corrective action documented before the external audit on April 8. See **Audit Finding Log AF-2026-011**.',
 ];
 
 export const recentActivity = [
@@ -767,6 +767,69 @@ export const forgeBrief = {
 		"Our predictive model suggests a 70% probability of seal failure within the next 48 hours. Maintenance Agent 'Forge-Beta' has drafted a service ticket for your approval.",
 };
 
+export const dueJobsData = [
+	{
+		jobId: 'WO-4821',
+		customer: 'Northrop Grumman',
+		part: 'Titanium Bracket Assy',
+		dueDate: '2026-03-16',
+		daysLeft: 1,
+		currentOp: 'Op 40 — CNC Finish',
+		percentComplete: 88,
+		risk: 'At Risk' as const,
+	},
+	{
+		jobId: 'WO-4807',
+		customer: 'Boeing Defense',
+		part: 'Hydraulic Manifold',
+		dueDate: '2026-03-13',
+		daysLeft: -2,
+		currentOp: 'Op 50 — QC Inspection',
+		percentComplete: 95,
+		risk: 'Past Due' as const,
+	},
+	{
+		jobId: 'WO-4835',
+		customer: 'Raytheon',
+		part: 'Avionics Housing',
+		dueDate: '2026-03-18',
+		daysLeft: 3,
+		currentOp: 'Op 30 — Heat Treat',
+		percentComplete: 62,
+		risk: 'At Risk' as const,
+	},
+	{
+		jobId: 'WO-4842',
+		customer: 'GE Aerospace',
+		part: 'Turbine Blade Root',
+		dueDate: '2026-03-20',
+		daysLeft: 5,
+		currentOp: 'Op 20 — 5-Axis Mill',
+		percentComplete: 41,
+		risk: 'At Risk' as const,
+	},
+	{
+		jobId: 'WO-4850',
+		customer: 'Lockheed Martin',
+		part: 'Structural Rib Panel',
+		dueDate: '2026-03-22',
+		daysLeft: 7,
+		currentOp: 'Op 10 — Laser Cut',
+		percentComplete: 18,
+		risk: 'On Track' as const,
+	},
+	{
+		jobId: 'WO-4819',
+		customer: 'Honeywell',
+		part: 'Sensor Mount Plate',
+		dueDate: '2026-03-14',
+		daysLeft: -1,
+		currentOp: 'Op 60 — Anodize',
+		percentComplete: 92,
+		risk: 'Past Due' as const,
+	},
+];
+
 /* ── Knowledge Base Chat (matches Technical Knowledge design) ── */
 
 export const knowledgeSources = [
@@ -779,20 +842,50 @@ export const knowledgeChatMessages = [
 	{
 		id: 'kc1',
 		role: 'user' as const,
-		sender: 'Technical Lead',
-		content:
-			'What are the specific heat treatment requirements for A36 structural steel according to our internal standards?',
+		sender: 'You',
+		content: 'When is the Mazak VTC-800 on Line 3 due for its next spindle service?',
 	},
 	{
 		id: 'kc2',
 		role: 'assistant' as const,
 		sender: 'Forge Intelligence',
 		content:
-			'Based on the Internal Metallurgy Handbook (v4.2), A36 structural steel typically does not require heat treatment for standard applications. However, for stress-relieving in heavy weldments, the following protocol is specified:\n\n1. Heating Rate: Do not exceed 400\u00b0F per hour.\n2. Soak Temperature: 1100\u00b0F - 1250\u00b0F.\n3. Soak Time: 1 hour per inch of thickness.\n4. Cooling: Furnace cool to 600\u00b0F before air cooling.',
+			'According to the Preventive Maintenance Schedule (Rev 7), the Mazak VTC-800 on Line 3 is due for a full spindle bearing inspection at 4,500 hours. Current runtime is 4,312 hours.\n\n• Estimated time to threshold: ~8 operating days\n• Required parts: Angular contact bearing set (P/N MZ-SPB-4500)\n• Downtime estimate: 6–8 hours with pre-staged parts\n\nRecommendation: Schedule during the next planned weekend shutdown to avoid impacting WO-4821.',
+	},
+	{
+		id: 'kc3',
+		role: 'user' as const,
+		sender: 'You',
+		content: 'What\'s the material status on the Ti-6Al-4V stock for the Raytheon avionics housing job?',
+	},
+	{
+		id: 'kc4',
+		role: 'assistant' as const,
+		sender: 'Forge Intelligence',
+		content:
+			'The Incoming Material Inspection Log shows the Ti-6Al-4V bar stock for WO-4835 (Raytheon Avionics Housing) was received on March 10 and passed dimensional and chemical certification.\n\n• Mill cert: Heat #TI-2026-0441, meets AMS 4928 spec\n• Bar diameter: 4.500" ± 0.005" — within tolerance\n• Material status: Released to production, staged at raw stores Bay C\n\nNo holds or NCRs on this lot.',
+	},
+	{
+		id: 'kc5',
+		role: 'user' as const,
+		sender: 'You',
+		content: 'Did the first article pass on WO-4807?',
+	},
+	{
+		id: 'kc6',
+		role: 'assistant' as const,
+		sender: 'Forge Intelligence',
+		content:
+			'Based on the First Article Inspection Report (FAIR) for WO-4807 Hydraulic Manifold:\n\n• 14 of 16 critical dimensions passed on first measurement\n• Two features (bore ID and O-ring groove depth) required remeasurement after deburring\n• Both passed on second check — within ±0.001" tolerance\n• Surface finish: 32 Ra achieved vs. 63 Ra max callout\n\nFAIR is signed off. Job is cleared for full production run.',
 	},
 ];
 
-export const recentQueries = ['Alloy Stress Limits', 'ISO 9001 Compliance'];
+export const recentQueries = [
+	'Mazak Line 3 spindle service',
+	'Ti-6Al-4V material status',
+	'WO-4807 first article',
+	'ISO 9001 audit findings',
+];
 
 /* ── Settings (matches Settings & Profile design) ────── */
 

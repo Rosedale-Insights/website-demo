@@ -18,7 +18,7 @@ export function Sidebar() {
 	const pathname = usePathname();
 
 	return (
-		<aside className="flex h-screen w-[260px] shrink-0 flex-col border-r border-forge-divider bg-white px-4 py-6">
+		<aside className="sticky top-0 flex h-screen w-[260px] shrink-0 flex-col border-r border-forge-divider bg-white px-4 py-6">
 			{/* Logo */}
 			<Link href="/insights" className="mb-8 flex items-center gap-2 px-3">
 				<div className="flex h-8 w-8 items-center justify-center rounded-xl bg-forge-primary">
@@ -47,16 +47,21 @@ export function Sidebar() {
 								{item.label}
 							</Link>
 							{isKB && isActive && (
-								<div className="mt-2 ml-3 flex flex-wrap gap-1.5">
-									{recentQueries.map((q) => (
-										<button
-											type="button"
-											key={q}
-											className="rounded-full border border-forge-divider bg-black/[0.02] px-3 py-1 text-[11px] font-medium text-forge-secondary transition-colors hover:border-forge-primary/20 hover:bg-forge-primary/[0.06] hover:text-forge-primary"
-										>
-											{q}
-										</button>
-									))}
+								<div className="mt-2 ml-1">
+									<p className="px-2 text-[10px] font-medium uppercase tracking-widest text-forge-hint">
+										Your chats
+									</p>
+									<div className="mt-1 space-y-0.5">
+										{recentQueries.map((q) => (
+											<button
+												type="button"
+												key={q}
+												className="w-full truncate rounded-lg px-2 py-1.5 text-left text-xs text-forge-secondary transition-colors hover:bg-black/[0.04]"
+											>
+												{q}
+											</button>
+										))}
+									</div>
 								</div>
 							)}
 						</div>

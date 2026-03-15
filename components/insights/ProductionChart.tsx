@@ -60,13 +60,13 @@ export function ProductionChart() {
 					/>
 					<ReferenceLine
 						y={95}
-						stroke="#B85C3A"
+						stroke="#A0A0A0"
 						strokeDasharray="6 4"
 						strokeWidth={1.5}
 						label={{
 							value: '95% Target',
 							position: 'right',
-							fill: '#B85C3A',
+							fill: '#A0A0A0',
 							fontSize: 11,
 							fontWeight: 600,
 						}}
