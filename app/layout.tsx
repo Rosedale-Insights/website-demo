@@ -1,15 +1,21 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
 
+const inter = Inter({
+	subsets: ['latin'],
+	variable: '--font-inter',
+});
+
 export const metadata: Metadata = {
-	title: 'App',
-	description: 'Built with Next.js, Vercel, and Claude Code',
+	title: 'FORGE — Manufacturing Intelligence',
+	description: 'AI-native manufacturing platform demo',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
-			<body>{children}</body>
+			<body className={`${inter.variable} font-sans antialiased`}>{children}</body>
 		</html>
 	);
 }
