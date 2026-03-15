@@ -39,3 +39,4 @@ drizzle/meta/
 .idea/
 *.swp
 *.swo
+test-results/

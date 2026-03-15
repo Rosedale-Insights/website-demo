@@ -2,7 +2,7 @@
 
 import { ArrowUp, Paperclip } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { cannedResponses, knowledgeChatMessages } from '@/lib/mock-data';
+import { cannedResponses } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 
 type Message = {
@@ -13,7 +13,7 @@ type Message = {
 };
 
 export function ChatInterface() {
-	const [messages, setMessages] = useState<Message[]>(knowledgeChatMessages);
+	const [messages, setMessages] = useState<Message[]>([]);
 	const [input, setInput] = useState('');
 	const [responseIndex, setResponseIndex] = useState(0);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
