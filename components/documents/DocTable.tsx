@@ -1,14 +1,14 @@
 'use client';
 
-import { useState } from 'react';
 import {
-	FileText,
-	FileSpreadsheet,
-	FileImage,
-	FileCog,
 	ChevronLeft,
 	ChevronRight,
+	FileCog,
+	FileImage,
+	FileSpreadsheet,
+	FileText,
 } from 'lucide-react';
+import { useState } from 'react';
 import { documentTableRows } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 
@@ -31,18 +31,12 @@ export function DocTable() {
 		<div className="glass-solid overflow-hidden rounded-2xl">
 			{/* Header */}
 			<div className="grid grid-cols-[2fr_1.2fr_1fr_1fr] gap-4 border-b border-forge-divider bg-black/[0.02] px-6 py-3">
-				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
-					Name
-				</span>
+				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">Name</span>
 				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
 					Date Modified
 				</span>
-				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
-					Size
-				</span>
-				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
-					Status
-				</span>
+				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">Size</span>
+				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">Status</span>
 			</div>
 			{/* Rows */}
 			{documentTableRows.map((row) => {
@@ -74,11 +68,17 @@ export function DocTable() {
 			})}
 			{/* Pagination */}
 			<div className="flex items-center justify-center gap-4 py-4">
-				<button className="text-forge-hint transition-colors hover:text-forge-primary">
+				<button
+					type="button"
+					className="text-forge-hint transition-colors hover:text-forge-primary"
+				>
 					<ChevronLeft className="h-4 w-4" />
 				</button>
 				<span className="text-sm text-forge-secondary">Page {page} of 12</span>
-				<button className="text-forge-hint transition-colors hover:text-forge-primary">
+				<button
+					type="button"
+					className="text-forge-hint transition-colors hover:text-forge-primary"
+				>
 					<ChevronRight className="h-4 w-4" />
 				</button>
 			</div>

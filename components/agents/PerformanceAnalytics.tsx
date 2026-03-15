@@ -1,14 +1,12 @@
 'use client';
 
-import { AreaChart, Area, XAxis, ResponsiveContainer } from 'recharts';
-import { performanceChartData, agentConfigDefaults } from '@/lib/mock-data';
+import { Area, AreaChart, ResponsiveContainer, XAxis } from 'recharts';
+import { agentConfigDefaults, performanceChartData } from '@/lib/mock-data';
 
 export function PerformanceAnalytics() {
 	return (
 		<div className="glass-solid rounded-2xl p-6">
-			<h3 className="mb-2 text-lg font-semibold text-forge-primary">
-				Performance Analytics
-			</h3>
+			<h3 className="mb-2 text-lg font-semibold text-forge-primary">Performance Analytics</h3>
 			<p className="mb-4 text-xs text-forge-hint">Accuracy over last 48h</p>
 			<ResponsiveContainer width="100%" height={140}>
 				<AreaChart data={performanceChartData}>

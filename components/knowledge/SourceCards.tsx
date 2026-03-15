@@ -1,4 +1,4 @@
-import { FileText, Database, Archive } from 'lucide-react';
+import { Archive, Database, FileText } from 'lucide-react';
 import { knowledgeSources } from '@/lib/mock-data';
 
 const iconMap: Record<string, React.ElementType> = { FileText, Database, Archive };

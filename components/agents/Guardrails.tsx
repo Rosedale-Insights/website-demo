@@ -4,12 +4,10 @@ import { useState } from 'react';
 import { agentConfigDefaults } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 
-function Toggle({
-	checked,
-	onChange,
-}: { checked: boolean; onChange: (v: boolean) => void }) {
+function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
 	return (
 		<button
+			type="button"
 			onClick={() => onChange(!checked)}
 			className={cn(
 				'relative h-6 w-11 rounded-full transition-colors',
@@ -55,9 +53,7 @@ export function Guardrails() {
 
 	return (
 		<div className="glass-solid rounded-2xl p-6">
-			<h3 className="mb-6 text-lg font-semibold text-forge-primary">
-				Operational Guardrails
-			</h3>
+			<h3 className="mb-6 text-lg font-semibold text-forge-primary">Operational Guardrails</h3>
 			<div className="space-y-5">
 				{toggles.map((t) => (
 					<div key={t.label} className="flex items-center justify-between">

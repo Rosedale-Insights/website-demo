@@ -1,18 +1,18 @@
 'use client';
 
+import { Check } from 'lucide-react';
 import { useState } from 'react';
 import {
-	AreaChart,
 	Area,
+	AreaChart,
+	CartesianGrid,
+	ResponsiveContainer,
+	Tooltip,
 	XAxis,
 	YAxis,
-	CartesianGrid,
-	Tooltip,
-	ResponsiveContainer,
 } from 'recharts';
 import { productionOutputData } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
-import { Check } from 'lucide-react';
 
 export function ProductionChart() {
 	const [mode, setMode] = useState<'units' | 'efficiency'>('units');
@@ -24,6 +24,7 @@ export function ProductionChart() {
 				<div className="flex gap-2">
 					{(['units', 'efficiency'] as const).map((m) => (
 						<button
+							type="button"
 							key={m}
 							onClick={() => setMode(m)}
 							className={cn(

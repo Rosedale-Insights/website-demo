@@ -1,10 +1,10 @@
-import { PageHeader } from '@/components/PageHeader';
-import { StatCard } from '@/components/StatCard';
-import { ProductionChart } from '@/components/insights/ProductionChart';
+import { Calendar, Download } from 'lucide-react';
 import { EnergyDonut } from '@/components/insights/EnergyDonut';
 import { IntelligenceBrief } from '@/components/insights/IntelligenceBrief';
+import { ProductionChart } from '@/components/insights/ProductionChart';
+import { PageHeader } from '@/components/PageHeader';
+import { StatCard } from '@/components/StatCard';
 import { insightsKpis } from '@/lib/mock-data';
-import { Calendar, Download } from 'lucide-react';
 
 export default function InsightsPage() {
 	return (
@@ -13,11 +13,17 @@ export default function InsightsPage() {
 				title="Manufacturing Insights"
 				subtitle="Real-time production intelligence and facility performance."
 			>
-				<button className="flex items-center gap-2 rounded-xl border border-forge-divider bg-white px-4 py-2 text-sm font-medium text-forge-primary transition-colors hover:bg-black/[0.02]">
+				<button
+					type="button"
+					className="flex items-center gap-2 rounded-xl border border-forge-divider bg-white px-4 py-2 text-sm font-medium text-forge-primary transition-colors hover:bg-black/[0.02]"
+				>
 					<Calendar className="h-4 w-4" />
 					Last 30 Days
 				</button>
-				<button className="flex items-center gap-2 rounded-xl bg-forge-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90">
+				<button
+					type="button"
+					className="flex items-center gap-2 rounded-xl bg-forge-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90"
+				>
 					<Download className="h-4 w-4" />
 					Export Report
 				</button>

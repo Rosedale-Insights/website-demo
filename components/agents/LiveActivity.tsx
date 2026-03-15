@@ -1,4 +1,4 @@
-import { Eye, RefreshCw, CheckCircle, HelpCircle, List } from 'lucide-react';
+import { CheckCircle, Eye, HelpCircle, List, RefreshCw } from 'lucide-react';
 import { agentLiveActivity } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 
@@ -26,9 +26,7 @@ export function LiveActivity() {
 					const Icon = config.icon;
 					return (
 						<div key={item.id} className="flex items-start gap-3">
-							<div
-								className={cn('mt-1.5 h-2 w-2 shrink-0 rounded-full', config.dot)}
-							/>
+							<div className={cn('mt-1.5 h-2 w-2 shrink-0 rounded-full', config.dot)} />
 							<div className="min-w-0 flex-1">
 								<p className="truncate text-sm text-forge-primary">{item.text}</p>
 								<p className="text-xs text-forge-hint">{item.time}</p>

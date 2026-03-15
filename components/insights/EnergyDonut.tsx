@@ -1,6 +1,6 @@
 'use client';
 
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 import { energyAllocationData } from '@/lib/mock-data';
 
 export function EnergyDonut() {
@@ -29,10 +29,7 @@ export function EnergyDonut() {
 				{energyAllocationData.map((item) => (
 					<div key={item.name} className="flex items-center justify-between">
 						<div className="flex items-center gap-2">
-							<div
-								className="h-2 w-2 rounded-full"
-								style={{ backgroundColor: item.color }}
-							/>
+							<div className="h-2 w-2 rounded-full" style={{ backgroundColor: item.color }} />
 							<span className="text-sm text-forge-secondary">{item.name}</span>
 						</div>
 						<span className="text-sm font-semibold text-forge-primary">{item.value}%</span>

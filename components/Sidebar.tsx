@@ -1,16 +1,8 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { Bot, Cpu, FileText, FolderOpen, LayoutDashboard, Settings, Sparkles } from 'lucide-react';
 import Link from 'next/link';
-import {
-	LayoutDashboard,
-	FileText,
-	Sparkles,
-	FolderOpen,
-	Bot,
-	Settings,
-	Cpu,
-} from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 const navItems = [
@@ -31,16 +23,13 @@ export function Sidebar() {
 				<div className="flex h-8 w-8 items-center justify-center rounded-xl bg-forge-primary">
 					<Cpu className="h-4 w-4 text-white" />
 				</div>
-				<span className="text-base font-extrabold tracking-tight text-forge-primary">
-					FORGE
-				</span>
+				<span className="text-base font-extrabold tracking-tight text-forge-primary">FORGE</span>
 			</Link>
 
 			{/* Nav Items */}
 			<nav className="flex flex-1 flex-col gap-1">
 				{navItems.map((item) => {
-					const isActive =
-						pathname === item.href || pathname.startsWith(`${item.href}/`);
+					const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
 					return (
 						<Link
 							key={item.href}
@@ -66,9 +55,7 @@ export function Sidebar() {
 						JD
 					</div>
 					<div className="min-w-0 flex-1">
-						<p className="truncate text-sm font-medium text-forge-primary">
-							Julian Detmer
-						</p>
+						<p className="truncate text-sm font-medium text-forge-primary">Julian Detmer</p>
 						<p className="truncate text-xs text-forge-hint">Plant Manager</p>
 					</div>
 					<Link

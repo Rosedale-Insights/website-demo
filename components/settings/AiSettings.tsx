@@ -1,16 +1,14 @@
 'use client';
 
+import { Folder, Link as LinkIcon, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { aiSettings, connectedRepositories } from '@/lib/mock-data';
-import { Link as LinkIcon, Folder, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-function Toggle({
-	checked,
-	onChange,
-}: { checked: boolean; onChange: (v: boolean) => void }) {
+function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
 	return (
 		<button
+			type="button"
 			onClick={() => onChange(!checked)}
 			className={cn(
 				'relative h-6 w-11 rounded-full transition-colors',
@@ -75,9 +73,7 @@ export function AiSettings() {
 			</div>
 
 			<div className="mt-6 border-t border-forge-divider pt-5">
-				<p className="mb-3 text-xs font-medium text-forge-secondary">
-					Connected Repositories
-				</p>
+				<p className="mb-3 text-xs font-medium text-forge-secondary">Connected Repositories</p>
 				<div className="flex flex-wrap items-center gap-2">
 					{connectedRepositories.map((repo) => {
 						const Icon = repoIcons[repo.icon] || LinkIcon;
@@ -91,7 +87,10 @@ export function AiSettings() {
 							</span>
 						);
 					})}
-					<button className="flex items-center gap-1.5 text-sm text-forge-secondary transition-colors hover:text-forge-primary">
+					<button
+						type="button"
+						className="flex items-center gap-1.5 text-sm text-forge-secondary transition-colors hover:text-forge-primary"
+					>
 						<Plus className="h-3.5 w-3.5" />
 						Add Source
 					</button>

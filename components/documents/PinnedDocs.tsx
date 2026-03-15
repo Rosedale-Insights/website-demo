@@ -1,4 +1,4 @@
-import { FileText, Cog, ClipboardList, PenTool, MoreVertical } from 'lucide-react';
+import { ClipboardList, Cog, FileText, MoreVertical, PenTool } from 'lucide-react';
 import { pinnedDocuments } from '@/lib/mock-data';
 
 const iconMap: Record<string, React.ElementType> = { FileText, Cog, ClipboardList, PenTool };
@@ -19,7 +19,10 @@ export function PinnedDocs() {
 								<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black/[0.03]">
 									<Icon className="h-5 w-5 text-forge-primary" />
 								</div>
-								<button className="text-forge-hint transition-colors hover:text-forge-primary">
+								<button
+									type="button"
+									className="text-forge-hint transition-colors hover:text-forge-primary"
+								>
 									<MoreVertical className="h-4 w-4" />
 								</button>
 							</div>

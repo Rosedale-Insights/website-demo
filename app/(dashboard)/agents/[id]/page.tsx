@@ -1,9 +1,9 @@
-import { PageHeader } from '@/components/PageHeader';
+import { Database, FileText, Plus } from 'lucide-react';
 import { ConfigForm } from '@/components/agents/ConfigForm';
 import { Guardrails } from '@/components/agents/Guardrails';
 import { PerformanceAnalytics } from '@/components/agents/PerformanceAnalytics';
+import { PageHeader } from '@/components/PageHeader';
 import { agentConfigDefaults } from '@/lib/mock-data';
-import { FileText, Database, Plus } from 'lucide-react';
 
 const dbIcons: Record<string, React.ElementType> = { FileText, Database };
 
@@ -12,23 +12,24 @@ export default function AgentConfigPage() {
 		<div className="space-y-8">
 			{/* Breadcrumb */}
 			<div className="flex items-center gap-2 text-sm text-forge-secondary">
-				<a
-					href="/agents"
-					className="transition-colors hover:text-forge-primary"
-				>
+				<a href="/agents" className="transition-colors hover:text-forge-primary">
 					Agents
 				</a>
 				<span className="text-forge-hint">&gt;</span>
-				<span className="font-medium text-forge-primary">
-					{agentConfigDefaults.name}
-				</span>
+				<span className="font-medium text-forge-primary">{agentConfigDefaults.name}</span>
 			</div>
 
 			<PageHeader title="Agent Configuration" subtitle="">
-				<button className="text-sm text-forge-secondary transition-colors hover:text-forge-primary">
+				<button
+					type="button"
+					className="text-sm text-forge-secondary transition-colors hover:text-forge-primary"
+				>
 					Discard
 				</button>
-				<button className="rounded-xl bg-forge-primary px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90">
+				<button
+					type="button"
+					className="rounded-xl bg-forge-primary px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90"
+				>
 					Deploy Agent
 				</button>
 			</PageHeader>
@@ -42,9 +43,7 @@ export default function AgentConfigPage() {
 						<h3 className="mb-4 text-lg font-semibold text-forge-primary">
 							Knowledge & Data Access
 						</h3>
-						<p className="mb-4 text-xs font-medium text-forge-secondary">
-							Connected Databases
-						</p>
+						<p className="mb-4 text-xs font-medium text-forge-secondary">Connected Databases</p>
 						<div className="space-y-3">
 							{agentConfigDefaults.connectedDatabases.map((db) => {
 								const Icon = dbIcons[db.icon] || FileText;
@@ -60,7 +59,10 @@ export default function AgentConfigPage() {
 								);
 							})}
 						</div>
-						<button className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-forge-divider py-3 text-sm text-forge-secondary transition-colors hover:border-forge-primary/20 hover:text-forge-primary">
+						<button
+							type="button"
+							className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-forge-divider py-3 text-sm text-forge-secondary transition-colors hover:border-forge-primary/20 hover:text-forge-primary"
+						>
 							<Plus className="h-4 w-4" />
 							Add Knowledge Source
 						</button>

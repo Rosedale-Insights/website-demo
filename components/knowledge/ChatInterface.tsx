@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
 import { ArrowUp, Paperclip } from 'lucide-react';
-import { knowledgeChatMessages, cannedResponses } from '@/lib/mock-data';
+import { useEffect, useRef, useState } from 'react';
+import { cannedResponses, knowledgeChatMessages } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 
 type Message = {
@@ -18,9 +18,10 @@ export function ChatInterface() {
 	const [responseIndex, setResponseIndex] = useState(0);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
+	const messagesLength = messages.length;
 	useEffect(() => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-	}, [messages]);
+	}, [messagesLength]);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -52,10 +53,7 @@ export function ChatInterface() {
 				{messages.map((msg) => (
 					<div
 						key={msg.id}
-						className={cn(
-							'flex flex-col',
-							msg.role === 'user' ? 'items-end' : 'items-start',
-						)}
+						className={cn('flex flex-col', msg.role === 'user' ? 'items-end' : 'items-start')}
 					>
 						<p className="mb-1 text-xs text-forge-hint">{msg.sender}</p>
 						<div

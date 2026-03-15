@@ -1,6 +1,6 @@
 'use client';
 
-import { AreaChart, Area, XAxis, ResponsiveContainer } from 'recharts';
+import { Area, AreaChart, ResponsiveContainer, XAxis } from 'recharts';
 import { performanceChartData } from '@/lib/mock-data';
 
 export function PerformanceChart() {

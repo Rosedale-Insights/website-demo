@@ -1,9 +1,9 @@
+import { Plus, Search } from 'lucide-react';
+import { DocTable } from '@/components/documents/DocTable';
+import { PinnedDocs } from '@/components/documents/PinnedDocs';
 import { PageHeader } from '@/components/PageHeader';
 import { StatCard } from '@/components/StatCard';
-import { PinnedDocs } from '@/components/documents/PinnedDocs';
-import { DocTable } from '@/components/documents/DocTable';
 import { documentStats } from '@/lib/mock-data';
-import { Search, Plus } from 'lucide-react';
 
 export default function DocumentsPage() {
 	return (
@@ -20,7 +20,10 @@ export default function DocumentsPage() {
 						className="w-48 bg-transparent text-sm text-forge-primary outline-none placeholder:text-forge-hint"
 					/>
 				</div>
-				<button className="flex items-center gap-2 rounded-xl bg-forge-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90">
+				<button
+					type="button"
+					className="flex items-center gap-2 rounded-xl bg-forge-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90"
+				>
 					<Plus className="h-4 w-4" />
 					Upload File
 				</button>

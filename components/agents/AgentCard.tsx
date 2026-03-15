@@ -1,4 +1,4 @@
-import { ScanSearch, Container, Wrench, Gauge, ArrowRight } from 'lucide-react';
+import { ArrowRight, Container, Gauge, ScanSearch, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const iconMap: Record<string, React.ElementType> = { ScanSearch, Container, Wrench, Gauge };
@@ -40,10 +40,7 @@ export function AgentCard({
 					<Icon className="h-6 w-6 text-forge-primary" />
 				</div>
 				<span
-					className={cn(
-						'rounded-full px-3 py-1 text-xs font-medium',
-						statusColorMap[statusColor],
-					)}
+					className={cn('rounded-full px-3 py-1 text-xs font-medium', statusColorMap[statusColor])}
 				>
 					{status}
 				</span>

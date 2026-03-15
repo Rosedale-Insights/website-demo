@@ -1,5 +1,5 @@
-import { quoteTableRows } from '@/lib/mock-data';
 import { MoreVertical } from 'lucide-react';
+import { quoteTableRows } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 
 const statusStyles: Record<string, string> = {
@@ -20,15 +20,11 @@ export function QuoteTable() {
 				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
 					Project Name
 				</span>
-				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
-					Date
-				</span>
+				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">Date</span>
 				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
 					Total Amount
 				</span>
-				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
-					Status
-				</span>
+				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">Status</span>
 				<span />
 			</div>
 			{/* Rows */}
@@ -46,10 +42,11 @@ export function QuoteTable() {
 					<p className="text-sm font-medium text-forge-primary">
 						${row.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
 					</p>
-					<span className={cn('text-sm font-medium', statusStyles[row.status])}>
-						{row.status}
-					</span>
-					<button className="flex h-8 w-8 items-center justify-center rounded-lg text-forge-hint transition-colors hover:bg-black/[0.03] hover:text-forge-primary">
+					<span className={cn('text-sm font-medium', statusStyles[row.status])}>{row.status}</span>
+					<button
+						type="button"
+						className="flex h-8 w-8 items-center justify-center rounded-lg text-forge-hint transition-colors hover:bg-black/[0.03] hover:text-forge-primary"
+					>
 						<MoreVertical className="h-4 w-4" />
 					</button>
 				</div>
