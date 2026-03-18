@@ -1,63 +1,138 @@
-import { CheckCircle2, Clock, FileEdit, MoreVertical, XCircle } from 'lucide-react';
-import { quoteTableRows } from '@/lib/mock-data';
-import { cn } from '@/lib/utils';
+'use client';
 
-const statusConfig: Record<string, { icon: typeof CheckCircle2; iconColor: string }> = {
+import { useState } from 'react';
+import {
+	CheckCircle2,
+	ChevronDown,
+	ChevronRight,
+	Clock,
+	Eye,
+	FileEdit,
+	Trophy,
+	XCircle,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { enhancedQuoteTableRows } from '@/lib/mock-data';
+import type { EnhancedQuoteRow } from '@/lib/mock-data';
+import { QuoteFilterTabs } from './QuoteFilterTabs';
+import { QuoteDetailPanel } from './QuoteDetailPanel';
+
+const statusConfig: Record<
+	EnhancedQuoteRow['status'],
+	{ icon: typeof CheckCircle2; iconColor: string }
+> = {
 	Draft: { icon: FileEdit, iconColor: 'text-forge-primary' },
-	Pending: { icon: Clock, iconColor: 'text-forge-accent-warm' },
-	Sent: { icon: CheckCircle2, iconColor: 'text-forge-success' },
-	Expired: { icon: XCircle, iconColor: 'text-forge-error' },
+	Review: { icon: Eye, iconColor: 'text-forge-accent-blue' },
+	Sent: { icon: Clock, iconColor: 'text-forge-accent-warm' },
+	Won: { icon: Trophy, iconColor: 'text-forge-success' },
+	Lost: { icon: XCircle, iconColor: 'text-forge-error' },
+	Expired: { icon: XCircle, iconColor: 'text-forge-hint' },
+};
+
+const marginColor = (m: number) => {
+	if (m >= 25) return 'bg-forge-success';
+	if (m >= 15) return 'bg-forge-accent-warm';
+	return 'bg-forge-error';
 };
 
 export function QuoteTable() {
+	const [filter, setFilter] = useState('All');
+	const [expandedId, setExpandedId] = useState<string | null>(null);
+
+	const filtered =
+		filter === 'All'
+			? enhancedQuoteTableRows
+			: enhancedQuoteTableRows.filter((r) => r.status === filter);
+
 	return (
-		<div className="glass-solid overflow-hidden rounded-2xl">
-			{/* Header */}
-			<div className="grid grid-cols-[2fr_2fr_1.2fr_1.2fr_1fr_48px] gap-4 border-b border-forge-divider bg-black/[0.02] px-6 py-3">
-				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
-					Client & ID
-				</span>
-				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
-					Project Name
-				</span>
-				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">Date</span>
-				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
-					Total Amount
-				</span>
-				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">Status</span>
-				<span />
+		<div>
+			<div className="mb-4">
+				<QuoteFilterTabs active={filter} onChange={setFilter} />
 			</div>
-			{/* Rows */}
-			{quoteTableRows.map((row) => {
-				const status = statusConfig[row.status];
-				const StatusIcon = status.icon;
-				return (
-					<div
-						key={row.quoteId}
-						className="grid grid-cols-[2fr_2fr_1.2fr_1.2fr_1fr_48px] items-center gap-4 border-b border-forge-divider px-6 py-4 transition-colors hover:bg-black/[0.01]"
-					>
-						<div>
-							<p className="font-medium text-forge-primary">{row.client}</p>
-							<p className="text-xs text-forge-hint">{row.quoteId}</p>
+
+			<div className="glass-solid overflow-hidden rounded-2xl">
+				{/* Header */}
+				<div className="grid grid-cols-[24px_1.8fr_2fr_1fr_1fr_80px_1fr] items-center gap-4 border-b border-forge-divider bg-black/[0.02] px-6 py-3">
+					<span />
+					<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
+						Client & ID
+					</span>
+					<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
+						Project
+					</span>
+					<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
+						Amount
+					</span>
+					<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
+						Margin
+					</span>
+					<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
+						Conf.
+					</span>
+					<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">
+						Status
+					</span>
+				</div>
+
+				{/* Rows */}
+				{filtered.map((row) => {
+					const status = statusConfig[row.status];
+					const StatusIcon = status.icon;
+					const isExpanded = expandedId === row.quoteId;
+
+					return (
+						<div key={row.quoteId}>
+							<div
+								className="grid cursor-pointer grid-cols-[24px_1.8fr_2fr_1fr_1fr_80px_1fr] items-center gap-4 border-b border-forge-divider px-6 py-4 transition-colors hover:bg-black/[0.01]"
+								onClick={() => setExpandedId(isExpanded ? null : row.quoteId)}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter') setExpandedId(isExpanded ? null : row.quoteId);
+								}}
+								role="button"
+								tabIndex={0}
+							>
+								{isExpanded ? (
+									<ChevronDown className="h-3.5 w-3.5 text-forge-hint" />
+								) : (
+									<ChevronRight className="h-3.5 w-3.5 text-forge-hint" />
+								)}
+								<div>
+									<p className="font-medium text-forge-primary">{row.client}</p>
+									<p className="text-xs text-forge-hint">{row.quoteId}</p>
+								</div>
+								<p className="truncate text-sm text-forge-secondary">{row.project}</p>
+								<p className="text-sm font-medium text-forge-primary">
+									${row.amount.toLocaleString()}
+								</p>
+								{/* Margin bar */}
+								<div className="flex items-center gap-2">
+									<div className="h-1.5 w-12 rounded-full bg-black/[0.04]">
+										<div
+											className={cn('h-full rounded-full', marginColor(row.margin))}
+											style={{ width: `${Math.min((row.margin / 40) * 100, 100)}%` }}
+										/>
+									</div>
+									<span className="text-xs text-forge-secondary">{row.margin}%</span>
+								</div>
+								<span className="text-xs text-forge-hint">{row.confidenceScore}%</span>
+								<div className="flex items-center gap-1.5">
+									<StatusIcon className={cn('h-3.5 w-3.5', status.iconColor)} />
+									<span className="text-xs font-medium text-forge-secondary">
+										{row.status}
+									</span>
+								</div>
+							</div>
+
+							{/* Expandable detail */}
+							{isExpanded && (
+								<div className="border-b border-forge-divider bg-black/[0.01] px-6 py-6">
+									<QuoteDetailPanel />
+								</div>
+							)}
 						</div>
-						<p className="text-sm text-forge-secondary">{row.project}</p>
-						<p className="text-sm text-forge-secondary">{row.date}</p>
-						<p className="text-sm font-medium text-forge-primary">
-							${row.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-						</p>
-						<div className="flex items-center gap-1.5">
-							<StatusIcon className={cn('h-3.5 w-3.5', status.iconColor)} />
-							<span className="text-xs font-medium text-forge-secondary">{row.status}</span>
-						</div>
-						<button
-							type="button"
-							className="flex h-8 w-8 items-center justify-center rounded-lg text-forge-hint transition-colors hover:bg-black/[0.03] hover:text-forge-primary"
-						>
-							<MoreVertical className="h-4 w-4" />
-						</button>
-					</div>
-				);
-			})}
+					);
+				})}
+			</div>
 		</div>
 	);
 }
