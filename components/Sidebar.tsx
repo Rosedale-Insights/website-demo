@@ -1,6 +1,16 @@
 'use client';
 
-import { Bot, Cpu, FileText, FolderOpen, LayoutDashboard, Lightbulb, Settings } from 'lucide-react';
+import {
+	Bot,
+	Cpu,
+	Factory,
+	FileText,
+	FolderOpen,
+	LayoutDashboard,
+	Lightbulb,
+	Settings,
+	Truck,
+} from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -8,6 +18,8 @@ import { recentQueries } from '@/lib/mock-data';
 
 const navItems = [
 	{ href: '/insights', label: 'Insights', icon: LayoutDashboard },
+	{ href: '/delivery', label: 'Delivery', icon: Truck },
+	{ href: '/shop-floor', label: 'Shop Floor', icon: Factory },
 	{ href: '/quoting', label: 'Quoting', icon: FileText },
 	{ href: '/knowledge-base', label: 'Knowledge Base', icon: Lightbulb },
 	{ href: '/documents', label: 'Documents', icon: FolderOpen },

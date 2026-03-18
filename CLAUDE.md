@@ -1,90 +1,98 @@
-# Project: [PROJECT_NAME]
+# Project: FORGE Manufacturing Demo
 
 ## Overview
-Next.js application using the App Router, deployed on Vercel.
+FORGE is a manufacturing intelligence demo application built to showcase Rosedale's AI-powered platform. It is a **self-contained, mocked demo** — no database, no API calls, no auth at runtime. All data comes from `lib/mock-data.ts`.
+
+The app is designed to be **recorded as a video walkthrough** using Playwright, producing a polished demo reel of each page.
 
 ## Tech Stack
 - **Framework**: Next.js (App Router, Turbopack, React 19)
 - **Language**: TypeScript (strict mode)
-- **Database**: Neon Postgres via Drizzle ORM
-- **AI**: Vercel AI SDK with AI Gateway
-- **Storage**: Vercel Blob Storage
-- **Hosting**: Vercel (Edge Functions supported)
-- **Styling**: Tailwind CSS v4 + shadcn/ui
+- **Styling**: Tailwind CSS v4 + custom FORGE design tokens (`--color-forge-*`)
+- **Charts**: Recharts (area charts, donut chart, sparklines)
+- **Icons**: Lucide React
+- **Testing/Recording**: Playwright (demo video recording, not traditional tests)
+- **Video Processing**: ffmpeg-static (converts Playwright .webm to .mp4)
 - **Package Manager**: pnpm (enforced — do NOT use npm or yarn)
 - **Formatting/Linting**: Biome (auto-runs via PostToolUse hook)
+
+## Pages (9 routes)
+All pages live under `app/(dashboard)/` which provides a shared sidebar + atmospheric background. Root `/` redirects to `/insights`.
+
+| Route | Page | Description |
+|-------|------|-------------|
+| `/insights` | Insights Dashboard | Production charts, energy donut, due jobs table, intelligence brief |
+| `/delivery` | Delivery Intelligence | Supplier OTD chart, delay root cause donut, at-risk PO table, supplier scorecard, agent feed |
+| `/shop-floor` | Shop Floor Monitor | Machine status table, OEE breakdown, maintenance timeline, shift overview, machine alerts |
+| `/quoting` | Quoting Tool | Enhanced quote table with filters/margins, Quote Builder modal (3-step: form → AI processing → review with cost breakdown, routing, similar jobs, margin slider) |
+| `/knowledge-base` | Knowledge Base | Enhanced chat with inline citations [1][2][3], source citation cards, confidence badges, contributor attribution, query suggestions |
+| `/documents` | Document Library | Paginated doc table, pinned documents |
+| `/agents` | Agent Workspace | Agent cards with live activity and performance analytics |
+| `/agents/[id]` | Agent Config | Config form, guardrails toggles |
+| `/settings` | Settings | Profile form, AI settings, security section |
 
 ## Commands
 - `pnpm dev` — Start dev server with Turbopack
 - `pnpm build` — Production build
+- `pnpm start` — Start production server
 - `pnpm check:fix` — Biome check with auto-fix
 - `pnpm typecheck` — TypeScript type checking
-- `pnpm db:generate` — Generate Drizzle migration from schema changes
-- `pnpm db:migrate` — Apply migrations to Neon
-- `pnpm db:push` — Push schema directly (dev only)
-- `pnpm db:studio` — Open Drizzle Studio
+- `pnpm record-demo` — Full pipeline: build → start server → Playwright recording → ffmpeg conversion to MP4
+
+## Demo Recording System
+
+### How it works
+1. `scripts/record-demo.sh` builds the app, starts a production server on :3000, runs Playwright, and converts the output to MP4
+2. `playwright.config.ts` is configured for 1920×1080 video recording with `slowMo: 50` for smooth animations
+3. `tests/demo-recording.spec.ts` drives a scripted walkthrough of every page with:
+   - A **fake cursor** (20px dot) injected into the DOM to replace the invisible Playwright cursor
+   - **Click ripple** animations for visual feedback
+   - Smooth mouse movements between elements
+   - Timed pauses to let the viewer absorb each page
+
+### Key files
+- `scripts/record-demo.sh` — Orchestration script (build → serve → record → convert)
+- `playwright.config.ts` — Playwright config (video on, 1080p, chromium only)
+- `tests/demo-recording.spec.ts` — The scripted walkthrough
+- `demo-recording.mp4` — Output artifact (committed to repo)
+
+## Design System
+- **Background**: Radial gradient (`#E0E7FF` → `#F2F4F5`) via `.forge-atmosphere`
+- **Surfaces**: Glass panels (`.glass` = white 70% opacity + backdrop blur) and solid cards (`.glass-solid`)
+- **Colors**: Defined as `--color-forge-*` CSS custom properties in `globals.css`
+- **Typography**: Inter via `next/font/google`
+
+## Directory Structure
+- `app/` — Routes, layouts (all under `(dashboard)` route group)
+- `components/` — Shared: `Sidebar`, `GlassCard`, `StatCard`, `PageHeader`
+- `components/{page}/` — Page-specific: `insights/`, `delivery/`, `shop-floor/`, `quoting/`, `knowledge/`, `documents/`, `agents/`, `settings/`
+- `lib/mock-data.ts` — All mock data (documents, chat messages, agents, quotes, etc.)
+- `lib/utils.ts` — `cn()` helper
+- `scripts/` — Demo recording shell script
+- `tests/` — Playwright demo recording spec
+- `docs/` — Architecture docs, design prompt, recording prompt
 
 ## Code Style
 - Server Components by default — only add `'use client'` when using hooks/event handlers/browser APIs
-- `'use server'` directive at top of server action files
 - Named exports for components; default exports only for `page.tsx` and `layout.tsx`
-- Zod for all input validation in server actions
-- All database queries through Drizzle ORM — never raw SQL
 - `@/` path alias for all imports
 - Use `cn()` from `@/lib/utils` for conditional classNames
 
-## Directory Structure
-- `app/` — Routes, layouts, API routes
-- `app/api/` — API route handlers
-- `components/ui/` — shadcn/ui components
-- `components/` — App-specific components
-- `hooks/` — Custom React hooks
-- `lib/db/` — Database schema and client
-- `lib/actions/` — Server actions
-- `lib/ai/` — AI Gateway utilities
-- `lib/blob/` — Blob storage utilities
-- `lib/utils.ts` — `cn()` helper and general utilities
+## Data
+All data is mocked in `lib/mock-data.ts`. There is **no database, no API, no server actions** in this demo. The following are present in `package.json` from the template but unused:
+- `drizzle-orm` / `drizzle-kit` / `@neondatabase/serverless` (database)
+- `@ai-sdk/gateway` / `ai` (AI SDK)
+- `@vercel/blob` (blob storage)
+- `zod` (validation)
 
-## File Naming
-- Routes: `app/**/page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`
-- API routes: `app/api/**/route.ts`
-- Server actions: `lib/actions/*.ts`
-- Components: PascalCase in `components/`
-- Utilities: camelCase in `lib/`
-
-## Patterns
-- Use `gateway('provider/model')` from `@ai-sdk/gateway` for AI model access
-- Use `streamText` / `generateText` from `ai` for AI operations
-- Blob uploads: `put()` from `@vercel/blob`
-- Edge functions: `export const runtime = 'edge'`
-- After mutations: `revalidatePath()` or `revalidateTag()`
-- Drizzle typed exports: `$inferInsert` and `$inferSelect`
-
-## Working Loop
-1. **Read context first** — always read `CLAUDE.md` and relevant docs before coding
-2. **Plan before implementing** — outline steps and files before writing code
-3. **Code** — implement the plan, following project conventions
-4. **Update docs before finishing** — any changed data model or architecture must be reflected in `docs/`
-5. Use `/start-task` at the beginning of work to read context and create a plan
-6. Use `/finish-task` at the end of work to summarise changes, update docs, and prepare the PR
-
-## Documentation Rules
-
-**When to create a new doc:**
-- A new major app area is added (e.g. `app/billing/`)
-- A new external integration is introduced (e.g. Stripe, email provider)
-- A significant new system is built (auth, background jobs, etc.)
-
-**How to keep docs updated:**
-- `/finish-task` always checks which docs need updating
-- Any PR that changes the data model must update `docs/data-model.md`
-- Any PR that changes system architecture or key flows must update `docs/architecture.md`
-- New docs should follow the same heading structure as the starter placeholders
-- Docs should be concise and factual — describe what exists, not aspirations
+## GitHub
+- **Org**: Rosedale-Insights
+- **Repo**: `website-demo`
+- **Remote**: `origin` → `https://github.com/Rosedale-Insights/website-demo.git`
 
 ## IMPORTANT
 - Do NOT use `npm` or `yarn` — pnpm only
 - Do NOT read `.env` or `.env.local` files
 - Do NOT use `any` type — prefer `unknown` and narrow
 - Do NOT install ESLint or Prettier — this project uses Biome
-- Do NOT push to main directly — use feature branches
+- This is a **demo app** — all data is mocked, no real integrations
