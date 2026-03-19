@@ -52,7 +52,7 @@ export function Guardrails() {
 	];
 
 	return (
-		<div className="glass-solid rounded-2xl p-6">
+		<div className="glass-solid rounded-lg p-6">
 			<h3 className="mb-6 text-lg font-semibold text-forge-primary">Operational Guardrails</h3>
 			<div className="space-y-5">
 				{toggles.map((t) => (

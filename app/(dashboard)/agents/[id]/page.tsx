@@ -12,7 +12,7 @@ export default function AgentConfigPage() {
 		<div className="space-y-8">
 			{/* Breadcrumb */}
 			<div className="flex items-center gap-2 text-sm text-forge-secondary">
-				<a href="/agents" className="transition-colors hover:text-forge-primary">
+				<a href="/settings?tab=agents" className="transition-colors hover:text-forge-primary">
 					Agents
 				</a>
 				<span className="text-forge-hint">&gt;</span>
@@ -28,7 +28,7 @@ export default function AgentConfigPage() {
 				</button>
 				<button
 					type="button"
-					className="rounded-xl bg-forge-primary px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90"
+					className="rounded-lg bg-forge-primary px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90"
 				>
 					Deploy Agent
 				</button>
@@ -39,7 +39,7 @@ export default function AgentConfigPage() {
 				<div className="space-y-6">
 					<ConfigForm />
 					{/* Knowledge & Data Access */}
-					<div className="glass-solid rounded-2xl p-6">
+					<div className="glass-solid rounded-lg p-6">
 						<h3 className="mb-4 text-lg font-semibold text-forge-primary">
 							Knowledge & Data Access
 						</h3>
@@ -50,7 +50,7 @@ export default function AgentConfigPage() {
 								return (
 									<div
 										key={db.name}
-										className="flex items-center gap-3 rounded-xl bg-forge-primary/[0.04] px-4 py-3"
+										className="flex items-center gap-3 rounded-lg bg-forge-primary/[0.04] px-4 py-3"
 									>
 										<Icon className="h-4 w-4 text-forge-secondary" />
 										<span className="text-sm text-forge-primary">{db.name}</span>
@@ -61,7 +61,7 @@ export default function AgentConfigPage() {
 						</div>
 						<button
 							type="button"
-							className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-forge-divider py-3 text-sm text-forge-secondary transition-colors hover:border-forge-primary/20 hover:text-forge-primary"
+							className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-forge-divider py-3 text-sm text-forge-secondary transition-colors hover:border-forge-primary/20 hover:text-forge-primary"
 						>
 							<Plus className="h-4 w-4" />
 							Add Knowledge Source

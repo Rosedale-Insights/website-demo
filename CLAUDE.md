@@ -9,27 +9,27 @@ The app is designed to be **recorded as a video walkthrough** using Playwright, 
 - **Framework**: Next.js (App Router, Turbopack, React 19)
 - **Language**: TypeScript (strict mode)
 - **Styling**: Tailwind CSS v4 + custom FORGE design tokens (`--color-forge-*`)
-- **Charts**: Recharts (area charts, donut chart, sparklines)
+- **Charts**: Recharts (area charts, bar charts, sparklines)
 - **Icons**: Lucide React
 - **Testing/Recording**: Playwright (demo video recording, not traditional tests)
 - **Video Processing**: ffmpeg-static (converts Playwright .webm to .mp4)
 - **Package Manager**: pnpm (enforced — do NOT use npm or yarn)
 - **Formatting/Linting**: Biome (auto-runs via PostToolUse hook)
 
-## Pages (9 routes)
-All pages live under `app/(dashboard)/` which provides a shared sidebar + atmospheric background. Root `/` redirects to `/insights`.
+## Pages (7 routes)
+All pages live under `app/(dashboard)/` which provides a shared sidebar + atmospheric background. Root `/` redirects to `/insights` (the Home page). Sidebar has 5 items: Home, Delivery, Shop Floor, Quoting, Knowledge Base.
 
 | Route | Page | Description |
 |-------|------|-------------|
-| `/insights` | Insights Dashboard | Production charts, energy donut, due jobs table, intelligence brief |
-| `/delivery` | Delivery Intelligence | Supplier OTD chart, delay root cause donut, at-risk PO table, supplier scorecard, agent feed |
+| `/insights` | Home | Greeting, cross-module intelligence brief, 4 key metric cards |
+| `/delivery` | Delivery Intelligence | Supplier OTD chart, delay root cause bar chart, at-risk PO table, supplier scorecard, agent feed |
 | `/shop-floor` | Shop Floor Monitor | Machine status table, OEE breakdown, maintenance timeline, shift overview, machine alerts |
 | `/quoting` | Quoting Tool | Enhanced quote table with filters/margins, Quote Builder modal (3-step: form → AI processing → review with cost breakdown, routing, similar jobs, margin slider) |
 | `/knowledge-base` | Knowledge Base | Enhanced chat with inline citations [1][2][3], source citation cards, confidence badges, contributor attribution, query suggestions |
-| `/documents` | Document Library | Paginated doc table, pinned documents |
-| `/agents` | Agent Workspace | Agent cards with live activity and performance analytics |
-| `/agents/[id]` | Agent Config | Config form, guardrails toggles |
-| `/settings` | Settings | Profile form, AI settings, security section |
+| `/settings` | Settings (tabbed) | Profile, AI settings, Agents, Documents, Security — tab selected via `?tab=` query param |
+| `/agents/[id]` | Agent Config | Config form, guardrails toggles (breadcrumb links to `/settings?tab=agents`) |
+
+**Redirects**: `/documents` → `/settings?tab=documents`, `/agents` → `/settings?tab=agents`
 
 ## Commands
 - `pnpm dev` — Start dev server with Turbopack
@@ -59,7 +59,8 @@ All pages live under `app/(dashboard)/` which provides a shared sidebar + atmosp
 ## Design System
 - **Background**: Radial gradient (`#E0E7FF` → `#F2F4F5`) via `.forge-atmosphere`
 - **Surfaces**: Glass panels (`.glass` = white 70% opacity + backdrop blur) and solid cards (`.glass-solid`)
-- **Colors**: Defined as `--color-forge-*` CSS custom properties in `globals.css`
+- **Colors**: 4 semantic colors — `forge-primary` (#1A1A1A), `forge-success` (#4A6741), `forge-accent-warm` (#C4836A), `forge-error` (#BC4B41). Plus `forge-secondary`, `forge-hint` for text. No blue accent.
+- **Charts**: All bars are solid black (#1A1A1A). No multi-colored charts. Text labels differentiate categories.
 - **Typography**: Inter via `next/font/google`
 
 ## Directory Structure

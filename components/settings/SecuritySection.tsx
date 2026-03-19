@@ -12,7 +12,7 @@ export function SecuritySection() {
 					</div>
 					<button
 						type="button"
-						className="rounded-xl border border-forge-divider px-4 py-2 text-sm font-medium text-forge-primary transition-colors hover:bg-black/[0.02]"
+						className="rounded-lg border border-forge-divider px-4 py-2 text-sm font-medium text-forge-primary transition-colors hover:bg-black/[0.02]"
 					>
 						Enable
 					</button>

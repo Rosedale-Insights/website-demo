@@ -24,7 +24,7 @@ export function ProfileForm() {
 				</div>
 				<button
 					type="button"
-					className="rounded-xl border border-forge-divider px-4 py-2 text-sm font-medium text-forge-primary transition-colors hover:bg-black/[0.02]"
+					className="rounded-lg border border-forge-divider px-4 py-2 text-sm font-medium text-forge-primary transition-colors hover:bg-black/[0.02]"
 				>
 					Change Photo
 				</button>
@@ -40,7 +40,7 @@ export function ProfileForm() {
 								type="text"
 								value={form[f.key]}
 								onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
-								className="mt-1.5 w-full rounded-xl border border-forge-divider bg-white px-4 py-3 text-sm text-forge-primary outline-none transition-colors focus:border-forge-accent-blue"
+								className="mt-1.5 w-full rounded-lg border border-forge-divider bg-white px-4 py-3 text-sm text-forge-primary outline-none transition-colors focus:border-forge-primary"
 							/>
 						</label>
 					</div>

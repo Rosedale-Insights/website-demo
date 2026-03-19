@@ -1,18 +1,12 @@
-import { Sparkles } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Sparkles, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { maintenanceEvents } from '@/lib/mock-data';
 
-const typeColors: Record<string, { dot: string; text: string }> = {
-	Preventive: { dot: 'bg-forge-accent-blue', text: 'text-forge-accent-blue' },
-	Predictive: { dot: 'bg-forge-accent-warm', text: 'text-forge-accent-warm' },
-	Corrective: { dot: 'bg-forge-error', text: 'text-forge-error' },
-};
-
 const statusBadge: Record<string, string> = {
-	Scheduled: 'bg-forge-accent-blue/10 text-forge-accent-blue',
-	'In Progress': 'bg-forge-accent-warm/10 text-forge-accent-warm',
-	Complete: 'bg-forge-success/10 text-forge-success',
-	Overdue: 'bg-forge-error/10 text-forge-error',
+	Scheduled: 'bg-black/[0.04] text-forge-secondary',
+	'In Progress': 'bg-black/[0.04] text-forge-secondary',
+	Complete: 'bg-black/[0.04] text-forge-secondary',
+	Overdue: 'bg-black/[0.04] text-forge-secondary',
 };
 
 export function MaintenanceTimeline() {
@@ -21,29 +15,32 @@ export function MaintenanceTimeline() {
 	);
 
 	return (
-		<div className="glass-solid rounded-2xl p-6">
+		<div className="glass-solid rounded-lg p-6">
 			<h3 className="mb-1 text-sm font-semibold text-forge-primary">Maintenance Schedule</h3>
 			<p className="mb-4 text-xs text-forge-hint">Upcoming and recent events</p>
 
 			<div className="relative pl-4">
-				{/* Vertical line */}
 				<div className="absolute top-0 bottom-0 left-[7px] w-px bg-forge-divider" />
 
 				<div className="space-y-4">
 					{sorted.map((event) => {
-						const colors = typeColors[event.type] ?? typeColors.Preventive;
 						const badge = statusBadge[event.status] ?? statusBadge.Scheduled;
+						const isComplete = event.status === 'Complete';
+						const isInProgress = event.status === 'In Progress';
+						const Icon = isComplete ? CheckCircle2 : isInProgress ? Wrench : AlertTriangle;
+
 						return (
 							<div key={event.id} className="relative flex gap-3">
-								{/* Dot */}
-								<div
-									className={cn(
-										'relative z-10 mt-1.5 h-3 w-3 shrink-0 rounded-full ring-2 ring-white',
-										event.status === 'Complete' ? 'bg-forge-success' : colors.dot,
-									)}
-								/>
+								<div className="relative z-10 mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center">
+									<div className="absolute inset-0 rounded-full bg-white" />
+									<Icon
+										className={cn(
+											'relative h-3.5 w-3.5',
+											isComplete ? 'text-forge-success' : 'text-forge-primary',
+										)}
+									/>
+								</div>
 
-								{/* Content */}
 								<div className="min-w-0 flex-1">
 									<div className="mb-0.5 flex items-center gap-2">
 										<span className="text-xs font-medium text-forge-primary">
@@ -67,16 +64,11 @@ export function MaintenanceTimeline() {
 										>
 											{event.status}
 										</span>
-										<span
-											className={cn(
-												'inline-block text-[10px] font-medium',
-												colors.text,
-											)}
-										>
+										<span className="inline-block text-[10px] font-medium text-forge-hint">
 											{event.type}
 										</span>
 										{event.aiGenerated && (
-											<span className="inline-flex items-center gap-0.5 rounded-full bg-forge-accent-warm/10 px-2 py-0.5 text-[10px] font-medium text-forge-accent-warm">
+											<span className="inline-flex items-center gap-0.5 rounded-full bg-black/[0.04] px-2 py-0.5 text-[10px] font-medium text-forge-secondary">
 												<Sparkles className="h-2.5 w-2.5" />
 												AI — {event.confidenceScore}%
 											</span>

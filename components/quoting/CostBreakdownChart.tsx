@@ -1,18 +1,9 @@
 'use client';
 
-import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { quoteDetail } from '@/lib/mock-data';
 
-const colorMap: Record<string, string> = {
-	Material: '#7C9CB4',
-	'Machine Time': '#1A1A1A',
-	Labor: '#4A6741',
-	Setup: '#C4836A',
-	Tooling: '#666666',
-	'Outside Svc': '#A0A0A0',
-	Overhead: '#BC4B41',
-	Margin: '#E0E7FF',
-};
+const BAR_COLOR = '#1A1A1A';
 
 export function CostBreakdownChart({ marginOverride }: { marginOverride?: number }) {
 	const cb = quoteDetail.costBreakdown;
@@ -26,7 +17,7 @@ export function CostBreakdownChart({ marginOverride }: { marginOverride?: number
 		{ name: 'Outside Svc', value: cb.outsideServices },
 		{ name: 'Overhead', value: cb.overhead },
 		{ name: 'Margin', value: marginValue },
-	];
+	].sort((a, b) => b.value - a.value);
 
 	return (
 		<div>
@@ -53,17 +44,13 @@ export function CostBreakdownChart({ marginOverride }: { marginOverride?: number
 							backgroundColor: 'rgba(255,255,255,0.9)',
 							backdropFilter: 'blur(12px)',
 							border: '1px solid rgba(0,0,0,0.06)',
-							borderRadius: '12px',
+							borderRadius: '8px',
 							boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
 							fontSize: '12px',
 						}}
 						formatter={(value) => [`$${Number(value).toLocaleString()}`, '']}
 					/>
-					<Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={18}>
-						{data.map((entry) => (
-							<Cell key={entry.name} fill={colorMap[entry.name] ?? '#A0A0A0'} />
-						))}
-					</Bar>
+					<Bar dataKey="value" radius={[0, 3, 3, 0]} barSize={18} fill={BAR_COLOR} />
 				</BarChart>
 			</ResponsiveContainer>
 		</div>

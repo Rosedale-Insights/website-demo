@@ -14,7 +14,7 @@ import { supplierOtdTrendData } from '@/lib/mock-data';
 
 export function SupplierOtdChart() {
 	return (
-		<div className="glass rounded-2xl p-6">
+		<div className="glass rounded-lg p-6">
 			<h3 className="mb-1 text-sm font-semibold text-forge-primary">Supplier On-Time Delivery</h3>
 			<p className="mb-4 text-xs text-forge-hint">12-week trend vs. 95% target</p>
 			<ResponsiveContainer width="100%" height={280}>

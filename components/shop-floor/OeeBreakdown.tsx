@@ -1,20 +1,12 @@
-import { cn } from '@/lib/utils';
-
-const bars = [
-	{ label: 'Availability', value: 91.5 },
-	{ label: 'Performance', value: 94.3 },
-	{ label: 'Quality', value: 97.6 },
-];
-
-const barColor = (value: number) => {
-	if (value >= 85) return 'bg-forge-success';
-	if (value >= 70) return 'bg-forge-accent-warm';
-	return 'bg-forge-error';
-};
-
 export function OeeBreakdown() {
+	const bars = [
+		{ label: 'Quality', value: 97.6 },
+		{ label: 'Performance', value: 94.3 },
+		{ label: 'Availability', value: 91.5 },
+	];
+
 	return (
-		<div className="glass-solid rounded-2xl p-5">
+		<div className="glass-solid rounded-lg p-5">
 			<div className="mb-4 flex items-center justify-between">
 				<h3 className="text-sm font-semibold text-forge-primary">OEE Breakdown</h3>
 				<span className="text-lg font-bold text-forge-primary">84.2%</span>
@@ -25,7 +17,7 @@ export function OeeBreakdown() {
 						<span className="w-20 text-xs text-forge-secondary">{bar.label}</span>
 						<div className="h-2 flex-1 rounded-full bg-black/[0.04]">
 							<div
-								className={cn('h-full rounded-full', barColor(bar.value))}
+								className="h-full rounded-r-sm bg-forge-primary"
 								style={{ width: `${bar.value}%` }}
 							/>
 						</div>

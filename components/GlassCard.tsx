@@ -10,7 +10,7 @@ export function GlassCard({
 	solid?: boolean;
 }) {
 	return (
-		<div className={cn(solid ? 'glass-solid' : 'glass', 'rounded-2xl p-6', className)}>
+		<div className={cn(solid ? 'glass-solid' : 'glass', 'rounded-lg p-6', className)}>
 			{children}
 		</div>
 	);

@@ -22,7 +22,7 @@ export function StatCard({
 	};
 
 	return (
-		<div className={cn('glass rounded-2xl px-6 py-5', className)}>
+		<div className={cn('glass rounded-lg px-6 py-5', className)}>
 			<div className="flex items-center justify-between">
 				<p className="text-xs font-medium tracking-wide text-forge-secondary">{title}</p>
 				{badge && (

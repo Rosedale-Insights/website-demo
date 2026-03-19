@@ -13,10 +13,10 @@ export function PinnedDocs() {
 					return (
 						<div
 							key={doc.id}
-							className="glass-solid rounded-2xl p-5 transition-shadow hover:shadow-glass-md"
+							className="glass-solid rounded-lg p-5 transition-shadow hover:shadow-glass-md"
 						>
 							<div className="flex items-start justify-between">
-								<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black/[0.03]">
+								<div className="flex h-10 w-10 items-center justify-center rounded-lg bg-black/[0.03]">
 									<Icon className="h-5 w-5 text-forge-primary" />
 								</div>
 								<button

@@ -1,17 +1,17 @@
-import { AlertTriangle, CheckCircle2, Clock, Info, ShieldAlert } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Eye } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { deliveryAlerts } from '@/lib/mock-data';
 
 const severityConfig = {
-	critical: { icon: ShieldAlert, colorClass: 'text-forge-error', bgClass: 'bg-forge-error/10' },
+	critical: { icon: AlertTriangle, colorClass: 'text-forge-accent-warm', bgClass: 'bg-forge-accent-warm/10' },
 	high: { icon: AlertTriangle, colorClass: 'text-forge-accent-warm', bgClass: 'bg-forge-accent-warm/10' },
-	medium: { icon: Clock, colorClass: 'text-forge-accent-blue', bgClass: 'bg-forge-accent-blue/10' },
-	low: { icon: Info, colorClass: 'text-forge-success', bgClass: 'bg-forge-success/10' },
+	medium: { icon: Eye, colorClass: 'text-forge-hint', bgClass: 'bg-forge-hint/10' },
+	low: { icon: CheckCircle2, colorClass: 'text-forge-success', bgClass: 'bg-forge-success/10' },
 };
 
 export function DeliveryAgentFeed() {
 	return (
-		<div className="glass-solid overflow-hidden rounded-2xl">
+		<div className="glass-solid overflow-hidden rounded-lg">
 			<div className="border-b border-forge-divider px-6 py-4">
 				<h3 className="text-sm font-semibold text-forge-primary">Agent Activity</h3>
 				<p className="text-xs text-forge-hint">Delivery Monitor AI actions</p>

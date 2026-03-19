@@ -5,7 +5,7 @@ import { performanceChartData } from '@/lib/mock-data';
 
 export function PerformanceChart() {
 	return (
-		<div className="glass rounded-2xl p-5">
+		<div className="glass rounded-lg p-5">
 			<h4 className="mb-3 text-sm font-semibold text-forge-primary">Agent Performance</h4>
 			<ResponsiveContainer width="100%" height={100}>
 				<AreaChart data={performanceChartData}>
