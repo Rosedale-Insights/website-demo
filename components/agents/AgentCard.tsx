@@ -33,10 +33,10 @@ export function AgentCard({
 	return (
 		<a
 			href={`/agents/${id}`}
-			className="glass-solid group flex flex-col rounded-2xl p-6 transition-shadow hover:shadow-glass-md"
+			className="glass-solid group flex flex-col rounded-lg p-6 transition-shadow hover:shadow-glass-md"
 		>
 			<div className="flex items-start justify-between">
-				<div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-black/[0.03]">
+				<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-black/[0.03]">
 					<Icon className="h-6 w-6 text-forge-primary" />
 				</div>
 				<span

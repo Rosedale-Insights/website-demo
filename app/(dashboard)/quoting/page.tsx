@@ -21,7 +21,7 @@ export default function QuotingPage() {
 				<button
 					type="button"
 					onClick={() => setShowBuilder(true)}
-					className="flex items-center gap-2 rounded-xl bg-forge-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90"
+					className="flex items-center gap-2 rounded-lg bg-forge-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90"
 				>
 					<Plus className="h-4 w-4" />
 					New Quote

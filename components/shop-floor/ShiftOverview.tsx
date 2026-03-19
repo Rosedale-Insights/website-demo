@@ -29,7 +29,7 @@ export function ShiftOverview() {
 	);
 
 	return (
-		<div className="glass-solid rounded-2xl p-6">
+		<div className="glass-solid rounded-lg p-6">
 			<h3 className="mb-1 text-sm font-semibold text-forge-primary">Shift Overview</h3>
 			<p className="mb-4 text-xs text-forge-hint">Operator assignments and coverage</p>
 
@@ -48,7 +48,7 @@ export function ShiftOverview() {
 								return (
 									<div
 										key={op.id}
-										className="flex items-center gap-3 rounded-xl bg-black/[0.015] px-3 py-2"
+										className="flex items-center gap-3 rounded-lg bg-black/[0.015] px-3 py-2"
 									>
 										{/* Avatar */}
 										<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-forge-primary/10 text-[10px] font-semibold text-forge-primary">

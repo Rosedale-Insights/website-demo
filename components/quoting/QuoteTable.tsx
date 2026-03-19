@@ -22,7 +22,7 @@ const statusConfig: Record<
 	{ icon: typeof CheckCircle2; iconColor: string }
 > = {
 	Draft: { icon: FileEdit, iconColor: 'text-forge-primary' },
-	Review: { icon: Eye, iconColor: 'text-forge-accent-blue' },
+	Review: { icon: Eye, iconColor: 'text-forge-secondary' },
 	Sent: { icon: Clock, iconColor: 'text-forge-accent-warm' },
 	Won: { icon: Trophy, iconColor: 'text-forge-success' },
 	Lost: { icon: XCircle, iconColor: 'text-forge-error' },
@@ -50,7 +50,7 @@ export function QuoteTable() {
 				<QuoteFilterTabs active={filter} onChange={setFilter} />
 			</div>
 
-			<div className="glass-solid overflow-hidden rounded-2xl">
+			<div className="glass-solid overflow-hidden rounded-lg">
 				{/* Header */}
 				<div className="grid grid-cols-[24px_1.8fr_2fr_1fr_1fr_80px_1fr] items-center gap-4 border-b border-forge-divider bg-black/[0.02] px-6 py-3">
 					<span />
@@ -108,7 +108,7 @@ export function QuoteTable() {
 								<div className="flex items-center gap-2">
 									<div className="h-1.5 w-12 rounded-full bg-black/[0.04]">
 										<div
-											className={cn('h-full rounded-full', marginColor(row.margin))}
+											className={cn('h-full rounded-r-sm', marginColor(row.margin))}
 											style={{ width: `${Math.min((row.margin / 40) * 100, 100)}%` }}
 										/>
 									</div>

@@ -28,7 +28,7 @@ export function DocTable() {
 	const [page] = useState(1);
 
 	return (
-		<div className="glass-solid overflow-hidden rounded-2xl">
+		<div className="glass-solid overflow-hidden rounded-lg">
 			{/* Header */}
 			<div className="grid grid-cols-[2fr_1.2fr_1fr_1fr] gap-4 border-b border-forge-divider bg-black/[0.02] px-6 py-3">
 				<span className="text-xs font-medium uppercase tracking-wider text-forge-hint">Name</span>

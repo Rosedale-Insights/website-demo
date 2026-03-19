@@ -1,9 +1,7 @@
 import {
 	AlertTriangle,
 	CheckCircle2,
-	CircleAlert,
 	Eye,
-	ShieldAlert,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { purchaseOrders } from '@/lib/mock-data';
@@ -13,9 +11,8 @@ const riskConfig: Record<
 	PurchaseOrder['riskLevel'],
 	{ icon: React.ElementType; colorClass: string; bgClass: string }
 > = {
-	Critical: { icon: ShieldAlert, colorClass: 'text-forge-error', bgClass: 'bg-forge-error/10' },
 	'At Risk': { icon: AlertTriangle, colorClass: 'text-forge-accent-warm', bgClass: 'bg-forge-accent-warm/10' },
-	Watch: { icon: Eye, colorClass: 'text-forge-accent-blue', bgClass: 'bg-forge-accent-blue/10' },
+	Watch: { icon: Eye, colorClass: 'text-forge-hint', bgClass: 'bg-forge-hint/10' },
 	'On Track': { icon: CheckCircle2, colorClass: 'text-forge-success', bgClass: 'bg-forge-success/10' },
 };
 
@@ -23,7 +20,7 @@ export function AtRiskOrdersTable() {
 	const activeOrders = purchaseOrders.filter((po) => po.actualDelivery === null);
 
 	return (
-		<div className="glass-solid overflow-hidden rounded-2xl">
+		<div className="glass-solid overflow-hidden rounded-lg">
 			<div className="border-b border-forge-divider px-6 py-4">
 				<h3 className="text-sm font-semibold text-forge-primary">At-Risk Purchase Orders</h3>
 				<p className="text-xs text-forge-hint">{activeOrders.length} active POs requiring attention</p>

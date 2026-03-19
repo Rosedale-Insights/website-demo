@@ -12,7 +12,7 @@ const typeConfig = {
 
 export function LiveActivity() {
 	return (
-		<div className="glass rounded-2xl p-6">
+		<div className="glass rounded-lg p-6">
 			<div className="mb-4 flex items-center justify-between">
 				<h3 className="text-lg font-semibold text-forge-primary">Live Activity</h3>
 				<div className="flex items-center gap-1.5 text-xs font-medium text-forge-success">

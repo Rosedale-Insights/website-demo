@@ -3,7 +3,6 @@ import { MachineAlerts } from '@/components/shop-floor/MachineAlerts';
 import { MachineStatusGrid } from '@/components/shop-floor/MachineStatusGrid';
 import { MaintenanceTimeline } from '@/components/shop-floor/MaintenanceTimeline';
 import { OeeBreakdown } from '@/components/shop-floor/OeeBreakdown';
-import { ShiftOverview } from '@/components/shop-floor/ShiftOverview';
 import { PageHeader } from '@/components/PageHeader';
 import { StatCard } from '@/components/StatCard';
 import { shopFloorKpis } from '@/lib/mock-data';
@@ -15,12 +14,12 @@ export default function ShopFloorPage() {
 				title="Shop Floor Monitor"
 				subtitle="Real-time machine status, OEE, and workforce optimization."
 			>
-				<div className="flex items-center gap-2 rounded-xl border border-forge-divider bg-white px-4 py-2 text-sm font-medium text-forge-primary">
+				<div className="flex items-center gap-2 rounded-lg border border-forge-divider bg-white px-4 py-2 text-sm font-medium text-forge-primary">
 					Current Shift: Day
 				</div>
 				<button
 					type="button"
-					className="flex items-center gap-2 rounded-xl bg-forge-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90"
+					className="flex items-center gap-2 rounded-lg bg-forge-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90"
 				>
 					<AlertTriangle className="h-4 w-4" />
 					Alerts
@@ -45,9 +44,6 @@ export default function ShopFloorPage() {
 
 			{/* Machine Status — compact table */}
 			<MachineStatusGrid />
-
-			{/* Shift Overview */}
-			<ShiftOverview />
 		</div>
 	);
 }

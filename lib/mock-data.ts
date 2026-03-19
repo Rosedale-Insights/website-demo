@@ -641,7 +641,7 @@ export const specializedAgents = [
 		name: 'Supply Chain',
 		description: 'Optimizes lead times and manages raw material procurement.',
 		icon: 'Container',
-		status: 'Idle',
+		status: 'Active',
 		statusColor: 'neutral' as const,
 		currentTask: 'None',
 	},
@@ -706,127 +706,62 @@ export const agentConfigDefaults = {
 	avgLatency: '1.2s',
 };
 
-/* ── Insights Chart Data ──────────────────────────────── */
+/* ── Home Page Data ──────────────────────────────── */
 
-export const onTimeDeliveryData = [
-	{ week: 'W1', otd: 96, target: 95 },
-	{ week: 'W2', otd: 94, target: 95 },
-	{ week: 'W3', otd: 97, target: 95 },
-	{ week: 'W4', otd: 93, target: 95 },
-	{ week: 'W5', otd: 91, target: 95 },
-	{ week: 'W6', otd: 88, target: 95 },
-	{ week: 'W7', otd: 90, target: 95 },
-	{ week: 'W8', otd: 92, target: 95 },
-	{ week: 'W9', otd: 94, target: 95 },
-	{ week: 'W10', otd: 93, target: 95 },
-	{ week: 'W11', otd: 95, target: 95 },
-	{ week: 'W12', otd: 91, target: 95 },
-];
-
-export const lateOrderCausesData = [
-	{ name: 'Material Delays', value: 38, color: '#B85C3A' },
-	{ name: 'Machine Downtime', value: 27, color: '#7C9CB4' },
-	{ name: 'Quality Holds', value: 20, color: '#4A6741' },
-	{ name: 'Scheduling Conflicts', value: 15, color: '#1A1A1A' },
-];
-
-export const insightsKpis = [
+export const homeKpis = [
 	{
 		title: 'OEE Score',
 		value: '84.2%',
-		subtitle: 'Overall Equipment Effectiveness',
+		subtitle: 'Shop floor effectiveness',
 		badge: '+2.4%',
 		badgeColor: 'green' as const,
 	},
 	{
-		title: 'Yield Rate',
-		value: '98.1%',
-		subtitle: 'Quality pass rate per unit',
-		badge: '+0.8%',
-		badgeColor: 'green' as const,
-	},
-	{
-		title: 'Down Time',
-		value: '12h 4m',
-		subtitle: 'Unplanned maintenance',
-		badge: '-14%',
+		title: 'On-Time Delivery',
+		value: '91.2%',
+		subtitle: '3 POs at risk this week',
+		badge: '-1.1%',
 		badgeColor: 'red' as const,
 	},
 	{
-		title: 'Active Agents',
-		value: '08/12',
-		subtitle: 'AI workflow utilization',
-		badge: 'Stable',
+		title: 'Open Quotes',
+		value: '$1.2M',
+		subtitle: '4 pending review',
+		badge: '+3',
+		badgeColor: 'neutral' as const,
+	},
+	{
+		title: 'Active Alerts',
+		value: '7',
+		subtitle: '2 critical, 5 warnings',
 		badgeColor: 'neutral' as const,
 	},
 ];
 
-export const forgeBrief = {
-	title: 'Anomaly detected in Line 4 Hydraulic Pressure',
-	description:
-		"Our predictive model suggests a 70% probability of seal failure within the next 48 hours. Maintenance Agent 'Forge-Beta' has drafted a service ticket for your approval.",
-};
-
-export const dueJobsData = [
+export const homeBriefItems = [
 	{
-		jobId: 'WO-4821',
-		customer: 'Northrop Grumman',
-		part: 'Titanium Bracket Assy',
-		dueDate: '2026-03-16',
-		daysLeft: 1,
-		currentOp: 'Op 40 — CNC Finish',
-		percentComplete: 88,
-		risk: 'At Risk' as const,
+		title: 'Seal Failure Risk on Line 4',
+		description:
+			'Hydraulic pressure trending 12% below threshold — 70% probability of seal failure within 48h. Maintenance ticket drafted for your approval.',
+		action: 'Review Ticket',
 	},
 	{
-		jobId: 'WO-4807',
-		customer: 'Boeing Defense',
-		part: 'Hydraulic Manifold',
-		dueDate: '2026-03-13',
-		daysLeft: -2,
-		currentOp: 'Op 50 — QC Inspection',
-		percentComplete: 95,
-		risk: 'Past Due' as const,
+		title: '2 Deliveries at Risk This Week',
+		description:
+			'Apex Industrial delayed due to port congestion. Pacific Fasteners unresponsive on PO-7198 — recommend dual-sourcing AN hardware.',
+		action: 'View POs',
 	},
 	{
-		jobId: 'WO-4835',
-		customer: 'Raytheon',
-		part: 'Avionics Housing',
-		dueDate: '2026-03-18',
-		daysLeft: 3,
-		currentOp: 'Op 30 — Heat Treat',
-		percentComplete: 62,
-		risk: 'At Risk' as const,
+		title: 'Increase Margin on QT-8821 by 4%',
+		description:
+			'Based on current Titanium Grade 5 costs, target profitability requires a margin adjustment. Wilson Manufacturing quote ($142K) in review for 5 days.',
+		action: 'Apply Suggestion',
 	},
 	{
-		jobId: 'WO-4842',
-		customer: 'GE Aerospace',
-		part: 'Turbine Blade Root',
-		dueDate: '2026-03-20',
-		daysLeft: 5,
-		currentOp: 'Op 20 — 5-Axis Mill',
-		percentComplete: 41,
-		risk: 'At Risk' as const,
-	},
-	{
-		jobId: 'WO-4850',
-		customer: 'Lockheed Martin',
-		part: 'Structural Rib Panel',
-		dueDate: '2026-03-22',
-		daysLeft: 7,
-		currentOp: 'Op 10 — Laser Cut',
-		percentComplete: 18,
-		risk: 'On Track' as const,
-	},
-	{
-		jobId: 'WO-4819',
-		customer: 'Honeywell',
-		part: 'Sensor Mount Plate',
-		dueDate: '2026-03-14',
-		daysLeft: -1,
-		currentOp: 'Op 60 — Anodize',
-		percentComplete: 92,
-		risk: 'Past Due' as const,
+		title: '3 Corrective Actions from ISO Audit',
+		description:
+			'Q1 ISO 9001 findings indexed. Documentation updates required in the quality management section.',
+		action: 'View Findings',
 	},
 ];
 
@@ -947,7 +882,7 @@ export type PurchaseOrder = {
 		| 'In Transit'
 		| 'Delivered'
 		| 'Delayed';
-	riskLevel: 'On Track' | 'Watch' | 'At Risk' | 'Critical';
+	riskLevel: 'On Track' | 'Watch' | 'At Risk';
 	riskScore: number;
 	riskReason: string | null;
 	carrier: string | null;
@@ -1029,11 +964,11 @@ export const supplierOtdTrendData = [
 ];
 
 export const delayRootCauseData = [
-	{ name: 'Supplier Production', value: 34, color: '#B85C3A' },
-	{ name: 'Shipping / Logistics', value: 24, color: '#7C9CB4' },
-	{ name: 'Material Unavailability', value: 19, color: '#4A6741' },
-	{ name: 'Quality Rejection', value: 13, color: '#D4A843' },
-	{ name: 'Customs / Documentation', value: 10, color: '#1A1A1A' },
+	{ name: 'Supplier Production', value: 34 },
+	{ name: 'Shipping / Logistics', value: 24 },
+	{ name: 'Material Unavailability', value: 19 },
+	{ name: 'Quality Rejection', value: 13 },
+	{ name: 'Customs / Documentation', value: 10 },
 ];
 
 export const purchaseOrders: PurchaseOrder[] = [
@@ -1076,7 +1011,7 @@ export const purchaseOrders: PurchaseOrder[] = [
 		predictedDelivery: '2026-03-22',
 		actualDelivery: null,
 		status: 'Delayed',
-		riskLevel: 'Critical',
+		riskLevel: 'At Risk',
 		riskScore: 89,
 		riskReason: 'Supplier unresponsive for 52 hours',
 		carrier: null,
@@ -1099,7 +1034,7 @@ export const purchaseOrders: PurchaseOrder[] = [
 		predictedDelivery: '2026-03-24',
 		actualDelivery: null,
 		status: 'In Production',
-		riskLevel: 'Critical',
+		riskLevel: 'At Risk',
 		riskScore: 78,
 		riskReason: 'Supplier reliability score dropped 14 pts in 30 days',
 		carrier: null,
@@ -1410,13 +1345,19 @@ export type Machine = {
 	name: string;
 	type: string;
 	location: string;
-	status: 'Running' | 'Idle' | 'Down' | 'Setup' | 'Maintenance';
+	status: 'Active' | 'Stalled' | 'Setup' | 'Loading';
 	currentJobId: string | null;
 	currentOperator: string | null;
 	healthScore: number;
 	oee: { overall: number; availability: number; performance: number; quality: number } | null;
 	shiftMetrics: { partsProduced: number; partsGoal: number; scrapCount: number } | null;
 	maintenance: { lastService: string; nextScheduled: string; hoursToService: number };
+	pctActive: number;
+	pctStalled: number;
+	pctSetup: number;
+	pctLoading: number;
+	productionProgress: number | null;
+	remainingMinutes: number | null;
 };
 
 export type Operator = {
@@ -1480,26 +1421,38 @@ export const machines: Machine[] = [
 		name: 'Mazak VTC-800/30',
 		type: 'CNC Mill',
 		location: 'Line 3, Bay A',
-		status: 'Running',
+		status: 'Active',
 		currentJobId: 'WO-4821',
 		currentOperator: 'Marcus Chen',
 		healthScore: 92,
 		oee: { overall: 87.4, availability: 93.2, performance: 95.1, quality: 98.5 },
 		shiftMetrics: { partsProduced: 142, partsGoal: 160, scrapCount: 2 },
 		maintenance: { lastService: '2026-03-01', nextScheduled: '2026-03-22', hoursToService: 188 },
+		pctActive: 82,
+		pctStalled: 4,
+		pctSetup: 8,
+		pctLoading: 6,
+		productionProgress: 74,
+		remainingMinutes: 156,
 	},
 	{
 		id: 'CNC-02',
 		name: 'Haas VF-4SS',
 		type: 'CNC Mill',
 		location: 'Line 3, Bay B',
-		status: 'Running',
+		status: 'Active',
 		currentJobId: 'WO-4842',
 		currentOperator: 'Sarah Torres',
 		healthScore: 68,
 		oee: { overall: 79.1, availability: 88.4, performance: 91.2, quality: 98.1 },
 		shiftMetrics: { partsProduced: 98, partsGoal: 140, scrapCount: 5 },
 		maintenance: { lastService: '2026-02-15', nextScheduled: '2026-03-18', hoursToService: 42 },
+		pctActive: 88,
+		pctStalled: 2,
+		pctSetup: 5,
+		pctLoading: 5,
+		productionProgress: 91,
+		remainingMinutes: 42,
 	},
 	{
 		id: 'CNC-03',
@@ -1513,123 +1466,183 @@ export const machines: Machine[] = [
 		oee: null,
 		shiftMetrics: null,
 		maintenance: { lastService: '2026-03-10', nextScheduled: '2026-04-10', hoursToService: 480 },
+		pctActive: 76,
+		pctStalled: 8,
+		pctSetup: 10,
+		pctLoading: 6,
+		productionProgress: 58,
+		remainingMinutes: 210,
 	},
 	{
 		id: '5AX-01',
 		name: 'DMG Mori DMU 50',
 		type: '5-Axis Mill',
 		location: 'Line 1, Bay A',
-		status: 'Running',
+		status: 'Active',
 		currentJobId: 'WO-4835',
 		currentOperator: 'Marcus Chen',
 		healthScore: 88,
 		oee: { overall: 91.2, availability: 95.8, performance: 96.4, quality: 98.7 },
 		shiftMetrics: { partsProduced: 4, partsGoal: 6, scrapCount: 0 },
 		maintenance: { lastService: '2026-03-05', nextScheduled: '2026-03-28', hoursToService: 220 },
+		pctActive: 71,
+		pctStalled: 12,
+		pctSetup: 9,
+		pctLoading: 8,
+		productionProgress: 45,
+		remainingMinutes: 280,
 	},
 	{
 		id: '5AX-02',
 		name: 'Hermle C400',
 		type: '5-Axis Mill',
 		location: 'Line 1, Bay B',
-		status: 'Down',
+		status: 'Stalled',
 		currentJobId: null,
 		currentOperator: null,
 		healthScore: 34,
 		oee: null,
 		shiftMetrics: null,
 		maintenance: { lastService: '2026-02-28', nextScheduled: '2026-03-16', hoursToService: 0 },
+		pctActive: 0,
+		pctStalled: 68,
+		pctSetup: 18,
+		pctLoading: 14,
+		productionProgress: null,
+		remainingMinutes: null,
 	},
 	{
 		id: 'LAT-01',
 		name: 'Okuma LB3000',
 		type: 'CNC Lathe',
 		location: 'Line 2, Bay C',
-		status: 'Running',
+		status: 'Active',
 		currentJobId: 'WO-4850',
 		currentOperator: 'Sarah Torres',
 		healthScore: 90,
 		oee: { overall: 85.6, availability: 92.0, performance: 94.8, quality: 98.0 },
 		shiftMetrics: { partsProduced: 36, partsGoal: 40, scrapCount: 1 },
 		maintenance: { lastService: '2026-03-08', nextScheduled: '2026-04-05', hoursToService: 340 },
+		pctActive: 84,
+		pctStalled: 3,
+		pctSetup: 7,
+		pctLoading: 6,
+		productionProgress: 82,
+		remainingMinutes: 95,
 	},
 	{
 		id: 'LAT-02',
 		name: 'Doosan Puma 2600',
 		type: 'CNC Lathe',
 		location: 'Line 2, Bay D',
-		status: 'Idle',
+		status: 'Active',
 		currentJobId: null,
 		currentOperator: null,
 		healthScore: 82,
 		oee: null,
 		shiftMetrics: null,
 		maintenance: { lastService: '2026-03-02', nextScheduled: '2026-03-30', hoursToService: 260 },
+		pctActive: 79,
+		pctStalled: 6,
+		pctSetup: 9,
+		pctLoading: 6,
+		productionProgress: 63,
+		remainingMinutes: 184,
 	},
 	{
 		id: 'LAS-01',
 		name: 'Trumpf TruLaser 3030',
 		type: 'Laser Cutter',
 		location: 'Line 4, Bay A',
-		status: 'Running',
+		status: 'Active',
 		currentJobId: 'WO-4850',
 		currentOperator: 'Lisa Pham',
 		healthScore: 97,
 		oee: { overall: 93.1, availability: 97.2, performance: 96.8, quality: 99.0 },
 		shiftMetrics: { partsProduced: 58, partsGoal: 60, scrapCount: 0 },
 		maintenance: { lastService: '2026-03-12', nextScheduled: '2026-04-12', hoursToService: 520 },
+		pctActive: 91,
+		pctStalled: 1,
+		pctSetup: 4,
+		pctLoading: 4,
+		productionProgress: 96,
+		remainingMinutes: 18,
 	},
 	{
 		id: 'CMM-01',
 		name: 'Zeiss Contura',
 		type: 'CMM',
 		location: 'QC Lab',
-		status: 'Running',
+		status: 'Active',
 		currentJobId: 'WO-4807',
 		currentOperator: 'James Wilson',
 		healthScore: 99,
 		oee: null,
 		shiftMetrics: { partsProduced: 12, partsGoal: 15, scrapCount: 0 },
 		maintenance: { lastService: '2026-03-10', nextScheduled: '2026-06-10', hoursToService: 1800 },
+		pctActive: 73,
+		pctStalled: 5,
+		pctSetup: 14,
+		pctLoading: 8,
+		productionProgress: 37,
+		remainingMinutes: 312,
 	},
 	{
 		id: 'HT-01',
 		name: 'Lindberg Blue M',
 		type: 'Heat Treat Oven',
 		location: 'Heat Treat Bay',
-		status: 'Running',
+		status: 'Active',
 		currentJobId: 'WO-4835',
 		currentOperator: null,
 		healthScore: 76,
 		oee: null,
 		shiftMetrics: { partsProduced: 6, partsGoal: 6, scrapCount: 0 },
 		maintenance: { lastService: '2026-02-20', nextScheduled: '2026-03-20', hoursToService: 48 },
+		pctActive: 86,
+		pctStalled: 3,
+		pctSetup: 6,
+		pctLoading: 5,
+		productionProgress: 88,
+		remainingMinutes: 62,
 	},
 	{
 		id: 'GRN-01',
 		name: 'Okamoto ACC-820',
 		type: 'Surface Grinder',
 		location: 'Line 4, Bay B',
-		status: 'Idle',
+		status: 'Active',
 		currentJobId: null,
 		currentOperator: null,
 		healthScore: 91,
 		oee: null,
 		shiftMetrics: null,
 		maintenance: { lastService: '2026-03-06', nextScheduled: '2026-04-06', hoursToService: 400 },
+		pctActive: 80,
+		pctStalled: 5,
+		pctSetup: 8,
+		pctLoading: 7,
+		productionProgress: 55,
+		remainingMinutes: 225,
 	},
 	{
 		id: 'EDM-01',
 		name: 'Sodick ALC600G',
 		type: 'EDM Wire',
 		location: 'Line 4, Bay C',
-		status: 'Maintenance',
+		status: 'Setup',
 		currentJobId: null,
 		currentOperator: null,
 		healthScore: 45,
 		oee: null,
 		shiftMetrics: null,
 		maintenance: { lastService: '2026-03-14', nextScheduled: '2026-03-16', hoursToService: 0 },
+		pctActive: 0,
+		pctStalled: 0,
+		pctSetup: 72,
+		pctLoading: 28,
+		productionProgress: null,
+		remainingMinutes: null,
 	},
 ];
 

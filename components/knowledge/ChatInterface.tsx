@@ -44,9 +44,9 @@ function renderCitedText(text: string) {
 function SourceCitationCard({ citation }: { citation: CitationSource }) {
 	const Icon = docTypeIcon[citation.docType] ?? ClipboardList;
 	return (
-		<div className="rounded-xl border border-forge-divider bg-white p-3">
+		<div className="rounded-lg border border-forge-divider bg-white p-3">
 			<div className="mb-1.5 flex items-center gap-2">
-				<Icon className="h-3.5 w-3.5 text-forge-accent-blue" />
+				<Icon className="h-3.5 w-3.5 text-forge-secondary" />
 				<span className="text-xs font-semibold text-forge-primary">
 					{citation.docId}: {citation.docTitle}
 				</span>
@@ -89,8 +89,8 @@ function KnowledgeAttribution({ contributors }: { contributors: KnowledgeContrib
 function ConfidenceBadge({ score, sources }: { score: number; sources: number }) {
 	return (
 		<div className="mt-2 flex items-center gap-1.5">
-			<Sparkles className="h-3 w-3 text-forge-accent-blue" />
-			<span className="text-[10px] font-medium text-forge-accent-blue">
+			<Sparkles className="h-3 w-3 text-forge-secondary" />
+			<span className="text-[10px] font-medium text-forge-secondary">
 				{score}% confidence · {sources} sources matched
 			</span>
 		</div>
@@ -179,7 +179,7 @@ export function ChatInterface() {
 						<p className="mb-1 text-xs text-forge-hint">{msg.sender}</p>
 						<div
 							className={cn(
-								'max-w-[640px] rounded-2xl px-5 py-4 text-sm leading-relaxed',
+								'max-w-[640px] rounded-lg px-5 py-4 text-sm leading-relaxed',
 								msg.role === 'user'
 									? 'bg-forge-primary text-white'
 									: 'glass-solid text-forge-primary',
@@ -219,7 +219,7 @@ export function ChatInterface() {
 
 			{/* Input Bar */}
 			<form onSubmit={handleSubmit} className="mt-auto">
-				<div className="flex items-center gap-3 rounded-2xl border border-white/60 bg-gradient-to-r from-white/80 to-white/60 p-2 shadow-glass-md backdrop-blur-xl">
+				<div className="flex items-center gap-3 rounded-lg border border-black/[0.08] bg-white p-2 shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
 					<button
 						type="button"
 						className="p-2 text-forge-hint transition-colors hover:text-forge-primary"
@@ -235,7 +235,7 @@ export function ChatInterface() {
 					/>
 					<button
 						type="submit"
-						className="flex h-10 w-10 items-center justify-center rounded-xl bg-forge-primary text-white transition-colors hover:bg-forge-primary/90"
+						className="flex h-10 w-10 items-center justify-center rounded-lg bg-forge-primary text-white transition-colors hover:bg-forge-primary/90"
 					>
 						<ArrowUp className="h-5 w-5" />
 					</button>

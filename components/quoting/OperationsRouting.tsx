@@ -4,7 +4,7 @@ export function OperationsRouting() {
 	return (
 		<div>
 			<h4 className="mb-3 text-xs font-semibold text-forge-primary">Operations Routing</h4>
-			<div className="overflow-hidden rounded-xl border border-forge-divider">
+			<div className="overflow-hidden rounded-lg border border-forge-divider">
 				{/* Header */}
 				<div className="grid grid-cols-[40px_1.5fr_2fr_80px_80px_80px] items-center gap-2 bg-black/[0.02] px-4 py-2">
 					<span className="text-[10px] font-medium uppercase tracking-wider text-forge-hint">Op</span>

@@ -10,7 +10,7 @@ export function SimilarJobsPanel() {
 				{quoteDetail.similarJobs.map((job) => (
 					<div
 						key={job.jobId}
-						className="rounded-xl border border-forge-divider bg-black/[0.01] p-3"
+						className="rounded-lg border border-forge-divider bg-black/[0.01] p-3"
 					>
 						<div className="mb-1 flex items-center justify-between">
 							<div className="flex items-center gap-2">

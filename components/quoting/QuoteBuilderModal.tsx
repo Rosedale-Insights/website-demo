@@ -7,7 +7,6 @@ import { quoteBuilderDefaults, quoteBuilderSteps, quoteDetail } from '@/lib/mock
 import { CostBreakdownChart } from './CostBreakdownChart';
 import { OperationsRouting } from './OperationsRouting';
 import { SimilarJobsPanel } from './SimilarJobsPanel';
-import { ConfidenceGauge } from './ConfidenceGauge';
 
 type Step = 'form' | 'processing' | 'review';
 
@@ -38,7 +37,7 @@ export function QuoteBuilderModal({ onClose }: { onClose: () => void }) {
 
 	return (
 		<div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 px-4 py-8 backdrop-blur-sm">
-			<div className="glass-solid relative w-full max-w-4xl rounded-2xl shadow-glass-xl">
+			<div className="glass-solid relative w-full max-w-4xl rounded-lg shadow-glass-xl">
 				{/* Close button */}
 				<button
 					type="button"
@@ -83,7 +82,7 @@ function FormStep({ onGenerate }: { onGenerate: () => void }) {
 					<input
 						type="text"
 						defaultValue={quoteBuilderDefaults.customer}
-						className="w-full rounded-xl border border-forge-divider bg-white px-4 py-2.5 text-sm text-forge-primary outline-none focus:border-forge-primary/20"
+						className="w-full rounded-lg border border-forge-divider bg-white px-4 py-2.5 text-sm text-forge-primary outline-none focus:border-forge-primary/20"
 					/>
 				</div>
 				<div>
@@ -91,7 +90,7 @@ function FormStep({ onGenerate }: { onGenerate: () => void }) {
 					<input
 						type="text"
 						defaultValue={quoteBuilderDefaults.material}
-						className="w-full rounded-xl border border-forge-divider bg-white px-4 py-2.5 text-sm text-forge-primary outline-none focus:border-forge-primary/20"
+						className="w-full rounded-lg border border-forge-divider bg-white px-4 py-2.5 text-sm text-forge-primary outline-none focus:border-forge-primary/20"
 					/>
 				</div>
 				<div className="col-span-2">
@@ -99,7 +98,7 @@ function FormStep({ onGenerate }: { onGenerate: () => void }) {
 					<input
 						type="text"
 						defaultValue={quoteBuilderDefaults.partDescription}
-						className="w-full rounded-xl border border-forge-divider bg-white px-4 py-2.5 text-sm text-forge-primary outline-none focus:border-forge-primary/20"
+						className="w-full rounded-lg border border-forge-divider bg-white px-4 py-2.5 text-sm text-forge-primary outline-none focus:border-forge-primary/20"
 					/>
 				</div>
 				<div>
@@ -107,7 +106,7 @@ function FormStep({ onGenerate }: { onGenerate: () => void }) {
 					<input
 						type="number"
 						defaultValue={quoteBuilderDefaults.quantity}
-						className="w-full rounded-xl border border-forge-divider bg-white px-4 py-2.5 text-sm text-forge-primary outline-none focus:border-forge-primary/20"
+						className="w-full rounded-lg border border-forge-divider bg-white px-4 py-2.5 text-sm text-forge-primary outline-none focus:border-forge-primary/20"
 					/>
 				</div>
 				<div>
@@ -147,7 +146,7 @@ function FormStep({ onGenerate }: { onGenerate: () => void }) {
 			</div>
 
 			{/* Upload area (decorative) */}
-			<div className="mt-4 rounded-xl border-2 border-dashed border-forge-divider p-6 text-center">
+			<div className="mt-4 rounded-lg border-2 border-dashed border-forge-divider p-6 text-center">
 				<p className="text-xs text-forge-hint">Drag drawings or specs here, or click to upload</p>
 			</div>
 
@@ -155,7 +154,7 @@ function FormStep({ onGenerate }: { onGenerate: () => void }) {
 				<button
 					type="button"
 					onClick={onGenerate}
-					className="flex items-center gap-2 rounded-xl bg-forge-primary px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90"
+					className="flex items-center gap-2 rounded-lg bg-forge-primary px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90"
 				>
 					<Sparkles className="h-4 w-4" />
 					Generate Quote
@@ -246,15 +245,10 @@ function ReviewStep({
 					<OperationsRouting />
 				</div>
 
-				{/* Right: Confidence + AI + Similar + Slider */}
+				{/* Right: AI + Similar + Slider */}
 				<div className="space-y-5">
-					{/* Confidence */}
-					<div className="rounded-xl border border-forge-divider p-4 text-center">
-						<ConfidenceGauge score={quoteDetail.confidenceScore} />
-					</div>
-
 					{/* AI Recommendation */}
-					<div className="rounded-xl bg-forge-primary/[0.03] p-4">
+					<div className="rounded-lg bg-forge-primary/[0.03] p-4">
 						<div className="mb-2 flex items-center gap-1.5">
 							<Sparkles className="h-3.5 w-3.5 text-forge-primary" />
 							<span className="text-xs font-semibold text-forge-primary">AI Recommendation</span>
@@ -268,7 +262,7 @@ function ReviewStep({
 					<SimilarJobsPanel />
 
 					{/* Margin Slider */}
-					<div className="rounded-xl border border-forge-divider p-4">
+					<div className="rounded-lg border border-forge-divider p-4">
 						<div className="mb-2 flex items-center justify-between">
 							<span className="text-xs font-semibold text-forge-primary">Target Margin</span>
 							<span className="text-xs font-bold text-forge-primary">{margin}%</span>
@@ -288,7 +282,7 @@ function ReviewStep({
 					</div>
 
 					{/* Price summary */}
-					<div className="rounded-xl bg-forge-primary p-4 text-white">
+					<div className="rounded-lg bg-forge-primary p-4 text-white">
 						<div className="flex items-center justify-between">
 							<span className="text-xs">Total Quote</span>
 							<span className="text-lg font-bold">${adjustedTotal.toLocaleString()}</span>
@@ -314,14 +308,14 @@ function ReviewStep({
 					<button
 						type="button"
 						onClick={onClose}
-						className="rounded-xl border border-forge-divider bg-white px-4 py-2 text-sm font-medium text-forge-primary transition-colors hover:bg-black/[0.02]"
+						className="rounded-lg border border-forge-divider bg-white px-4 py-2 text-sm font-medium text-forge-primary transition-colors hover:bg-black/[0.02]"
 					>
 						Save as Draft
 					</button>
 					<button
 						type="button"
 						onClick={onClose}
-						className="rounded-xl bg-forge-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90"
+						className="rounded-lg bg-forge-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-forge-primary/90"
 					>
 						Send to Customer
 					</button>

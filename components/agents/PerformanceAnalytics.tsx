@@ -5,15 +5,15 @@ import { agentConfigDefaults, performanceChartData } from '@/lib/mock-data';
 
 export function PerformanceAnalytics() {
 	return (
-		<div className="glass-solid rounded-2xl p-6">
+		<div className="glass-solid rounded-lg p-6">
 			<h3 className="mb-2 text-lg font-semibold text-forge-primary">Performance Analytics</h3>
 			<p className="mb-4 text-xs text-forge-hint">Accuracy over last 48h</p>
 			<ResponsiveContainer width="100%" height={140}>
 				<AreaChart data={performanceChartData}>
 					<defs>
 						<linearGradient id="perfFillConfig" x1="0" y1="0" x2="0" y2="1">
-							<stop offset="0%" stopColor="#7C9CB4" stopOpacity={0.12} />
-							<stop offset="100%" stopColor="#7C9CB4" stopOpacity={0.02} />
+							<stop offset="0%" stopColor="#1A1A1A" stopOpacity={0.12} />
+							<stop offset="100%" stopColor="#1A1A1A" stopOpacity={0.02} />
 						</linearGradient>
 					</defs>
 					<XAxis
@@ -25,10 +25,10 @@ export function PerformanceAnalytics() {
 					<Area
 						type="monotone"
 						dataKey="value"
-						stroke="#7C9CB4"
+						stroke="#1A1A1A"
 						strokeWidth={1.5}
 						fill="url(#perfFillConfig)"
-						dot={{ fill: '#7C9CB4', r: 3, strokeWidth: 0 }}
+						dot={{ fill: '#1A1A1A', r: 3, strokeWidth: 0 }}
 					/>
 				</AreaChart>
 			</ResponsiveContainer>

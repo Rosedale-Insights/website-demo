@@ -215,31 +215,20 @@ async function typeMessage(page: Page, text: string) {
 /* ─── Demo Script ──────────────────────────────────────────── */
 
 test('FORGE cinematic demo walkthrough', async ({ page }) => {
-	/* ── Scene 1: Insights Dashboard ─────────────────────── */
+	/* ── Scene 1: Home ──────────────────────────────────── */
 	await page.goto('/insights');
-	await waitVisible(page.getByText('Manufacturing Insights'));
-	await waitVisible(page.locator('.recharts-responsive-container').first());
-	await pause(1800); // let recharts animations finish
+	await waitVisible(page.getByText('Good morning, Julian'));
+	await pause(1200);
 
 	await injectCursor(page);
 	await pause(300);
 
 	// Light zoom on Intelligence Brief
-	const intelBrief = page.getByText('Forge Intelligence Brief').first();
+	const intelBrief = page.getByText('Intelligence Brief').first();
 	await zoomIn(page, intelBrief, 1.2);
 	await pause(1500);
 	await zoomOut(page);
-
-	// Scroll down to Due Jobs table using JS scrollIntoView
-	await page.evaluate(() => {
-		for (const node of document.querySelectorAll('*')) {
-			if (node.textContent?.trim().startsWith('Due Jobs') && node.children.length < 3) {
-				node.scrollIntoView({ behavior: 'smooth', block: 'start' });
-				break;
-			}
-		}
-	});
-	await pause(2000);
+	await pause(800);
 
 	/* ── Scene 2: Knowledge Base ─────────────────────────── */
 	await navigateVia(page, 'Knowledge Base', 'Technical Knowledge Base');
@@ -255,23 +244,34 @@ test('FORGE cinematic demo walkthrough', async ({ page }) => {
 
 	await zoomOut(page);
 
-	/* ── Scene 3: Documents ──────────────────────────────── */
-	await navigateVia(page, 'Documents', 'Document Library');
+	/* ── Scene 3: Settings → Documents ───────────────────── */
+	const settingsGear = page.locator('a[href="/settings"]');
+	await clickWithCursor(page, settingsGear);
+	await waitVisible(page.getByText('Settings').first());
+	await injectCursor(page);
+	await pause(400);
+
+	const docsTab = page.locator('a[href="/settings?tab=documents"]');
+	await clickWithCursor(page, docsTab);
 	await waitVisible(page.getByText('Total Storage'));
 	await pause(1900);
 
 	/* ── Scene 4: Quoting ────────────────────────────────── */
 	await navigateVia(page, 'Quoting', 'Quoting Tool');
 
-	// Scroll to Forge AI Insight and zoom
-	const aiInsight = page.getByText('Forge AI Insight').first();
+	// Scroll to Margin Optimisation and zoom
+	const aiInsight = page.getByText('Margin Optimisation').first();
 	await scrollToElement(page, aiInsight);
 	await zoomIn(page, aiInsight, 1.35);
 	await pause(600);
 	await zoomOut(page);
 
-	/* ── Scene 5: Agents → Quality Inspector AI ──────────── */
-	await navigateVia(page, 'Agents', 'Agent Workspace');
+	/* ── Scene 5: Settings → Agents → Agent Config ────────── */
+	const agentsTab = page.locator('a[href="/settings?tab=agents"]');
+	await clickWithCursor(page, agentsTab);
+	await waitVisible(page.getByText('Active Specialized Units'));
+	await pause(800);
+
 	const agentCards = page.locator('.grid.grid-cols-2 a');
 	await waitVisible(agentCards.first());
 

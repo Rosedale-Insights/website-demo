@@ -11,9 +11,9 @@ export function SourceCards() {
 				return (
 					<div
 						key={source.name}
-						className="flex w-[180px] flex-col gap-2 rounded-2xl bg-forge-primary/[0.04] p-5 transition-colors hover:bg-forge-primary/[0.07]"
+						className="flex w-[180px] flex-col gap-2 rounded-lg bg-forge-primary/[0.04] p-5 transition-colors hover:bg-forge-primary/[0.07]"
 					>
-						<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-forge-primary">
+						<div className="flex h-10 w-10 items-center justify-center rounded-lg bg-forge-primary">
 							<Icon className="h-5 w-5 text-white" />
 						</div>
 						<p className="font-medium text-forge-primary">{source.name}</p>
