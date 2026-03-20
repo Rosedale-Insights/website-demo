@@ -1,6 +1,6 @@
 import { CheckCircle2, XCircle } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { quoteDetail } from '@/lib/mock-data';
+import { cn } from '@/lib/utils';
 
 export function SimilarJobsPanel() {
 	return (

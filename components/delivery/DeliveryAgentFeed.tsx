@@ -1,10 +1,18 @@
 import { AlertTriangle, CheckCircle2, Eye } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { deliveryAlerts } from '@/lib/mock-data';
+import { cn } from '@/lib/utils';
 
 const severityConfig = {
-	critical: { icon: AlertTriangle, colorClass: 'text-forge-accent-warm', bgClass: 'bg-forge-accent-warm/10' },
-	high: { icon: AlertTriangle, colorClass: 'text-forge-accent-warm', bgClass: 'bg-forge-accent-warm/10' },
+	critical: {
+		icon: AlertTriangle,
+		colorClass: 'text-forge-accent-warm',
+		bgClass: 'bg-forge-accent-warm/10',
+	},
+	high: {
+		icon: AlertTriangle,
+		colorClass: 'text-forge-accent-warm',
+		bgClass: 'bg-forge-accent-warm/10',
+	},
 	medium: { icon: Eye, colorClass: 'text-forge-hint', bgClass: 'bg-forge-hint/10' },
 	low: { icon: CheckCircle2, colorClass: 'text-forge-success', bgClass: 'bg-forge-success/10' },
 };

@@ -1,23 +1,19 @@
 'use client';
 
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
-import { AiSettings } from '@/components/settings/AiSettings';
-import { ProfileForm } from '@/components/settings/ProfileForm';
-import { SecuritySection } from '@/components/settings/SecuritySection';
 import { AgentCard } from '@/components/agents/AgentCard';
 import { LiveActivity } from '@/components/agents/LiveActivity';
 import { PerformanceChart } from '@/components/agents/PerformanceChart';
 import { DocTable } from '@/components/documents/DocTable';
 import { PinnedDocs } from '@/components/documents/PinnedDocs';
 import { StatCard } from '@/components/StatCard';
-import {
-	agentWorkspaceStats,
-	documentStats,
-	specializedAgents,
-} from '@/lib/mock-data';
+import { AiSettings } from '@/components/settings/AiSettings';
+import { ProfileForm } from '@/components/settings/ProfileForm';
+import { SecuritySection } from '@/components/settings/SecuritySection';
+import { agentWorkspaceStats, documentStats, specializedAgents } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
-import Link from 'next/link';
 
 const tabs = [
 	{ key: 'profile', label: 'Profile' },

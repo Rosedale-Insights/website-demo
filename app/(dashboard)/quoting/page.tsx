@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { Plus } from 'lucide-react';
+import { useState } from 'react';
 import { PageHeader } from '@/components/PageHeader';
 import { AiInsightBanner } from '@/components/quoting/AiInsightBanner';
 import { QuoteBuilderModal } from '@/components/quoting/QuoteBuilderModal';

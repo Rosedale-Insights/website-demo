@@ -1,6 +1,6 @@
 import { AlertTriangle } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { operators } from '@/lib/mock-data';
+import { cn } from '@/lib/utils';
 
 const shiftOrder: Record<string, number> = { Day: 0, Swing: 1, Night: 2 };
 
@@ -57,9 +57,7 @@ export function ShiftOverview() {
 
 										{/* Name + role */}
 										<div className="min-w-0 flex-1">
-											<p className="truncate text-xs font-medium text-forge-primary">
-												{op.name}
-											</p>
+											<p className="truncate text-xs font-medium text-forge-primary">{op.name}</p>
 											<p className="text-[10px] text-forge-hint">{op.role}</p>
 										</div>
 
@@ -76,14 +74,10 @@ export function ShiftOverview() {
 											<span
 												className={cn(
 													'flex items-center gap-0.5 text-[10px] font-medium',
-													op.overtimeHours >= 8
-														? 'text-forge-error'
-														: 'text-forge-hint',
+													op.overtimeHours >= 8 ? 'text-forge-error' : 'text-forge-hint',
 												)}
 											>
-												{op.overtimeHours >= 8 && (
-													<AlertTriangle className="h-2.5 w-2.5" />
-												)}
+												{op.overtimeHours >= 8 && <AlertTriangle className="h-2.5 w-2.5" />}
 												{op.overtimeHours}h OT
 											</span>
 										)}

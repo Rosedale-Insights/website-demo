@@ -1,18 +1,10 @@
 'use client';
 
-import {
-	Cpu,
-	Factory,
-	FileText,
-	Home,
-	Lightbulb,
-	Package,
-	Settings,
-} from 'lucide-react';
+import { Cpu, Factory, FileText, Home, Lightbulb, Package, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
 import { recentQueries } from '@/lib/mock-data';
+import { cn } from '@/lib/utils';
 
 const navItems = [
 	{ href: '/insights', label: 'Home', icon: Home },
@@ -26,13 +18,13 @@ export function Sidebar() {
 	const pathname = usePathname();
 
 	return (
-		<aside className="group/sidebar sticky top-0 flex h-screen w-16 shrink-0 flex-col border-r border-forge-divider bg-white px-2 py-6 transition-all duration-200 hover:w-[260px] hover:px-4">
+		<aside className="sticky top-0 flex h-screen w-[260px] shrink-0 flex-col border-r border-forge-divider bg-white px-4 py-6">
 			{/* Logo */}
-			<Link href="/insights" className="mb-8 flex items-center gap-2 px-1 group-hover/sidebar:px-3">
+			<Link href="/insights" className="mb-8 flex items-center gap-2 px-3">
 				<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-forge-primary">
 					<Cpu className="h-4 w-4 text-white" />
 				</div>
-				<span className="hidden text-base font-extrabold tracking-tight text-forge-primary group-hover/sidebar:block">
+				<span className="text-base font-extrabold tracking-tight text-forge-primary">
 					FORGE
 				</span>
 			</Link>
@@ -54,10 +46,10 @@ export function Sidebar() {
 								)}
 							>
 								<item.icon className="h-[18px] w-[18px] shrink-0" />
-								<span className="hidden truncate group-hover/sidebar:block">{item.label}</span>
+								<span className="truncate">{item.label}</span>
 							</Link>
 							{isKB && isActive && (
-								<div className="mt-2 ml-1 hidden group-hover/sidebar:block">
+								<div className="mt-2 ml-1">
 									<p className="px-2 text-[10px] font-medium uppercase tracking-widest text-forge-hint">
 										Your chats
 									</p>
@@ -80,18 +72,18 @@ export function Sidebar() {
 			</nav>
 
 			{/* User Profile */}
-			<div className="mt-auto rounded-lg bg-black/[0.02] p-2 group-hover/sidebar:p-3">
+			<div className="mt-auto rounded-lg bg-black/[0.02] p-3">
 				<div className="flex items-center gap-3">
 					<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-forge-primary text-xs font-semibold text-white">
 						JD
 					</div>
-					<div className="hidden min-w-0 flex-1 group-hover/sidebar:block">
+					<div className="min-w-0 flex-1">
 						<p className="truncate text-sm font-medium text-forge-primary">Julian Detmer</p>
 						<p className="truncate text-xs text-forge-hint">Plant Manager</p>
 					</div>
 					<Link
 						href="/settings"
-						className="hidden text-forge-hint transition-colors hover:text-forge-primary group-hover/sidebar:block"
+						className="text-forge-hint transition-colors hover:text-forge-primary"
 					>
 						<Settings className="h-4 w-4" />
 					</Link>

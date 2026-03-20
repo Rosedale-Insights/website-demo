@@ -1,10 +1,10 @@
 import { AlertTriangle } from 'lucide-react';
+import { PageHeader } from '@/components/PageHeader';
+import { StatCard } from '@/components/StatCard';
 import { MachineAlerts } from '@/components/shop-floor/MachineAlerts';
 import { MachineStatusGrid } from '@/components/shop-floor/MachineStatusGrid';
 import { MaintenanceTimeline } from '@/components/shop-floor/MaintenanceTimeline';
 import { OeeBreakdown } from '@/components/shop-floor/OeeBreakdown';
-import { PageHeader } from '@/components/PageHeader';
-import { StatCard } from '@/components/StatCard';
 import { shopFloorKpis } from '@/lib/mock-data';
 
 export default function ShopFloorPage() {

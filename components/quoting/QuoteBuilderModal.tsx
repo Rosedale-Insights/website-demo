@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { Check, Loader2, Sparkles, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 import { quoteBuilderDefaults, quoteBuilderSteps, quoteDetail } from '@/lib/mock-data';
+import { cn } from '@/lib/utils';
 import { CostBreakdownChart } from './CostBreakdownChart';
 import { OperationsRouting } from './OperationsRouting';
 import { SimilarJobsPanel } from './SimilarJobsPanel';
@@ -74,7 +74,9 @@ function FormStep({ onGenerate }: { onGenerate: () => void }) {
 	return (
 		<div className="p-8">
 			<h2 className="mb-1 text-lg font-semibold text-forge-primary">New Quote — RFQ Details</h2>
-			<p className="mb-6 text-sm text-forge-hint">Enter the request details to generate an AI-assisted quote.</p>
+			<p className="mb-6 text-sm text-forge-hint">
+				Enter the request details to generate an AI-assisted quote.
+			</p>
 
 			<div className="grid grid-cols-2 gap-x-6 gap-y-4">
 				<div>
@@ -94,7 +96,9 @@ function FormStep({ onGenerate }: { onGenerate: () => void }) {
 					/>
 				</div>
 				<div className="col-span-2">
-					<label className="mb-1 block text-xs font-medium text-forge-secondary">Part Description</label>
+					<label className="mb-1 block text-xs font-medium text-forge-secondary">
+						Part Description
+					</label>
 					<input
 						type="text"
 						defaultValue={quoteBuilderDefaults.partDescription}
@@ -129,7 +133,9 @@ function FormStep({ onGenerate }: { onGenerate: () => void }) {
 					</div>
 				</div>
 				<div className="col-span-2">
-					<label className="mb-1 block text-xs font-medium text-forge-secondary">Certifications</label>
+					<label className="mb-1 block text-xs font-medium text-forge-secondary">
+						Certifications
+					</label>
 					<div className="flex gap-3">
 						{['AS9100', 'ITAR', 'NADCAP', 'ISO 9001'].map((cert) => (
 							<label key={cert} className="flex items-center gap-1.5 text-xs text-forge-secondary">
@@ -288,7 +294,9 @@ function ReviewStep({
 							<span className="text-lg font-bold">${adjustedTotal.toLocaleString()}</span>
 						</div>
 						<div className="mt-1 flex items-center justify-between text-xs opacity-70">
-							<span>{quoteDetail.quantity} units × ${adjustedUnitPrice.toLocaleString()}/unit</span>
+							<span>
+								{quoteDetail.quantity} units × ${adjustedUnitPrice.toLocaleString()}/unit
+							</span>
 							<span>{margin}% margin</span>
 						</div>
 					</div>
