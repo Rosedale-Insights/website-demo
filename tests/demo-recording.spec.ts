@@ -24,15 +24,6 @@ async function injectCursor(page: Page) {
 				0%   { transform: translate(-50%,-50%) scale(0); opacity: 0.5; }
 				100% { transform: translate(-50%,-50%) scale(1.5); opacity: 0; }
 			}
-			/* Force sidebar open for the demo — no hover expand/collapse */
-			.group\\/sidebar {
-				width: 260px !important;
-				padding-left: 1rem !important;
-				padding-right: 1rem !important;
-			}
-			.group-hover\\/sidebar\\:block { display: block !important; }
-			.group-hover\\/sidebar\\:px-3 { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
-			.group-hover\\/sidebar\\:p-3 { padding: 0.75rem !important; }
 		`;
 		document.head.appendChild(style);
 
