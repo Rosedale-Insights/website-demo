@@ -1,6 +1,6 @@
-import { cn } from '@/lib/utils';
-import { machines } from '@/lib/mock-data';
 import type { Machine } from '@/lib/mock-data';
+import { machines } from '@/lib/mock-data';
+import { cn } from '@/lib/utils';
 
 const statusDot: Record<Machine['status'], string> = {
 	Active: 'bg-forge-success',
@@ -54,21 +54,40 @@ export function MachineStatusGrid() {
 
 			{/* Header */}
 			<div className={cn(COL, 'border-t border-forge-divider bg-black/[0.02] px-6 py-2')}>
-				<span className="text-[10px] font-medium uppercase tracking-wider text-forge-hint">Status</span>
-				<span className="text-[10px] font-medium uppercase tracking-wider text-forge-hint">Machine</span>
-				<span className="text-center text-[10px] font-medium uppercase tracking-wider text-forge-hint">OEE</span>
-				<span className="text-center text-[10px] font-medium uppercase tracking-wider text-forge-hint">Active</span>
-				<span className="text-center text-[10px] font-medium uppercase tracking-wider text-forge-hint">Stalled</span>
-				<span className="text-center text-[10px] font-medium uppercase tracking-wider text-forge-hint">Setup</span>
-				<span className="text-center text-[10px] font-medium uppercase tracking-wider text-forge-hint">Loading</span>
-				<span className="text-right text-[10px] font-medium uppercase tracking-wider text-forge-hint">Production</span>
+				<span className="text-[10px] font-medium uppercase tracking-wider text-forge-hint">
+					Status
+				</span>
+				<span className="text-[10px] font-medium uppercase tracking-wider text-forge-hint">
+					Machine
+				</span>
+				<span className="text-center text-[10px] font-medium uppercase tracking-wider text-forge-hint">
+					OEE
+				</span>
+				<span className="text-center text-[10px] font-medium uppercase tracking-wider text-forge-hint">
+					Active
+				</span>
+				<span className="text-center text-[10px] font-medium uppercase tracking-wider text-forge-hint">
+					Stalled
+				</span>
+				<span className="text-center text-[10px] font-medium uppercase tracking-wider text-forge-hint">
+					Setup
+				</span>
+				<span className="text-center text-[10px] font-medium uppercase tracking-wider text-forge-hint">
+					Loading
+				</span>
+				<span className="text-right text-[10px] font-medium uppercase tracking-wider text-forge-hint">
+					Production
+				</span>
 			</div>
 
 			{/* Rows */}
 			{sorted.map((m) => (
 				<div
 					key={m.id}
-					className={cn(COL, 'border-t border-forge-divider px-6 py-2.5 transition-colors hover:bg-black/[0.01]')}
+					className={cn(
+						COL,
+						'border-t border-forge-divider px-6 py-2.5 transition-colors hover:bg-black/[0.01]',
+					)}
 				>
 					{/* Status + health score below */}
 					<div>
@@ -97,9 +116,7 @@ export function MachineStatusGrid() {
 						<div className="text-right">
 							<p className="text-xs font-medium text-forge-primary">{m.productionProgress}%</p>
 							{m.remainingMinutes != null && (
-								<p className="text-[10px] text-forge-hint">
-									{formatRemaining(m.remainingMinutes)}
-								</p>
+								<p className="text-[10px] text-forge-hint">{formatRemaining(m.remainingMinutes)}</p>
 							)}
 						</div>
 					) : (

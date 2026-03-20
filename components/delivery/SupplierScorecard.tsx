@@ -1,8 +1,8 @@
 'use client';
 
-import { TrendingDown, TrendingUp, Minus } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Minus, TrendingDown, TrendingUp } from 'lucide-react';
 import { suppliers } from '@/lib/mock-data';
+import { cn } from '@/lib/utils';
 
 const trendIcons = {
 	up: TrendingUp,
@@ -42,9 +42,7 @@ export function SupplierScorecard() {
 						>
 							{/* Name + location */}
 							<div className="min-w-0 flex-1">
-								<p className="truncate text-sm font-medium text-forge-primary">
-									{supplier.name}
-								</p>
+								<p className="truncate text-sm font-medium text-forge-primary">{supplier.name}</p>
 								<p className="text-xs text-forge-hint">{supplier.location}</p>
 							</div>
 

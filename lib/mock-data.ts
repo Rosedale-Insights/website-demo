@@ -791,7 +791,8 @@ export const knowledgeChatMessages = [
 		id: 'kc3',
 		role: 'user' as const,
 		sender: 'You',
-		content: 'What\'s the material status on the Ti-6Al-4V stock for the Raytheon avionics housing job?',
+		content:
+			"What's the material status on the Ti-6Al-4V stock for the Raytheon avionics housing job?",
 	},
 	{
 		id: 'kc4',
@@ -2080,12 +2081,54 @@ export const quoteDetail = {
 		margin: 3162,
 	} satisfies CostBreakdown,
 	operations: [
-		{ opNumber: 10, name: 'Rough Mill', machine: 'DMG Mori DMU 50', setupMinutes: 45, cycleMinutes: 150, costPerPart: 412 },
-		{ opNumber: 20, name: 'Finish Mill', machine: 'DMG Mori DMU 50', setupMinutes: 30, cycleMinutes: 108, costPerPart: 297 },
-		{ opNumber: 30, name: 'Drill/Tap', machine: 'Haas VF-4SS', setupMinutes: 20, cycleMinutes: 24, costPerPart: 48 },
-		{ opNumber: 40, name: 'Deburr', machine: 'Manual', setupMinutes: 0, cycleMinutes: 18, costPerPart: 23 },
-		{ opNumber: 50, name: 'CMM Inspect', machine: 'Zeiss Contura', setupMinutes: 15, cycleMinutes: 30, costPerPart: 58 },
-		{ opNumber: 60, name: 'Anodize', machine: 'Cascade Coatings (Outside)', setupMinutes: 0, cycleMinutes: 0, costPerPart: 90 },
+		{
+			opNumber: 10,
+			name: 'Rough Mill',
+			machine: 'DMG Mori DMU 50',
+			setupMinutes: 45,
+			cycleMinutes: 150,
+			costPerPart: 412,
+		},
+		{
+			opNumber: 20,
+			name: 'Finish Mill',
+			machine: 'DMG Mori DMU 50',
+			setupMinutes: 30,
+			cycleMinutes: 108,
+			costPerPart: 297,
+		},
+		{
+			opNumber: 30,
+			name: 'Drill/Tap',
+			machine: 'Haas VF-4SS',
+			setupMinutes: 20,
+			cycleMinutes: 24,
+			costPerPart: 48,
+		},
+		{
+			opNumber: 40,
+			name: 'Deburr',
+			machine: 'Manual',
+			setupMinutes: 0,
+			cycleMinutes: 18,
+			costPerPart: 23,
+		},
+		{
+			opNumber: 50,
+			name: 'CMM Inspect',
+			machine: 'Zeiss Contura',
+			setupMinutes: 15,
+			cycleMinutes: 30,
+			costPerPart: 58,
+		},
+		{
+			opNumber: 60,
+			name: 'Anodize',
+			machine: 'Cascade Coatings (Outside)',
+			setupMinutes: 0,
+			cycleMinutes: 0,
+			costPerPart: 90,
+		},
 	] satisfies QuoteOperation[],
 	similarJobs: [
 		{
@@ -2151,7 +2194,12 @@ export const quoteBuilderSteps = [
 export type CitationSource = {
 	id: string;
 	docTitle: string;
-	docType: 'SOP' | 'Work Instruction' | 'Troubleshooting Guide' | 'Process Parameters' | 'Tribal Knowledge';
+	docType:
+		| 'SOP'
+		| 'Work Instruction'
+		| 'Troubleshooting Guide'
+		| 'Process Parameters'
+		| 'Tribal Knowledge';
 	docId: string;
 	revision: string;
 	author: string;

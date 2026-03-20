@@ -10,13 +10,12 @@ async function waitVisible(locator: Locator, timeout = 15_000) {
 
 /**
  * Inject the fake cursor + ripple container + hidden real cursor.
- * Must be called after every full-page navigation since the DOM resets.
+ * Idempotent — safe to call after SPA navigations.
  */
 async function injectCursor(page: Page) {
 	await page.evaluate(() => {
 		if (document.getElementById('demo-cursor')) return;
 
-		// Hide real cursor
 		const style = document.createElement('style');
 		style.id = 'demo-hide-cursor';
 		style.textContent = `
@@ -25,10 +24,18 @@ async function injectCursor(page: Page) {
 				0%   { transform: translate(-50%,-50%) scale(0); opacity: 0.5; }
 				100% { transform: translate(-50%,-50%) scale(1.5); opacity: 0; }
 			}
+			/* Force sidebar open for the demo — no hover expand/collapse */
+			.group\\/sidebar {
+				width: 260px !important;
+				padding-left: 1rem !important;
+				padding-right: 1rem !important;
+			}
+			.group-hover\\/sidebar\\:block { display: block !important; }
+			.group-hover\\/sidebar\\:px-3 { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+			.group-hover\\/sidebar\\:p-3 { padding: 0.75rem !important; }
 		`;
 		document.head.appendChild(style);
 
-		// Fake cursor — 20px dot
 		const cursor = document.createElement('div');
 		cursor.id = 'demo-cursor';
 		Object.assign(cursor.style, {
@@ -42,14 +49,13 @@ async function injectCursor(page: Page) {
 			zIndex: '99999',
 			pointerEvents: 'none',
 			transition:
-				'left 0.35s cubic-bezier(0.22,0.61,0.36,1), top 0.35s cubic-bezier(0.22,0.61,0.36,1), width 0.1s, height 0.1s',
+				'left 0.45s cubic-bezier(0.22,0.61,0.36,1), top 0.45s cubic-bezier(0.22,0.61,0.36,1), width 0.1s, height 0.1s',
 			left: '960px',
 			top: '540px',
 			transform: 'translate(-50%, -50%)',
 		});
 		document.body.appendChild(cursor);
 
-		// Ripple container
 		const rippleContainer = document.createElement('div');
 		rippleContainer.id = 'demo-ripple-container';
 		Object.assign(rippleContainer.style, {
@@ -76,7 +82,7 @@ async function moveCursorTo(page: Page, x: number, y: number) {
 		},
 		{ x, y },
 	);
-	await pause(380);
+	await pause(420);
 }
 
 async function moveCursorToElement(page: Page, locator: Locator) {
@@ -130,43 +136,36 @@ async function clickWithCursor(page: Page, locator: Locator) {
 
 /**
  * Zoom: set transform-origin to element center, then animate ONLY scale().
- * No translate — single-property animation avoids jitter/bounce.
+ * Reads scroll offset from <main> (the actual scroll container), not window.
  */
 async function zoomIn(page: Page, locator: Locator, scale = 1.35) {
 	const box = await locator.boundingBox();
 	if (!box) return;
 
-	// Get current scroll offset so we compute the correct document-relative point
-	const scroll = await page.evaluate(() => ({
-		x: window.scrollX,
-		y: window.scrollY,
-	}));
+	const scrollTop = await page.evaluate(() => document.querySelector('main')?.scrollTop ?? 0);
 
-	const originX = scroll.x + box.x + box.width / 2;
-	const originY = scroll.y + box.y + box.height / 2;
+	const originX = box.x + box.width / 2;
+	const originY = scrollTop + box.y + box.height / 2;
 
 	await page.evaluate(
 		({ originX, originY, scale }) => {
 			const html = document.documentElement;
-			// Set origin first (no transition on origin)
 			html.style.transformOrigin = `${originX}px ${originY}px`;
-			// Small delay to ensure origin is applied before animating
-			html.style.transition = 'transform 0.6s ease-in-out';
+			html.style.transition = 'transform 0.7s ease-in-out';
 			html.style.transform = `scale(${scale})`;
 		},
 		{ originX, originY, scale },
 	);
-	await pause(650);
+	await pause(750);
 }
 
 async function zoomOut(page: Page) {
 	await page.evaluate(() => {
 		const html = document.documentElement;
-		html.style.transition = 'transform 0.6s ease-in-out';
+		html.style.transition = 'transform 0.7s ease-in-out';
 		html.style.transform = 'scale(1)';
 	});
-	await pause(650);
-	// Clean up transforms so they don't interfere with scrolling
+	await pause(750);
 	await page.evaluate(() => {
 		const html = document.documentElement;
 		html.style.transition = '';
@@ -175,16 +174,58 @@ async function zoomOut(page: Page) {
 	});
 }
 
-async function scrollToElement(page: Page, locator: Locator) {
+/**
+ * Smooth scroll within <main> to the bottom of the content.
+ */
+async function smoothScrollToBottom(page: Page) {
+	await page.evaluate(() => {
+		const main = document.querySelector('main');
+		if (main) {
+			main.scrollTo({ top: main.scrollHeight, behavior: 'smooth' });
+		}
+	});
+	await pause(1200);
+}
+
+/**
+ * Smooth scroll within <main> to position the target element ~200px from top.
+ */
+async function smoothScrollTo(page: Page, locator: Locator) {
 	await waitVisible(locator);
-	await locator.scrollIntoViewIfNeeded();
-	await pause(400);
+	const box = await locator.boundingBox();
+	if (!box) {
+		await locator.scrollIntoViewIfNeeded();
+		await pause(800);
+		return;
+	}
+	await page.evaluate(
+		({ elTop }) => {
+			const main = document.querySelector('main');
+			if (!main) return;
+			const mainRect = main.getBoundingClientRect();
+			const targetScroll = main.scrollTop + elTop - mainRect.top - 200;
+			main.scrollTo({
+				top: Math.max(0, targetScroll),
+				behavior: 'smooth',
+			});
+		},
+		{ elTop: box.y },
+	);
+	await pause(800);
 }
 
 /**
  * Navigate via sidebar click, wait for content, re-inject cursor.
+ * Smooth-scrolls to top before clicking so the transition doesn't jump.
  */
 async function navigateVia(page: Page, linkText: string, waitForText: string) {
+	await page.evaluate(() => {
+		const main = document.querySelector('main');
+		if (main && main.scrollTop > 0) {
+			main.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+	});
+	await pause(600);
 	const link = page.locator('nav a', { hasText: linkText });
 	await clickWithCursor(page, link);
 	await waitVisible(page.getByText(waitForText).first());
@@ -192,23 +233,22 @@ async function navigateVia(page: Page, linkText: string, waitForText: string) {
 	await pause(400);
 }
 
+/**
+ * Type a message in the KB chat, submit, and wait for the AI response to render.
+ * The ChatInterface has a 1s simulated delay before showing the AI response.
+ */
 async function typeMessage(page: Page, text: string) {
 	const input = page.locator('input[placeholder="Ask a technical question..."]');
 	await clickWithCursor(page, input);
-	await input.pressSequentially(text, { delay: 8 });
-
-	const beforeCount = await page.locator('.overflow-y-auto > div > div').count();
+	await input.pressSequentially(text, { delay: 18 });
 
 	const sendBtn = page.locator('button[type="submit"]');
-	await sendBtn.click();
+	await clickWithCursor(page, sendBtn);
 
-	// Wait for AI response to render
-	await page.waitForFunction(
-		(expected) =>
-			document.querySelectorAll('.overflow-y-auto > div > div').length >= expected,
-		beforeCount + 2,
-		{ timeout: 10_000 },
-	);
+	// Wait for the user message to appear
+	await page.getByText(text).first().waitFor({ state: 'visible', timeout: 10_000 });
+	// Wait for the AI response (arrives after 1s delay) — confidence badge is the signal
+	await page.locator('text=/\\d+% confidence/').last().waitFor({ state: 'visible', timeout: 10_000 });
 	await pause(300);
 }
 
@@ -218,79 +258,124 @@ test('FORGE cinematic demo walkthrough', async ({ page }) => {
 	/* ── Scene 1: Home ──────────────────────────────────── */
 	await page.goto('/insights');
 	await waitVisible(page.getByText('Good morning, Julian'));
-	await pause(1200);
-
 	await injectCursor(page);
+	await pause(2500);
+
+	/* ── Scene 2: Shop Floor ───────────────────────────── */
+	await navigateVia(page, 'Shop Floor', 'Shop Floor Monitor');
+	await pause(1500);
+
+	// Scroll all the way down to reveal the full machine table
+	await smoothScrollToBottom(page);
+	await pause(500);
+
+	// Zoom on the whole machine table card (centered on the card, not just heading)
+	const machineTableCard = page
+		.locator('.glass-solid')
+		.filter({ has: page.getByText('All Machines') })
+		.first();
+	await zoomIn(page, machineTableCard, 1.25);
+	await pause(2000);
+	await zoomOut(page);
+	await pause(400);
+
+	/* ── Scene 3: Quoting (Hero Scene) ─────────────────── */
+	await navigateVia(page, 'Quoting', 'Quoting Tool');
+	await pause(1000);
+
+	// Expand first quote row (Aerospace Dynamics) and zoom on the detail
+	const firstRow = page
+		.locator('[role="button"][tabindex="0"]')
+		.filter({ hasText: 'Aerospace Dynamics' })
+		.first();
+	await clickWithCursor(page, firstRow);
+	await pause(500);
+
+	// Zoom on the expanded detail panel
+	const detailPanel = page.locator('.bg-black\\/\\[0\\.01\\]').first();
+	await zoomIn(page, detailPanel, 1.3);
+	await pause(2000);
+	await zoomOut(page);
 	await pause(300);
 
-	// Light zoom on Intelligence Brief
-	const intelBrief = page.getByText('Intelligence Brief').first();
-	await zoomIn(page, intelBrief, 1.2);
+	// Collapse row
+	await clickWithCursor(page, firstRow);
+	await pause(500);
+
+	// Open Quote Builder modal
+	const newQuoteBtn = page.locator('button', { hasText: 'New Quote' });
+	await clickWithCursor(page, newQuoteBtn);
+	await waitVisible(page.getByText('New Quote — RFQ Details'));
+
+	// Zoom on modal and STAY ZOOMED through the entire flow
+	const modalContent = page.locator('.fixed.inset-0 .glass-solid').first();
+	await zoomIn(page, modalContent, 1.2);
+	await pause(1500);
+
+	// Click Generate Quote while zoomed
+	const generateBtn = page.locator('button', { hasText: 'Generate Quote' });
+	await clickWithCursor(page, generateBtn);
+
+	// Wait for processing animation to complete — scope to modal
+	const modal = page.locator('.fixed.inset-0');
+	await modal.getByText(/Quote QT-2026-0891/).waitFor({ state: 'visible', timeout: 15_000 });
+	await pause(2000);
+
+	// Close modal via Save as Draft — still zoomed
+	const closeBtn = modal.locator('button', { hasText: 'Save as Draft' });
+	await clickWithCursor(page, closeBtn);
+	await pause(300);
+
+	// Now zoom out after modal is closed
+	await zoomOut(page);
+	await pause(400);
+
+	/* ── Scene 4: Delivery ─────────────────────────────── */
+	await navigateVia(page, 'Delivery', 'Delivery Intelligence');
+	await pause(1200);
+
+	// Zoom on the Delivery Risk Summary AI insight card
+	const riskSummary = page
+		.locator('.glass-solid')
+		.filter({ has: page.getByText('Delivery Risk Summary') })
+		.first();
+	await zoomIn(page, riskSummary, 1.25);
 	await pause(1500);
 	await zoomOut(page);
-	await pause(800);
+	await pause(400);
 
-	/* ── Scene 2: Knowledge Base ─────────────────────────── */
+	// Scroll to At-Risk PO table
+	const poTable = page.getByText('At-Risk Purchase Orders').first();
+	await smoothScrollTo(page, poTable);
+	await pause(1500);
+
+	/* ── Scene 5: Knowledge Base ───────────────────────── */
 	await navigateVia(page, 'Knowledge Base', 'Technical Knowledge Base');
-	const chatInput = page.locator('input[placeholder="Ask a technical question..."]');
-	await waitVisible(chatInput);
+	await pause(500);
 
-	// Subtle zoom on chat area
+	// Zoom in on input bar immediately and start typing
 	const chatForm = page.locator('form').first();
-	await zoomIn(page, chatForm, 1.15);
+	await zoomIn(page, chatForm, 1.3);
 
-	await typeMessage(page, 'How many Kennametal CNMG 432 inserts are in stock?');
-	await typeMessage(page, 'What did the ISO 9001 audit find this quarter?');
+	// Q1: Mazak VTC-800 setup
+	await typeMessage(page, "What's the setup procedure for the Mazak VTC-800?");
 
+	// Zoom out to reveal the full response with citations
 	await zoomOut(page);
+	await pause(3000);
 
-	/* ── Scene 3: Settings → Documents ───────────────────── */
-	const settingsGear = page.locator('a[href="/settings"]');
-	await clickWithCursor(page, settingsGear);
-	await waitVisible(page.getByText('Settings').first());
-	await injectCursor(page);
-	await pause(400);
+	// Q2: Type at normal zoom — no zoom-in again to avoid vibration
+	await typeMessage(page, 'Troubleshoot surface finish issues on 4140 steel');
+	await pause(3000);
 
-	const docsTab = page.locator('a[href="/settings?tab=documents"]');
-	await clickWithCursor(page, docsTab);
-	await waitVisible(page.getByText('Total Storage'));
-	await pause(1900);
-
-	/* ── Scene 4: Quoting ────────────────────────────────── */
-	await navigateVia(page, 'Quoting', 'Quoting Tool');
-
-	// Scroll to Margin Optimisation and zoom
-	const aiInsight = page.getByText('Margin Optimisation').first();
-	await scrollToElement(page, aiInsight);
-	await zoomIn(page, aiInsight, 1.35);
-	await pause(600);
-	await zoomOut(page);
-
-	/* ── Scene 5: Settings → Agents → Agent Config ────────── */
-	const agentsTab = page.locator('a[href="/settings?tab=agents"]');
-	await clickWithCursor(page, agentsTab);
-	await waitVisible(page.getByText('Active Specialized Units'));
+	/* ── Ending: Return to Home ────────────────────────── */
+	await navigateVia(page, 'Home', 'Good morning, Julian');
 	await pause(800);
 
-	const agentCards = page.locator('.grid.grid-cols-2 a');
-	await waitVisible(agentCards.first());
-
-	const qcInspector = agentCards.first();
-	await clickWithCursor(page, qcInspector);
-	await waitVisible(page.getByText('Agent Configuration'));
-	await injectCursor(page);
-	await pause(400);
-
-	// Zoom in on agent specs
-	const agentConfig = page.getByText('Agent Configuration').first();
-	await zoomIn(page, agentConfig, 1.25);
-	await pause(1200);
-	await zoomOut(page);
-
-	/* ── End: hide cursor for clean final frame ──────────── */
+	// Hide cursor for clean final frame
 	await page.evaluate(() => {
 		const c = document.getElementById('demo-cursor');
 		if (c) c.style.display = 'none';
 	});
-	await pause(800);
+	await pause(1500);
 });

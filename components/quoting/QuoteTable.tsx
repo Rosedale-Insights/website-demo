@@ -1,8 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import {
-	CheckCircle2,
+	type CheckCircle2,
 	ChevronDown,
 	ChevronRight,
 	Clock,
@@ -11,11 +10,12 @@ import {
 	Trophy,
 	XCircle,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { enhancedQuoteTableRows } from '@/lib/mock-data';
+import { useState } from 'react';
 import type { EnhancedQuoteRow } from '@/lib/mock-data';
-import { QuoteFilterTabs } from './QuoteFilterTabs';
+import { enhancedQuoteTableRows } from '@/lib/mock-data';
+import { cn } from '@/lib/utils';
 import { QuoteDetailPanel } from './QuoteDetailPanel';
+import { QuoteFilterTabs } from './QuoteFilterTabs';
 
 const statusConfig: Record<
 	EnhancedQuoteRow['status'],
@@ -117,9 +117,7 @@ export function QuoteTable() {
 								<span className="text-xs text-forge-hint">{row.confidenceScore}%</span>
 								<div className="flex items-center gap-1.5">
 									<StatusIcon className={cn('h-3.5 w-3.5', status.iconColor)} />
-									<span className="text-xs font-medium text-forge-secondary">
-										{row.status}
-									</span>
+									<span className="text-xs font-medium text-forge-secondary">{row.status}</span>
 								</div>
 							</div>
 

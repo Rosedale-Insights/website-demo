@@ -1,18 +1,10 @@
 'use client';
 
-import {
-	Cpu,
-	Factory,
-	FileText,
-	Home,
-	Lightbulb,
-	Package,
-	Settings,
-} from 'lucide-react';
+import { Cpu, Factory, FileText, Home, Lightbulb, Package, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
 import { recentQueries } from '@/lib/mock-data';
+import { cn } from '@/lib/utils';
 
 const navItems = [
 	{ href: '/insights', label: 'Home', icon: Home },

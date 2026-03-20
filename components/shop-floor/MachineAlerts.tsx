@@ -1,6 +1,6 @@
 import { AlertTriangle, Wrench } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { machines } from '@/lib/mock-data';
+import { cn } from '@/lib/utils';
 
 const alertMachines = machines.filter(
 	(m) => ['Stalled', 'Setup'].includes(m.status) || m.healthScore < 70,
@@ -26,11 +26,7 @@ export function MachineAlerts() {
 			<div className="space-y-2">
 				{alertMachines.map((m) => {
 					const key =
-						m.status === 'Stalled'
-							? 'Stalled'
-							: m.status === 'Setup'
-								? 'Setup'
-								: 'low_health';
+						m.status === 'Stalled' ? 'Stalled' : m.status === 'Setup' ? 'Setup' : 'low_health';
 					const config = statusIcon[key];
 					const Icon = config.icon;
 					const reason =

@@ -10,9 +10,7 @@ export default function HomePage() {
 				<h1 className="text-2xl font-semibold tracking-tight text-forge-primary">
 					Good morning, Julian
 				</h1>
-				<p className="mt-1 text-sm text-forge-secondary">
-					Wednesday, March 19 &middot; Day Shift
-				</p>
+				<p className="mt-1 text-sm text-forge-secondary">Wednesday, March 19 &middot; Day Shift</p>
 			</div>
 
 			{/* Intelligence Brief */}

@@ -1,9 +1,18 @@
 'use client';
 
-import { ArrowUp, Brain, ClipboardList, Paperclip, Search, Sparkles, Table2, Wrench } from 'lucide-react';
+import {
+	ArrowUp,
+	Brain,
+	ClipboardList,
+	Paperclip,
+	Search,
+	Sparkles,
+	Table2,
+	Wrench,
+} from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { enhancedChatResponses, querySuggestions } from '@/lib/mock-data';
 import type { CitationSource, EnhancedChatResponse, KnowledgeContributor } from '@/lib/mock-data';
+import { enhancedChatResponses, querySuggestions } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 
 type Message = {
@@ -53,7 +62,9 @@ function SourceCitationCard({ citation }: { citation: CitationSource }) {
 				<span className="text-[10px] text-forge-hint">{citation.revision}</span>
 			</div>
 			<div className="mb-2 rounded-lg border-l-2 border-forge-accent-warm bg-forge-accent-warm/5 px-3 py-2">
-				<p className="text-xs leading-relaxed text-forge-secondary">{citation.highlightedPassage}</p>
+				<p className="text-xs leading-relaxed text-forge-secondary">
+					{citation.highlightedPassage}
+				</p>
 			</div>
 			<div className="flex gap-2 text-[10px] text-forge-hint">
 				<span>{citation.docType}</span>
@@ -132,9 +143,13 @@ export function ChatInterface() {
 			sourcesMatched: response.sourcesMatched,
 		};
 
-		setMessages((prev) => [...prev, userMsg, aiMsg]);
+		// Show user message immediately, AI response after 1s simulated delay
+		setMessages((prev) => [...prev, userMsg]);
 		setInput('');
 		setResponseIndex((i) => i + 1);
+		setTimeout(() => {
+			setMessages((prev) => [...prev, aiMsg]);
+		}, 1000);
 	};
 
 	const handleSubmit = (e: React.FormEvent) => {
@@ -192,10 +207,7 @@ export function ChatInterface() {
 									<div className="whitespace-pre-line">{renderCitedText(msg.content)}</div>
 
 									{msg.confidenceScore != null && msg.sourcesMatched != null && (
-										<ConfidenceBadge
-											score={msg.confidenceScore}
-											sources={msg.sourcesMatched}
-										/>
+										<ConfidenceBadge score={msg.confidenceScore} sources={msg.sourcesMatched} />
 									)}
 								</div>
 							)}

@@ -1,6 +1,6 @@
 import { AlertTriangle, CheckCircle2, Sparkles, Wrench } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { maintenanceEvents } from '@/lib/mock-data';
+import { cn } from '@/lib/utils';
 
 const statusBadge: Record<string, string> = {
 	Scheduled: 'bg-black/[0.04] text-forge-secondary',
