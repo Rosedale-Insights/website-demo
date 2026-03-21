@@ -18,7 +18,7 @@ export function Sidebar() {
 	const pathname = usePathname();
 
 	return (
-		<aside className="sticky top-0 flex h-screen w-[260px] shrink-0 flex-col border-r border-forge-divider bg-white px-4 py-6">
+		<aside className="sticky top-0 flex h-screen w-[260px] shrink-0 flex-col border-r border-black/10 bg-white px-4 py-6">
 			{/* Logo */}
 			<Link href="/insights" className="mb-8 flex items-center gap-2 px-3">
 				<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-forge-primary">

@@ -7,7 +7,7 @@ export function AiInsightBanner() {
 				<Sparkles className="h-5 w-5 text-white" />
 			</div>
 			<div className="flex-1">
-				<p className="font-semibold text-white">Margin Optimisation</p>
+				<p className="font-semibold text-white">Margin Optimization</p>
 				<p className="mt-0.5 text-sm text-white/70">
 					Based on current material costs for Titanium Grade 5, we suggest increasing the margin on
 					QT-8821 by 4% to maintain target profitability.
