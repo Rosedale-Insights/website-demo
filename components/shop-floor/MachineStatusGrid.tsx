@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import type { Machine } from '@/lib/mock-data';
 import { machines } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
@@ -32,6 +35,7 @@ export function MachineStatusGrid() {
 
 	const activeCount = machines.filter((m) => m.status === 'Active').length;
 	const offlineCount = machines.length - activeCount;
+	const [selected, setSelected] = useState<string | null>(null);
 
 	return (
 		<div className="glass-solid overflow-hidden rounded-lg">
@@ -81,49 +85,58 @@ export function MachineStatusGrid() {
 			</div>
 
 			{/* Rows */}
-			{sorted.map((m) => (
-				<div
-					key={m.id}
-					className={cn(
-						COL,
-						'border-t border-forge-divider px-6 py-2.5 transition-colors hover:bg-black/[0.01]',
-					)}
-				>
-					{/* Status + health score below */}
-					<div>
-						<div className="flex items-center gap-1.5">
-							<span className={cn('h-2 w-2 shrink-0 rounded-full', statusDot[m.status])} />
-							<span className={cn('text-xs font-medium', statusText[m.status])}>{m.status}</span>
+			{sorted.map((m) => {
+				const isSelected = selected === m.id;
+				const isDimmed = selected !== null && !isSelected;
+				return (
+					<div
+						key={m.id}
+						onClick={() => setSelected(isSelected ? null : m.id)}
+						className={cn(
+							COL,
+							'cursor-pointer border-t border-forge-divider px-6 transition-all duration-200',
+							isSelected
+								? 'relative z-10 bg-white py-4 ring-1 ring-forge-primary/10 shadow-[0_0_12px_rgba(0,0,0,0.12)]'
+								: 'py-2.5 hover:bg-black/[0.01]',
+							isDimmed && 'opacity-40',
+						)}
+					>
+						{/* Status + health score below */}
+						<div>
+							<div className="flex items-center gap-1.5">
+								<span className={cn('h-2 w-2 shrink-0 rounded-full', statusDot[m.status])} />
+								<span className={cn('text-xs font-medium', statusText[m.status])}>{m.status}</span>
+							</div>
+							<p className="mt-0.5 pl-3.5 whitespace-nowrap text-[10px] text-forge-hint">
+								Health {m.healthScore}/100
+							</p>
 						</div>
-						<p className="mt-0.5 pl-3.5 whitespace-nowrap text-[10px] text-forge-hint">
-							Health {m.healthScore}/100
-						</p>
-					</div>
-					{/* Machine */}
-					<div>
-						<p className="text-xs font-semibold text-forge-primary">{m.id}</p>
-						<p className="truncate text-[11px] text-forge-hint">{m.name}</p>
-					</div>
-					<span className="text-center text-xs text-forge-secondary">
-						{m.oee ? `${Math.round(m.oee.overall)}%` : '—'}
-					</span>
-					<span className="text-center text-xs text-forge-secondary">{m.pctActive}%</span>
-					<span className="text-center text-xs text-forge-secondary">{m.pctStalled}%</span>
-					<span className="text-center text-xs text-forge-secondary">{m.pctSetup}%</span>
-					<span className="text-center text-xs text-forge-secondary">{m.pctLoading}%</span>
-					{/* Production */}
-					{m.productionProgress != null ? (
-						<div className="text-right">
-							<p className="text-xs font-medium text-forge-primary">{m.productionProgress}%</p>
-							{m.remainingMinutes != null && (
-								<p className="text-[10px] text-forge-hint">{formatRemaining(m.remainingMinutes)}</p>
-							)}
+						{/* Machine */}
+						<div>
+							<p className="text-xs font-semibold text-forge-primary">{m.id}</p>
+							<p className="truncate text-[11px] text-forge-hint">{m.name}</p>
 						</div>
-					) : (
-						<span className="text-right text-xs text-forge-hint">—</span>
-					)}
-				</div>
-			))}
+						<span className="text-center text-xs text-forge-secondary">
+							{m.oee ? `${Math.round(m.oee.overall)}%` : '—'}
+						</span>
+						<span className="text-center text-xs text-forge-secondary">{m.pctActive}%</span>
+						<span className="text-center text-xs text-forge-secondary">{m.pctStalled}%</span>
+						<span className="text-center text-xs text-forge-secondary">{m.pctSetup}%</span>
+						<span className="text-center text-xs text-forge-secondary">{m.pctLoading}%</span>
+						{/* Production */}
+						{m.productionProgress != null ? (
+							<div className="text-right">
+								<p className="text-xs font-medium text-forge-primary">{m.productionProgress}%</p>
+								{m.remainingMinutes != null && (
+									<p className="text-[10px] text-forge-hint">{formatRemaining(m.remainingMinutes)}</p>
+								)}
+							</div>
+						) : (
+							<span className="text-right text-xs text-forge-hint">—</span>
+						)}
+					</div>
+				);
+			})}
 		</div>
 	);
 }

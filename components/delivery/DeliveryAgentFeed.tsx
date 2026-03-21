@@ -25,8 +25,8 @@ export function DeliveryAgentFeed() {
 				<p className="text-xs text-forge-hint">Delivery Monitor AI actions</p>
 			</div>
 
-			<div className="max-h-[340px] divide-y divide-forge-divider overflow-y-auto">
-				{deliveryAlerts.map((alert) => {
+			<div className="divide-y divide-forge-divider">
+				{deliveryAlerts.slice(0, 5).map((alert) => {
 					const config = severityConfig[alert.severity];
 					const Icon = config.icon;
 					return (
