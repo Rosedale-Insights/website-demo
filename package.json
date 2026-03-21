@@ -32,6 +32,7 @@
 		"clsx": "latest",
 		"drizzle-orm": "latest",
 		"lucide-react": "latest",
+		"motion": "^12.38.0",
 		"next": "latest",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",

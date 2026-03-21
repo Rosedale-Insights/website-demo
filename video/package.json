@@ -1,0 +1,21 @@
+{
+	"name": "forge-demo-video",
+	"version": "1.0.0",
+	"private": true,
+	"scripts": {
+		"studio": "remotion studio src/index.ts",
+		"render": "remotion render ForgeDemo --output=../demo.mp4 --codec=h264 --crf=18"
+	},
+	"dependencies": {
+		"@remotion/cli": "^4",
+		"@remotion/media-parser": "^4",
+		"@remotion/transitions": "^4",
+		"react": "^19",
+		"react-dom": "^19",
+		"remotion": "^4"
+	},
+	"devDependencies": {
+		"@types/react": "^19",
+		"typescript": "^5"
+	}
+}

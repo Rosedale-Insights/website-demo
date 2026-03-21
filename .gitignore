@@ -40,3 +40,9 @@ drizzle/meta/
 *.swp
 *.swo
 test-results/
+
+# Remotion video sub-project
+video/node_modules/
+video/public/clips/
+video/out/
+video/dist/

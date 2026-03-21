@@ -10,6 +10,7 @@ import {
 	Table2,
 	Wrench,
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import type { CitationSource, EnhancedChatResponse, KnowledgeContributor } from '@/lib/mock-data';
 import { enhancedChatResponses, querySuggestions } from '@/lib/mock-data';
@@ -187,8 +188,11 @@ export function ChatInterface() {
 				)}
 
 				{messages.map((msg) => (
-					<div
+					<motion.div
 						key={msg.id}
+						initial={{ opacity: 0, y: 16 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ type: 'spring', damping: 25, stiffness: 200 }}
 						className={cn('flex flex-col', msg.role === 'user' ? 'items-end' : 'items-start')}
 					>
 						<p className="mb-1 text-xs text-forge-hint">{msg.sender}</p>
@@ -224,7 +228,7 @@ export function ChatInterface() {
 								)}
 							</div>
 						)}
-					</div>
+					</motion.div>
 				))}
 				<div ref={messagesEndRef} />
 			</div>
