@@ -11,6 +11,7 @@ import {
 	XCircle,
 } from 'lucide-react';
 import { useState } from 'react';
+import { InfoTooltip } from '@/components/InfoTooltip';
 import type { EnhancedQuoteRow } from '@/lib/mock-data';
 import { enhancedQuoteTableRows } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
@@ -46,8 +47,36 @@ export function QuoteTable() {
 
 	return (
 		<div>
-			<div className="mb-4">
+			<div className="mb-4 flex items-center justify-between">
 				<QuoteFilterTabs active={filter} onChange={setFilter} />
+				<InfoTooltip
+					title="Quote Pipeline"
+					content={
+						<>
+							<p className="mb-2">
+								All quotes organized by status. Click any row to expand and see the full cost
+								breakdown, operations routing, and AI recommendations.
+							</p>
+							<p className="mb-1 font-medium text-forge-primary">Key terms</p>
+							<ul className="mb-2 list-inside list-disc space-y-0.5">
+								<li>
+									<strong>Margin</strong> - profit margin as a percentage of total quote value
+								</li>
+								<li>
+									<strong>Conf.</strong> - AI confidence that this quote will convert to a win
+								</li>
+								<li>
+									<strong>Status</strong> - Draft, Review, Sent, Won, Lost, or Expired
+								</li>
+							</ul>
+							<p className="mb-1 font-medium text-forge-primary">How to read</p>
+							<p>
+								Use the filter tabs to focus on a specific stage. Low-margin quotes with high
+								confidence are good candidates for margin optimization.
+							</p>
+						</>
+					}
+				/>
 			</div>
 
 			<div className="glass-solid overflow-hidden rounded-lg">

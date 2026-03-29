@@ -1,6 +1,7 @@
 'use client';
 
 import { Minus, TrendingDown, TrendingUp } from 'lucide-react';
+import { InfoTooltip } from '@/components/InfoTooltip';
 import { suppliers } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 
@@ -27,9 +28,37 @@ export function SupplierScorecard() {
 
 	return (
 		<div className="glass-solid overflow-hidden rounded-lg">
-			<div className="border-b border-forge-divider px-6 py-4">
-				<h3 className="text-sm font-semibold text-forge-primary">Supplier Scorecard</h3>
-				<p className="text-xs text-forge-hint">Ranked by on-time delivery rate</p>
+			<div className="flex items-start justify-between border-b border-forge-divider px-6 py-4">
+				<div>
+					<h3 className="text-sm font-semibold text-forge-primary">Supplier Scorecard</h3>
+					<p className="text-xs text-forge-hint">Ranked by on-time delivery rate</p>
+				</div>
+				<InfoTooltip
+					title="Supplier Scorecard"
+					content={
+						<>
+							<p className="mb-2">
+								Ranks all active suppliers by their on-time delivery percentage. Worst performers
+								appear first so you can prioritize follow-ups.
+							</p>
+							<p className="mb-1 font-medium text-forge-primary">Key terms</p>
+							<ul className="mb-2 list-inside list-disc space-y-0.5">
+								<li>
+									<strong>OTD %</strong> - percentage of POs delivered on or before the promised
+									date
+								</li>
+								<li>
+									<strong>Trend arrow</strong> - whether the supplier's OTD is improving, declining,
+									or stable
+								</li>
+								<li>
+									<strong>Risk level</strong> - Low (green), Medium (warm), High (red) based on OTD
+									and trend
+								</li>
+							</ul>
+						</>
+					}
+				/>
 			</div>
 
 			<div className="divide-y divide-forge-divider">

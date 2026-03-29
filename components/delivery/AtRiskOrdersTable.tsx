@@ -2,6 +2,7 @@
 
 import { AlertTriangle, CheckCircle2, Eye } from 'lucide-react';
 import { useState } from 'react';
+import { InfoTooltip } from '@/components/InfoTooltip';
 import type { PurchaseOrder } from '@/lib/mock-data';
 import { purchaseOrders } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
@@ -29,11 +30,44 @@ export function AtRiskOrdersTable() {
 
 	return (
 		<div className="glass-solid overflow-hidden rounded-lg">
-			<div className="border-b border-forge-divider px-6 py-4">
-				<h3 className="text-sm font-semibold text-forge-primary">At-Risk Purchase Orders</h3>
-				<p className="text-xs text-forge-hint">
-					{activeOrders.length} active POs requiring attention
-				</p>
+			<div className="flex items-start justify-between border-b border-forge-divider px-6 py-4">
+				<div>
+					<h3 className="text-sm font-semibold text-forge-primary">At-Risk Purchase Orders</h3>
+					<p className="text-xs text-forge-hint">
+						{activeOrders.length} active POs requiring attention
+					</p>
+				</div>
+				<InfoTooltip
+					title="At-Risk Purchase Orders"
+					content={
+						<>
+							<p className="mb-2">
+								Active purchase orders flagged by the AI for potential late delivery. Click a row to
+								highlight it and review details.
+							</p>
+							<p className="mb-1 font-medium text-forge-primary">Key terms</p>
+							<ul className="mb-2 list-inside list-disc space-y-0.5">
+								<li>
+									<strong>At Risk</strong> - high probability of missing the delivery date
+								</li>
+								<li>
+									<strong>Watch</strong> - showing early signs of slippage
+								</li>
+								<li>
+									<strong>On Track</strong> - delivery expected on time
+								</li>
+								<li>
+									<strong>AI Conf.</strong> - the model's confidence in its risk assessment
+								</li>
+							</ul>
+							<p className="mb-1 font-medium text-forge-primary">How to read</p>
+							<p>
+								Focus on "At Risk" POs first. The confidence score helps prioritize which orders
+								need immediate supplier follow-up.
+							</p>
+						</>
+					}
+				/>
 			</div>
 
 			{/* Header */}

@@ -1,3 +1,4 @@
+import { InfoTooltip } from '@/components/InfoTooltip';
 import { delayRootCauseData } from '@/lib/mock-data';
 
 export function DelayRootCauseChart() {
@@ -6,8 +7,28 @@ export function DelayRootCauseChart() {
 
 	return (
 		<div className="glass rounded-lg p-6">
-			<h3 className="mb-1 text-sm font-semibold text-forge-primary">Delay Root Causes</h3>
-			<p className="mb-6 text-xs text-forge-hint">Percentage by category</p>
+			<div className="mb-6 flex items-start justify-between">
+				<div>
+					<h3 className="mb-1 text-sm font-semibold text-forge-primary">Delay Root Causes</h3>
+					<p className="text-xs text-forge-hint">Percentage by category</p>
+				</div>
+				<InfoTooltip
+					title="Delay Root Causes"
+					content={
+						<>
+							<p className="mb-2">
+								Breaks down late deliveries by the primary reason for the delay. Categories are
+								assigned by the AI agent based on PO notes and supplier communications.
+							</p>
+							<p className="mb-1 font-medium text-forge-primary">How to read</p>
+							<p>
+								The longest bar is the most common delay reason. Focus process improvements on the
+								top 2-3 causes for the biggest impact.
+							</p>
+						</>
+					}
+				/>
+			</div>
 
 			<div className="space-y-4">
 				{delayRootCauseData.map((entry) => {

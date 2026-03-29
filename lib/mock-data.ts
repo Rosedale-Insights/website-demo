@@ -710,10 +710,10 @@ export const agentConfigDefaults = {
 
 export const homeKpis = [
 	{
-		title: 'OEE Score',
-		value: '84.2%',
-		subtitle: 'Shop floor effectiveness',
-		badge: '+2.4%',
+		title: 'PM Compliance',
+		value: '94%',
+		subtitle: '1 overdue, 2 scheduled this week',
+		badge: '+3%',
 		badgeColor: 'green' as const,
 	},
 	{
@@ -731,37 +731,42 @@ export const homeKpis = [
 		badgeColor: 'neutral' as const,
 	},
 	{
-		title: 'Active Alerts',
-		value: '7',
-		subtitle: '2 critical, 5 warnings',
-		badgeColor: 'neutral' as const,
+		title: 'Open Findings',
+		value: '14',
+		subtitle: '$127.4K potential savings',
+		badge: '+3',
+		badgeColor: 'red' as const,
 	},
 ];
 
 export const homeBriefItems = [
 	{
-		title: 'Seal Failure Risk on Line 4',
+		title: 'Hermle C400 Spindle Replacement In Progress',
 		description:
-			'Hydraulic pressure trending 12% below threshold — 70% probability of seal failure within 48h. Maintenance ticket drafted for your approval.',
-		action: 'Review Ticket',
+			'5AX-02 spindle motor bearing seizure detected via vibration analysis. OEM technician on-site, 2-day PM window. 3 jobs rerouted to 5AX-01.',
+		action: 'View PM Schedule',
+		href: '/shop-floor',
 	},
 	{
 		title: '2 Deliveries at Risk This Week',
 		description:
-			'Apex Industrial delayed due to port congestion. Pacific Fasteners unresponsive on PO-7198 — recommend dual-sourcing AN hardware.',
-		action: 'View POs',
+			'Apex Industrial delayed due to port congestion. Pacific Fasteners unresponsive on PO-7198. AI recommends dual-sourcing AN hardware.',
+		action: 'View At-Risk POs',
+		href: '/delivery',
+	},
+	{
+		title: '$34.2K Vendor Price Creep Detected',
+		description:
+			'Metro Industrial Supply raised 6061 aluminum prices 18% over 6 months without updating blanket PO terms. 12 open POs affected.',
+		action: 'Review Finding',
+		href: '/controller',
 	},
 	{
 		title: 'Increase Margin on QT-8821 by 4%',
 		description:
-			'Based on current Titanium Grade 5 costs, target profitability requires a margin adjustment. Wilson Manufacturing quote ($142K) in review for 5 days.',
-		action: 'Apply Suggestion',
-	},
-	{
-		title: '3 Corrective Actions from ISO Audit',
-		description:
-			'Q1 ISO 9001 findings indexed. Documentation updates required in the quality management section.',
-		action: 'View Findings',
+			'Based on current Titanium Grade 5 costs, target profitability requires a margin adjustment. Wilson Manufacturing quote ($142K) in review.',
+		action: 'Open Quote',
+		href: '/quoting',
 	},
 ];
 
@@ -1338,7 +1343,7 @@ export const deliveryBrief = {
 };
 
 /* ══════════════════════════════════════════════════════════
-   SHOP FLOOR MONITOR
+   MAINTENANCE INTELLIGENCE
    ══════════════════════════════════════════════════════════ */
 
 export type Machine = {
@@ -1353,12 +1358,16 @@ export type Machine = {
 	oee: { overall: number; availability: number; performance: number; quality: number } | null;
 	shiftMetrics: { partsProduced: number; partsGoal: number; scrapCount: number } | null;
 	maintenance: { lastService: string; nextScheduled: string; hoursToService: number };
-	pctActive: number;
-	pctStalled: number;
-	pctSetup: number;
-	pctLoading: number;
 	productionProgress: number | null;
 	remainingMinutes: number | null;
+	spindleHoursSinceLastPm: number;
+	pmThresholdHours: number;
+	vibrationStatus: 'Normal' | 'Attention' | 'Alarm';
+	jobBacklog: { woCount: number; hours: number };
+	exclusiveJobs: string[];
+	costUnplannedDowntime: number;
+	costPlannedPm: number;
+	serviceProvider: 'In-House' | 'OEM' | 'Third-Party';
 };
 
 export type Operator = {
@@ -1372,47 +1381,51 @@ export type Operator = {
 	overtimeHours: number;
 };
 
-export type MaintenanceEvent = {
+export type PmScheduleEntry = {
 	id: string;
 	machineId: string;
 	machineName: string;
-	type: 'Preventive' | 'Predictive' | 'Corrective';
-	status: 'Scheduled' | 'In Progress' | 'Complete' | 'Overdue';
+	pmType: 'Preventive' | 'Predictive' | 'Inspection';
+	status: 'Scheduled' | 'In Progress' | 'Completed' | 'Overdue';
 	priority: 'Low' | 'Medium' | 'High' | 'Critical';
+	startDate: string;
+	endDate: string;
+	duration: string;
+	serviceProvider: 'In-House' | 'OEM' | 'Third-Party';
+	technician: string | null;
+	jobConflicts: number;
+	aiRecommended: boolean;
 	description: string;
-	scheduledDate: string;
-	aiGenerated: boolean;
-	confidenceScore?: number;
 };
 
-export const shopFloorKpis = [
+export const maintenanceKpis = [
 	{
-		title: 'OEE',
-		value: '84.2%',
-		subtitle: 'Overall Equipment Effectiveness',
-		badge: '+2.4%',
+		title: 'PM Compliance',
+		value: '94%',
+		subtitle: 'Completed on schedule',
+		badge: '+3%',
 		badgeColor: 'green' as const,
 	},
 	{
-		title: 'Utilization',
-		value: '78.4%',
-		subtitle: 'Machine capacity in use',
-		badge: '+4.1%',
-		badgeColor: 'green' as const,
-	},
-	{
-		title: 'Active WOs',
-		value: '14',
-		subtitle: 'Work orders in progress',
-		badge: '+3',
-		badgeColor: 'neutral' as const,
-	},
-	{
-		title: 'Shift Coverage',
-		value: '92%',
-		subtitle: 'Certified operator ratio',
-		badge: '-2%',
+		title: 'Upcoming PMs',
+		value: '3',
+		subtitle: 'Next 14 days',
+		badge: '1 critical',
 		badgeColor: 'red' as const,
+	},
+	{
+		title: 'Unplanned Downtime',
+		value: '2.1%',
+		subtitle: 'vs. last month',
+		badge: '-0.8%',
+		badgeColor: 'green' as const,
+	},
+	{
+		title: 'Avg. MTTR',
+		value: '3.4 hrs',
+		subtitle: 'Mean time to repair',
+		badge: '-22 min',
+		badgeColor: 'green' as const,
 	},
 ];
 
@@ -1429,12 +1442,16 @@ export const machines: Machine[] = [
 		oee: { overall: 87.4, availability: 93.2, performance: 95.1, quality: 98.5 },
 		shiftMetrics: { partsProduced: 142, partsGoal: 160, scrapCount: 2 },
 		maintenance: { lastService: '2026-03-01', nextScheduled: '2026-03-22', hoursToService: 188 },
-		pctActive: 82,
-		pctStalled: 4,
-		pctSetup: 8,
-		pctLoading: 6,
 		productionProgress: 74,
 		remainingMinutes: 156,
+		spindleHoursSinceLastPm: 4312,
+		pmThresholdHours: 4500,
+		vibrationStatus: 'Normal',
+		jobBacklog: { woCount: 3, hours: 48 },
+		exclusiveJobs: [],
+		costUnplannedDowntime: 420,
+		costPlannedPm: 2800,
+		serviceProvider: 'OEM',
 	},
 	{
 		id: 'CNC-02',
@@ -1448,12 +1465,16 @@ export const machines: Machine[] = [
 		oee: { overall: 79.1, availability: 88.4, performance: 91.2, quality: 98.1 },
 		shiftMetrics: { partsProduced: 98, partsGoal: 140, scrapCount: 5 },
 		maintenance: { lastService: '2026-02-15', nextScheduled: '2026-03-18', hoursToService: 42 },
-		pctActive: 88,
-		pctStalled: 2,
-		pctSetup: 5,
-		pctLoading: 5,
 		productionProgress: 91,
 		remainingMinutes: 42,
+		spindleHoursSinceLastPm: 4458,
+		pmThresholdHours: 4500,
+		vibrationStatus: 'Attention',
+		jobBacklog: { woCount: 5, hours: 72 },
+		exclusiveJobs: ['WO-4842'],
+		costUnplannedDowntime: 380,
+		costPlannedPm: 2400,
+		serviceProvider: 'In-House',
 	},
 	{
 		id: 'CNC-03',
@@ -1467,12 +1488,16 @@ export const machines: Machine[] = [
 		oee: null,
 		shiftMetrics: null,
 		maintenance: { lastService: '2026-03-10', nextScheduled: '2026-04-10', hoursToService: 480 },
-		pctActive: 76,
-		pctStalled: 8,
-		pctSetup: 10,
-		pctLoading: 6,
 		productionProgress: 58,
 		remainingMinutes: 210,
+		spindleHoursSinceLastPm: 1200,
+		pmThresholdHours: 4500,
+		vibrationStatus: 'Normal',
+		jobBacklog: { woCount: 2, hours: 24 },
+		exclusiveJobs: [],
+		costUnplannedDowntime: 340,
+		costPlannedPm: 2400,
+		serviceProvider: 'In-House',
 	},
 	{
 		id: '5AX-01',
@@ -1486,12 +1511,16 @@ export const machines: Machine[] = [
 		oee: { overall: 91.2, availability: 95.8, performance: 96.4, quality: 98.7 },
 		shiftMetrics: { partsProduced: 4, partsGoal: 6, scrapCount: 0 },
 		maintenance: { lastService: '2026-03-05', nextScheduled: '2026-03-28', hoursToService: 220 },
-		pctActive: 71,
-		pctStalled: 12,
-		pctSetup: 9,
-		pctLoading: 8,
 		productionProgress: 45,
 		remainingMinutes: 280,
+		spindleHoursSinceLastPm: 3100,
+		pmThresholdHours: 3500,
+		vibrationStatus: 'Normal',
+		jobBacklog: { woCount: 4, hours: 96 },
+		exclusiveJobs: ['WO-4835', 'WO-4861'],
+		costUnplannedDowntime: 680,
+		costPlannedPm: 4200,
+		serviceProvider: 'OEM',
 	},
 	{
 		id: '5AX-02',
@@ -1505,12 +1534,16 @@ export const machines: Machine[] = [
 		oee: null,
 		shiftMetrics: null,
 		maintenance: { lastService: '2026-02-28', nextScheduled: '2026-03-16', hoursToService: 0 },
-		pctActive: 0,
-		pctStalled: 68,
-		pctSetup: 18,
-		pctLoading: 14,
 		productionProgress: null,
 		remainingMinutes: null,
+		spindleHoursSinceLastPm: 3500,
+		pmThresholdHours: 3500,
+		vibrationStatus: 'Alarm',
+		jobBacklog: { woCount: 6, hours: 128 },
+		exclusiveJobs: ['WO-4870'],
+		costUnplannedDowntime: 720,
+		costPlannedPm: 4800,
+		serviceProvider: 'OEM',
 	},
 	{
 		id: 'LAT-01',
@@ -1524,12 +1557,16 @@ export const machines: Machine[] = [
 		oee: { overall: 85.6, availability: 92.0, performance: 94.8, quality: 98.0 },
 		shiftMetrics: { partsProduced: 36, partsGoal: 40, scrapCount: 1 },
 		maintenance: { lastService: '2026-03-08', nextScheduled: '2026-04-05', hoursToService: 340 },
-		pctActive: 84,
-		pctStalled: 3,
-		pctSetup: 7,
-		pctLoading: 6,
 		productionProgress: 82,
 		remainingMinutes: 95,
+		spindleHoursSinceLastPm: 2100,
+		pmThresholdHours: 4000,
+		vibrationStatus: 'Normal',
+		jobBacklog: { woCount: 2, hours: 32 },
+		exclusiveJobs: [],
+		costUnplannedDowntime: 360,
+		costPlannedPm: 1800,
+		serviceProvider: 'Third-Party',
 	},
 	{
 		id: 'LAT-02',
@@ -1543,12 +1580,16 @@ export const machines: Machine[] = [
 		oee: null,
 		shiftMetrics: null,
 		maintenance: { lastService: '2026-03-02', nextScheduled: '2026-03-30', hoursToService: 260 },
-		pctActive: 79,
-		pctStalled: 6,
-		pctSetup: 9,
-		pctLoading: 6,
 		productionProgress: 63,
 		remainingMinutes: 184,
+		spindleHoursSinceLastPm: 2800,
+		pmThresholdHours: 4000,
+		vibrationStatus: 'Normal',
+		jobBacklog: { woCount: 3, hours: 40 },
+		exclusiveJobs: [],
+		costUnplannedDowntime: 340,
+		costPlannedPm: 1600,
+		serviceProvider: 'In-House',
 	},
 	{
 		id: 'LAS-01',
@@ -1562,88 +1603,16 @@ export const machines: Machine[] = [
 		oee: { overall: 93.1, availability: 97.2, performance: 96.8, quality: 99.0 },
 		shiftMetrics: { partsProduced: 58, partsGoal: 60, scrapCount: 0 },
 		maintenance: { lastService: '2026-03-12', nextScheduled: '2026-04-12', hoursToService: 520 },
-		pctActive: 91,
-		pctStalled: 1,
-		pctSetup: 4,
-		pctLoading: 4,
 		productionProgress: 96,
 		remainingMinutes: 18,
-	},
-	{
-		id: 'CMM-01',
-		name: 'Zeiss Contura',
-		type: 'CMM',
-		location: 'QC Lab',
-		status: 'Active',
-		currentJobId: 'WO-4807',
-		currentOperator: 'James Wilson',
-		healthScore: 99,
-		oee: null,
-		shiftMetrics: { partsProduced: 12, partsGoal: 15, scrapCount: 0 },
-		maintenance: { lastService: '2026-03-10', nextScheduled: '2026-06-10', hoursToService: 1800 },
-		pctActive: 73,
-		pctStalled: 5,
-		pctSetup: 14,
-		pctLoading: 8,
-		productionProgress: 37,
-		remainingMinutes: 312,
-	},
-	{
-		id: 'HT-01',
-		name: 'Lindberg Blue M',
-		type: 'Heat Treat Oven',
-		location: 'Heat Treat Bay',
-		status: 'Active',
-		currentJobId: 'WO-4835',
-		currentOperator: null,
-		healthScore: 76,
-		oee: null,
-		shiftMetrics: { partsProduced: 6, partsGoal: 6, scrapCount: 0 },
-		maintenance: { lastService: '2026-02-20', nextScheduled: '2026-03-20', hoursToService: 48 },
-		pctActive: 86,
-		pctStalled: 3,
-		pctSetup: 6,
-		pctLoading: 5,
-		productionProgress: 88,
-		remainingMinutes: 62,
-	},
-	{
-		id: 'GRN-01',
-		name: 'Okamoto ACC-820',
-		type: 'Surface Grinder',
-		location: 'Line 4, Bay B',
-		status: 'Active',
-		currentJobId: null,
-		currentOperator: null,
-		healthScore: 91,
-		oee: null,
-		shiftMetrics: null,
-		maintenance: { lastService: '2026-03-06', nextScheduled: '2026-04-06', hoursToService: 400 },
-		pctActive: 80,
-		pctStalled: 5,
-		pctSetup: 8,
-		pctLoading: 7,
-		productionProgress: 55,
-		remainingMinutes: 225,
-	},
-	{
-		id: 'EDM-01',
-		name: 'Sodick ALC600G',
-		type: 'EDM Wire',
-		location: 'Line 4, Bay C',
-		status: 'Setup',
-		currentJobId: null,
-		currentOperator: null,
-		healthScore: 45,
-		oee: null,
-		shiftMetrics: null,
-		maintenance: { lastService: '2026-03-14', nextScheduled: '2026-03-16', hoursToService: 0 },
-		pctActive: 0,
-		pctStalled: 0,
-		pctSetup: 72,
-		pctLoading: 28,
-		productionProgress: null,
-		remainingMinutes: null,
+		spindleHoursSinceLastPm: 800,
+		pmThresholdHours: 2000,
+		vibrationStatus: 'Normal',
+		jobBacklog: { woCount: 1, hours: 8 },
+		exclusiveJobs: [],
+		costUnplannedDowntime: 520,
+		costPlannedPm: 3200,
+		serviceProvider: 'OEM',
 	},
 ];
 
@@ -1682,10 +1651,10 @@ export const operators: Operator[] = [
 		shift: 'Day',
 		role: 'QC Inspector',
 		certifications: [
-			{ machine: 'CMM', level: 3 },
-			{ machine: 'Surface Grinder', level: 1 },
+			{ machine: 'CNC Lathe', level: 2 },
+			{ machine: 'CNC Mill', level: 1 },
 		],
-		currentMachine: 'CMM-01',
+		currentMachine: 'LAT-02',
 		overtimeHours: 2.0,
 	},
 	{
@@ -1757,143 +1726,403 @@ export const operators: Operator[] = [
 	},
 ];
 
-export const maintenanceEvents: MaintenanceEvent[] = [
+export const pmSchedule: PmScheduleEntry[] = [
 	{
-		id: 'MT-001',
-		machineId: '5AX-02',
-		machineName: 'Hermle C400',
-		type: 'Corrective',
-		status: 'In Progress',
-		priority: 'Critical',
-		description: 'Spindle motor replacement — bearing seizure detected',
-		scheduledDate: '2026-03-16',
-		aiGenerated: false,
-	},
-	{
-		id: 'MT-002',
-		machineId: 'CNC-02',
-		machineName: 'Haas VF-4SS',
-		type: 'Predictive',
-		status: 'Scheduled',
-		priority: 'High',
-		description: 'Spindle bearing inspection — vibration trending high',
-		scheduledDate: '2026-03-20',
-		aiGenerated: true,
-		confidenceScore: 87,
-	},
-	{
-		id: 'MT-003',
-		machineId: 'CNC-01',
-		machineName: 'Mazak VTC-800/30',
-		type: 'Preventive',
-		status: 'Scheduled',
-		priority: 'Medium',
-		description: 'Scheduled spindle bearing inspection at 4,500 hours',
-		scheduledDate: '2026-03-22',
-		aiGenerated: false,
-	},
-	{
-		id: 'MT-004',
-		machineId: 'HT-01',
-		machineName: 'Lindberg Blue M',
-		type: 'Predictive',
-		status: 'Scheduled',
-		priority: 'Medium',
-		description: 'Heating element degradation — output variance increasing',
-		scheduledDate: '2026-03-20',
-		aiGenerated: true,
-		confidenceScore: 74,
-	},
-	{
-		id: 'MT-005',
-		machineId: 'EDM-01',
-		machineName: 'Sodick ALC600G',
-		type: 'Corrective',
-		status: 'In Progress',
-		priority: 'High',
-		description: 'Wire guide replacement and realignment',
-		scheduledDate: '2026-03-16',
-		aiGenerated: false,
-	},
-	{
-		id: 'MT-006',
+		id: 'PM-001',
 		machineId: 'LAT-01',
 		machineName: 'Okuma LB3000',
-		type: 'Preventive',
-		status: 'Complete',
+		pmType: 'Preventive',
+		status: 'Completed',
 		priority: 'Low',
+		startDate: '2026-03-15',
+		endDate: '2026-03-15',
+		duration: '4 hrs',
+		serviceProvider: 'Third-Party',
+		technician: 'R. Vasquez',
+		jobConflicts: 0,
+		aiRecommended: false,
 		description: 'Coolant system flush and concentration reset',
-		scheduledDate: '2026-03-15',
-		aiGenerated: false,
 	},
 	{
-		id: 'MT-007',
+		id: 'PM-002',
 		machineId: 'LAS-01',
 		machineName: 'Trumpf TruLaser 3030',
-		type: 'Preventive',
-		status: 'Complete',
+		pmType: 'Preventive',
+		status: 'Completed',
 		priority: 'Low',
+		startDate: '2026-03-12',
+		endDate: '2026-03-12',
+		duration: '4 hrs',
+		serviceProvider: 'OEM',
+		technician: 'D. Hartmann',
+		jobConflicts: 0,
+		aiRecommended: false,
 		description: 'Lens cleaning and assist gas calibration',
-		scheduledDate: '2026-03-12',
-		aiGenerated: false,
 	},
 	{
-		id: 'MT-008',
+		id: 'PM-003',
+		machineId: '5AX-02',
+		machineName: 'Hermle C400',
+		pmType: 'Predictive',
+		status: 'In Progress',
+		priority: 'Critical',
+		startDate: '2026-03-28',
+		endDate: '2026-03-30',
+		duration: '2 days',
+		serviceProvider: 'OEM',
+		technician: 'K. Weber',
+		jobConflicts: 3,
+		aiRecommended: true,
+		description: 'Spindle motor replacement — bearing seizure detected via vibration analysis',
+	},
+	{
+		id: 'PM-004',
 		machineId: 'CNC-02',
 		machineName: 'Haas VF-4SS',
-		type: 'Predictive',
+		pmType: 'Predictive',
+		status: 'Scheduled',
+		priority: 'High',
+		startDate: '2026-04-01',
+		endDate: '2026-04-02',
+		duration: '1 day',
+		serviceProvider: 'In-House',
+		technician: null,
+		jobConflicts: 2,
+		aiRecommended: true,
+		description: 'Spindle bearing inspection — vibration trending 2.3σ above baseline',
+	},
+	{
+		id: 'PM-005',
+		machineId: 'CNC-01',
+		machineName: 'Mazak VTC-800/30',
+		pmType: 'Preventive',
 		status: 'Scheduled',
 		priority: 'Medium',
-		description: 'Coolant pump seal — flow rate declining 8% over 2 weeks',
-		scheduledDate: '2026-03-25',
-		aiGenerated: true,
-		confidenceScore: 69,
+		startDate: '2026-04-04',
+		endDate: '2026-04-05',
+		duration: '1 day',
+		serviceProvider: 'OEM',
+		technician: null,
+		jobConflicts: 1,
+		aiRecommended: false,
+		description: 'Scheduled spindle bearing inspection at 4,500 hours',
+	},
+	{
+		id: 'PM-006',
+		machineId: '5AX-01',
+		machineName: 'DMG Mori DMU 50',
+		pmType: 'Inspection',
+		status: 'Overdue',
+		priority: 'High',
+		startDate: '2026-03-25',
+		endDate: '2026-03-25',
+		duration: '8 hrs',
+		serviceProvider: 'OEM',
+		technician: null,
+		jobConflicts: 2,
+		aiRecommended: true,
+		description: 'Axis alignment verification — positional drift detected on B-axis',
 	},
 ];
 
-export const shopFloorAlerts = [
+export const pmProcessingSteps = [
+	'Checking machine PM history...',
+	'Analyzing job schedule conflicts...',
+	'Evaluating rerouting options...',
+	'Calculating cost impact...',
+];
+
+export type PmImpactAnalysis = {
+	machineId: string;
+	recommendedWindow: { start: string; end: string };
+	jobsAffected: {
+		jobId: string;
+		customer: string;
+		currentDeadline: string;
+		delayDays: number;
+		canReroute: boolean;
+		rerouteTo: string | null;
+	}[];
+	totalDelayDays: number;
+	costImpact: number;
+	aiRecommendation: string;
+};
+
+export const pmImpactAnalyses: PmImpactAnalysis[] = [
 	{
-		id: 'sfa-1',
-		text: 'Hermle C400 spindle motor failed — corrective maintenance in progress',
-		time: '45m ago',
-		type: 'alert' as const,
-		agent: 'Machine Health',
+		machineId: 'CNC-01',
+		recommendedWindow: { start: '2026-04-04', end: '2026-04-05' },
+		jobsAffected: [],
+		totalDelayDays: 0,
+		costImpact: 2800,
+		aiRecommendation:
+			'Recommended window: Apr 4–5. Zero jobs affected. Weekend overlap minimizes production impact. PM cost of $2,800 vs. $420/hr unplanned downtime risk.',
 	},
 	{
-		id: 'sfa-2',
-		text: 'Rescheduled WO-4835 from 5AX-02 to 5AX-01 to avoid downtime conflict',
-		time: '1h ago',
-		type: 'success' as const,
-		agent: 'Scheduler',
+		machineId: 'CNC-02',
+		recommendedWindow: { start: '2026-04-01', end: '2026-04-02' },
+		jobsAffected: [
+			{
+				jobId: 'WO-4842',
+				customer: 'Pratt & Whitney',
+				currentDeadline: '2026-04-08',
+				delayDays: 1,
+				canReroute: true,
+				rerouteTo: 'CNC-03',
+			},
+			{
+				jobId: 'WO-4856',
+				customer: 'Honeywell Aerospace',
+				currentDeadline: '2026-04-10',
+				delayDays: 0,
+				canReroute: true,
+				rerouteTo: 'CNC-01',
+			},
+		],
+		totalDelayDays: 1,
+		costImpact: 2400,
+		aiRecommendation:
+			'Recommended window: Apr 1–2. WO-4842 can reroute to CNC-03 with 1-day delay (within deadline). WO-4856 shifts to CNC-01 with no delay. Vibration trending demands action within 7 days.',
 	},
 	{
-		id: 'sfa-3',
-		text: 'Haas VF-4SS vibration trending 2.3σ above baseline — maintenance scheduled',
-		time: '2h ago',
-		type: 'update' as const,
-		agent: 'Machine Health',
+		machineId: '5AX-01',
+		recommendedWindow: { start: '2026-03-31', end: '2026-03-31' },
+		jobsAffected: [
+			{
+				jobId: 'WO-4835',
+				customer: 'GE Aviation',
+				currentDeadline: '2026-04-02',
+				delayDays: 2,
+				canReroute: false,
+				rerouteTo: null,
+			},
+			{
+				jobId: 'WO-4861',
+				customer: 'Rolls-Royce',
+				currentDeadline: '2026-04-05',
+				delayDays: 1,
+				canReroute: false,
+				rerouteTo: null,
+			},
+		],
+		totalDelayDays: 3,
+		costImpact: 4200,
+		aiRecommendation:
+			'Hard conflict: WO-4835 and WO-4861 are exclusive to 5AX-01 and cannot be rerouted. Delaying PM to Apr 7 (after WO-4835 completes) reduces total delay to 1 day but extends alignment drift risk.',
+	},
+];
+
+/* ══════════════════════════════════════════════════════════
+   VIGILANT CONTROLLER
+   ══════════════════════════════════════════════════════════ */
+
+export type FindingSeverity = 'Critical' | 'High' | 'Medium' | 'Low';
+export type FindingStatus = 'New' | 'Under Review' | 'Confirmed' | 'Dismissed' | 'Resolved';
+
+export type Finding = {
+	id: string;
+	type: string;
+	title: string;
+	vendor: string;
+	severity: FindingSeverity;
+	status: FindingStatus;
+	dollarImpact: number;
+	detectedDate: string;
+	aiSummary: string;
+	evidence: {
+		label: string;
+		value: string;
+	}[];
+};
+
+export const controllerKpis = [
+	{
+		title: 'Open Findings',
+		value: '14',
+		subtitle: '4 critical, 6 high, 4 medium',
+		badge: '+3',
+		badgeColor: 'red' as const,
 	},
 	{
-		id: 'sfa-4',
-		text: 'Bore ID on Part HX-2290 trending toward UCL — recommend tool offset adjustment',
-		time: '3h ago',
-		type: 'alert' as const,
-		agent: 'Quality',
+		title: 'Dollar Impact',
+		value: '$127.4K',
+		subtitle: 'Potential savings identified',
+		badge: '+$18.2K',
+		badgeColor: 'red' as const,
 	},
 	{
-		id: 'sfa-5',
-		text: 'Night shift: no certified 5-axis operator Thursday — flag for shift lead',
-		time: '4h ago',
-		type: 'update' as const,
-		agent: 'Workforce',
+		title: 'Realized Savings',
+		value: '$284.9K',
+		subtitle: 'YTD confirmed',
+		badge: '+$41K',
+		badgeColor: 'green' as const,
 	},
 	{
-		id: 'sfa-6',
-		text: 'Overtime for Torres (Day shift) at 8.0h — approaching weekly limit',
-		time: '5h ago',
-		type: 'idle' as const,
-		agent: 'Workforce',
+		title: 'Resolution Rate',
+		value: '73%',
+		subtitle: 'Resolved within 7 days',
+		badge: '+8%',
+		badgeColor: 'green' as const,
 	},
+];
+
+export const findings: Finding[] = [
+	{
+		id: 'F-001',
+		type: 'Purchase Price Variance',
+		title: 'Vendor Price Creep — Metro Industrial Supply',
+		vendor: 'Metro Industrial Supply',
+		severity: 'Critical',
+		status: 'New',
+		dollarImpact: 34200,
+		detectedDate: '2026-03-27',
+		aiSummary:
+			'Metro Industrial has incrementally raised unit prices on 6061 aluminum bar stock by 18% over 6 months without updating the blanket PO terms. Current price of $16.80/ea exceeds the contracted rate of $14.20/ea. Affects 12 open POs totaling $34.2K in excess spend.',
+		evidence: [
+			{ label: 'Contracted Rate', value: '$14.20/ea — BPO-2240 (Oct 2025)' },
+			{ label: 'Current Rate', value: '$16.80/ea — PO-9102 (Mar 2026)' },
+			{ label: 'Variance', value: '+18.3% ($2.60/ea × 13,154 units)' },
+			{ label: 'Affected POs', value: '12 open orders' },
+		],
+	},
+	{
+		id: 'F-002',
+		type: 'Duplicate Invoice',
+		title: 'Duplicate Freight Charge — Fastenal',
+		vendor: 'Fastenal',
+		severity: 'High',
+		status: 'New',
+		dollarImpact: 8400,
+		detectedDate: '2026-03-26',
+		aiSummary:
+			'Two invoices (INV-44201 and INV-44203) reference the same shipment SH-8891 with identical line items. The freight charges of $4,200 each were both approved through the standard 3-way match because they had different invoice numbers.',
+		evidence: [
+			{ label: 'Invoice A', value: 'INV-44201 — $4,200 (Mar 18)' },
+			{ label: 'Invoice B', value: 'INV-44203 — $4,200 (Mar 20)' },
+			{ label: 'Shipment', value: 'SH-8891 — same BOL, same date' },
+			{ label: 'Pattern', value: '3rd duplicate from this vendor in 90 days' },
+		],
+	},
+	{
+		id: 'F-003',
+		type: 'Freight Optimization',
+		title: 'LTL Consolidation Opportunity — Midwest Corridor',
+		vendor: 'Multiple',
+		severity: 'Medium',
+		status: 'Under Review',
+		dollarImpact: 12800,
+		detectedDate: '2026-03-25',
+		aiSummary:
+			'14 separate LTL shipments to 3 customers within a 50-mile radius of Dayton, OH over the past 30 days. Consolidating into 4 FTL shipments would save an estimated $12.8K/quarter in freight costs while reducing transit time by 1 day.',
+		evidence: [
+			{ label: 'Current', value: '14 LTL shipments/month — avg $2,340 each' },
+			{ label: 'Proposed', value: '4 FTL shipments/month — avg $4,800 each' },
+			{ label: 'Quarterly Savings', value: '$12.8K (39% reduction)' },
+			{ label: 'Destinations', value: 'Dayton, Fairborn, Beavercreek' },
+		],
+	},
+	{
+		id: 'F-004',
+		type: 'Contract Compliance',
+		title: 'Missed Volume Rebate — Allied Titanium',
+		vendor: 'Allied Titanium',
+		severity: 'Critical',
+		status: 'Confirmed',
+		dollarImpact: 22600,
+		detectedDate: '2026-03-22',
+		aiSummary:
+			'Q1 2026 purchases from Allied Titanium totaled $412K, exceeding the $350K tier threshold for a 5.5% volume rebate. The rebate of $22.6K was not claimed because the purchasing system tracks spend by PO number rather than aggregate vendor spend.',
+		evidence: [
+			{ label: 'Q1 Spend', value: '$412,400 — 38 POs' },
+			{ label: 'Rebate Tier', value: '$350K+ → 5.5% rebate' },
+			{ label: 'Unclaimed', value: '$22,682 (automatic upon filing)' },
+			{ label: 'Contract', value: 'MSA-1104 § 4.2 — Volume Incentives' },
+		],
+	},
+	{
+		id: 'F-005',
+		type: 'Purchase Price Variance',
+		title: 'Spot Buy Premium — Titanium 6Al-4V Plate',
+		vendor: 'Pacific Metals Corp',
+		severity: 'High',
+		status: 'New',
+		dollarImpact: 18900,
+		detectedDate: '2026-03-24',
+		aiSummary:
+			'3 emergency spot buys for Ti-6Al-4V plate at $89/lb vs. the contracted rate of $62/lb with Allied Titanium. The spot buys were triggered by stockout events that could have been prevented with a 2-week safety stock policy.',
+		evidence: [
+			{ label: 'Spot Rate', value: '$89/lb — Pacific Metals (emergency)' },
+			{ label: 'Contract Rate', value: '$62/lb — Allied Titanium (MSA-1104)' },
+			{ label: 'Volume', value: '700 lbs across 3 POs' },
+			{ label: 'Root Cause', value: 'No safety stock buffer on Class A material' },
+		],
+	},
+	{
+		id: 'F-006',
+		type: 'Payment Terms',
+		title: 'Early Payment Discount Missed — Kennametal',
+		vendor: 'Kennametal',
+		severity: 'Medium',
+		status: 'Resolved',
+		dollarImpact: 4100,
+		detectedDate: '2026-03-18',
+		aiSummary:
+			'8 invoices from Kennametal offering 2/10 Net 30 terms were paid on day 28, missing the early payment discount window. Total missed discount of $4,100 on $205K in tooling purchases.',
+		evidence: [
+			{ label: 'Terms', value: '2/10 Net 30 — 2% discount if paid in 10 days' },
+			{ label: 'Avg Payment', value: 'Day 28 (18 days late for discount)' },
+			{ label: 'Invoices', value: '8 invoices, $205K total' },
+			{ label: 'Resolution', value: 'AP workflow updated — auto-flag 2/10 terms' },
+		],
+	},
+	{
+		id: 'F-007',
+		type: 'Maverick Spend',
+		title: 'Off-Contract Tooling Purchases — Shop Floor',
+		vendor: 'Amazon Business',
+		severity: 'High',
+		status: 'Under Review',
+		dollarImpact: 15200,
+		detectedDate: '2026-03-23',
+		aiSummary:
+			'$15.2K in cutting tools and inserts purchased through Amazon Business at retail prices instead of through the contracted distributor (MSC Industrial). Same SKUs available at 22-35% lower cost through the existing MSA.',
+		evidence: [
+			{ label: 'Amazon Spend', value: '$15,200 (23 orders, 90 days)' },
+			{ label: 'MSC Equivalent', value: '$10,640 (same SKUs, contract pricing)' },
+			{ label: 'Overspend', value: '$4,560 (30% premium)' },
+			{ label: 'Buyers', value: '4 shop floor leads with P-card access' },
+		],
+	},
+	{
+		id: 'F-008',
+		type: 'Duplicate Prevention',
+		title: 'Recurring Service Agreement Overlap — Calibration',
+		vendor: 'Precision Calibration Inc',
+		severity: 'Medium',
+		status: 'Dismissed',
+		dollarImpact: 6200,
+		detectedDate: '2026-03-20',
+		aiSummary:
+			'Annual calibration service agreement (SA-3301) overlaps with per-event calibration charges on 4 instruments already covered by the agreement. Duplicate charges total $6.2K across 2 quarterly billing cycles.',
+		evidence: [
+			{ label: 'Agreement', value: 'SA-3301 — $18,400/yr (covers all CMM + gauges)' },
+			{ label: 'Duplicate Charges', value: '4 per-event invoices totaling $6,200' },
+			{ label: 'Instruments', value: 'CMM probe, bore gauge, surface plate, ring gauge' },
+			{
+				label: 'Status',
+				value: 'Dismissed — per-event charges are for rush calibrations outside SLA',
+			},
+		],
+	},
+];
+
+export const savingsBreakdown = [
+	{ type: 'Price Variance', amount: 68200 },
+	{ type: 'Freight Optimization', amount: 34100 },
+	{ type: 'Duplicate Prevention', amount: 22800 },
+	{ type: 'Contract Compliance', amount: 86400 },
+	{ type: 'Payment Terms', amount: 41200 },
+	{ type: 'Maverick Spend', amount: 32200 },
 ];
 
 /* ══════════════════════════════════════════════════════════
