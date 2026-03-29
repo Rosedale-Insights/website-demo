@@ -2,6 +2,8 @@
 
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
+import { AnimatedGroup } from '@/components/motion/AnimatedGroup';
+import { AnimatedItem } from '@/components/motion/AnimatedItem';
 import { PageHeader } from '@/components/PageHeader';
 import { AiInsightBanner } from '@/components/quoting/AiInsightBanner';
 import { QuoteBuilderModal } from '@/components/quoting/QuoteBuilderModal';
@@ -28,14 +30,23 @@ export default function QuotingPage() {
 				</button>
 			</PageHeader>
 
-			<div className="grid grid-cols-4 gap-4">
-				{enhancedQuotingStats.map((stat) => (
-					<StatCard key={stat.title} {...stat} />
-				))}
-			</div>
+			<AnimatedGroup className="space-y-8">
+				<AnimatedItem>
+					<div className="grid grid-cols-4 gap-4">
+						{enhancedQuotingStats.map((stat) => (
+							<StatCard key={stat.title} {...stat} />
+						))}
+					</div>
+				</AnimatedItem>
 
-			<QuoteTable />
-			<AiInsightBanner />
+				<AnimatedItem>
+					<QuoteTable />
+				</AnimatedItem>
+
+				<AnimatedItem>
+					<AiInsightBanner />
+				</AnimatedItem>
+			</AnimatedGroup>
 
 			{showBuilder && <QuoteBuilderModal onClose={() => setShowBuilder(false)} />}
 		</div>

@@ -1,5 +1,6 @@
 import { Plus, Settings } from 'lucide-react';
 import { ChatInterface } from '@/components/knowledge/ChatInterface';
+import { AnimatedItem } from '@/components/motion/AnimatedItem';
 import { PageHeader } from '@/components/PageHeader';
 
 export default function KnowledgeBasePage() {
@@ -22,9 +23,9 @@ export default function KnowledgeBasePage() {
 			</PageHeader>
 
 			{/* Chat */}
-			<div className="mt-8 flex min-h-0 flex-1 flex-col">
+			<AnimatedItem className="mt-8 flex min-h-0 flex-1 flex-col">
 				<ChatInterface />
-			</div>
+			</AnimatedItem>
 		</div>
 	);
 }

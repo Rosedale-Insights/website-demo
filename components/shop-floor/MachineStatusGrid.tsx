@@ -128,7 +128,9 @@ export function MachineStatusGrid() {
 							<div className="text-right">
 								<p className="text-xs font-medium text-forge-primary">{m.productionProgress}%</p>
 								{m.remainingMinutes != null && (
-									<p className="text-[10px] text-forge-hint">{formatRemaining(m.remainingMinutes)}</p>
+									<p className="text-[10px] text-forge-hint">
+										{formatRemaining(m.remainingMinutes)}
+									</p>
 								)}
 							</div>
 						) : (

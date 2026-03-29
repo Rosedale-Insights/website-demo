@@ -70,6 +70,8 @@ export function SupplierOtdChart() {
 						fill="url(#otdGradient)"
 						dot={{ r: 4, fill: '#1A1A1A', strokeWidth: 0 }}
 						activeDot={{ r: 6, fill: '#1A1A1A', strokeWidth: 0 }}
+						animationBegin={800}
+						animationDuration={1800}
 					/>
 				</AreaChart>
 			</ResponsiveContainer>

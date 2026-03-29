@@ -239,7 +239,10 @@ async function typeMessage(page: Page, text: string) {
 	// Wait for the user message to appear
 	await page.getByText(text).first().waitFor({ state: 'visible', timeout: 10_000 });
 	// Wait for the AI response (arrives after 1s delay) — confidence badge is the signal
-	await page.locator('text=/\\d+% confidence/').last().waitFor({ state: 'visible', timeout: 10_000 });
+	await page
+		.locator('text=/\\d+% confidence/')
+		.last()
+		.waitFor({ state: 'visible', timeout: 10_000 });
 	await pause(300);
 }
 

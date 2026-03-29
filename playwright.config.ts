@@ -15,9 +15,6 @@ export default defineConfig({
 			mode: 'on',
 			size: { width: 1920, height: 1080 },
 		},
-		launchOptions: {
-			slowMo: 50,
-		},
 		actionTimeout: 10_000,
 	},
 	projects: [

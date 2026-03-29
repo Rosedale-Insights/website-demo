@@ -5,6 +5,8 @@ import { DeliveryAgentFeed } from '@/components/delivery/DeliveryAgentFeed';
 import { DeliveryBrief } from '@/components/delivery/DeliveryBrief';
 import { SupplierOtdChart } from '@/components/delivery/SupplierOtdChart';
 import { SupplierScorecard } from '@/components/delivery/SupplierScorecard';
+import { AnimatedGroup } from '@/components/motion/AnimatedGroup';
+import { AnimatedItem } from '@/components/motion/AnimatedItem';
 import { PageHeader } from '@/components/PageHeader';
 import { StatCard } from '@/components/StatCard';
 import { deliveryKpis } from '@/lib/mock-data';
@@ -32,30 +34,42 @@ export default function DeliveryPage() {
 				</button>
 			</PageHeader>
 
-			{/* KPI Cards */}
-			<div className="grid grid-cols-4 gap-4">
-				{deliveryKpis.map((kpi) => (
-					<StatCard key={kpi.title} {...kpi} />
-				))}
-			</div>
+			<AnimatedGroup className="space-y-8">
+				{/* KPI Cards */}
+				<AnimatedItem>
+					<div className="grid grid-cols-4 gap-4">
+						{deliveryKpis.map((kpi) => (
+							<StatCard key={kpi.title} {...kpi} />
+						))}
+					</div>
+				</AnimatedItem>
 
-			{/* Charts Row */}
-			<div className="grid grid-cols-[1fr_340px] gap-6">
-				<SupplierOtdChart />
-				<DelayRootCauseChart />
-			</div>
+				{/* Charts Row */}
+				<AnimatedItem>
+					<div className="grid grid-cols-[1fr_340px] gap-6">
+						<SupplierOtdChart />
+						<DelayRootCauseChart />
+					</div>
+				</AnimatedItem>
 
-			{/* Intelligence Brief */}
-			<DeliveryBrief />
+				{/* Intelligence Brief */}
+				<AnimatedItem>
+					<DeliveryBrief />
+				</AnimatedItem>
 
-			{/* At-Risk Orders Table */}
-			<AtRiskOrdersTable />
+				{/* At-Risk Orders Table */}
+				<AnimatedItem>
+					<AtRiskOrdersTable />
+				</AnimatedItem>
 
-			{/* Bottom Row: Scorecard + Agent Feed */}
-			<div className="grid grid-cols-2 gap-6">
-				<SupplierScorecard />
-				<DeliveryAgentFeed />
-			</div>
+				{/* Bottom Row: Scorecard + Agent Feed */}
+				<AnimatedItem>
+					<div className="grid grid-cols-2 gap-6">
+						<SupplierScorecard />
+						<DeliveryAgentFeed />
+					</div>
+				</AnimatedItem>
+			</AnimatedGroup>
 		</div>
 	);
 }
