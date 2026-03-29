@@ -22,12 +22,27 @@ export const ForgeDemo: React.FC<Props> = ({ clipDurations }) => {
 
 				return (
 					<React.Fragment key={scene.id}>
-						{i > 0 && (
+						{i > 0 && i === 2 ? (
+							<>
+								{/* Fade to black, then fade in — no overlap so chart animation plays fully */}
+								<TransitionSeries.Transition
+									timing={linearTiming({ durationInFrames: 10 })}
+									presentation={fade()}
+								/>
+								<TransitionSeries.Sequence durationInFrames={10}>
+									<AbsoluteFill style={{ backgroundColor: 'black' }} />
+								</TransitionSeries.Sequence>
+								<TransitionSeries.Transition
+									timing={linearTiming({ durationInFrames: 10 })}
+									presentation={fade()}
+								/>
+							</>
+						) : i > 0 ? (
 							<TransitionSeries.Transition
 								timing={linearTiming({ durationInFrames: FADE_FRAMES })}
 								presentation={fade()}
 							/>
-						)}
+						) : null}
 						<TransitionSeries.Sequence durationInFrames={effectiveDuration}>
 							<SceneClip scene={scene} />
 						</TransitionSeries.Sequence>

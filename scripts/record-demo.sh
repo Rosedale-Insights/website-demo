@@ -63,7 +63,7 @@ for clip in "${CLIPS[@]}"; do
   fi
   echo "    Converting ${clip}..."
   "$FFMPEG" -y -i "$WEBM" \
-    -c:v libx264 -preset fast -crf 18 -pix_fmt yuv420p \
+    -c:v libx264 -preset ultrafast -crf 1 -pix_fmt yuv420p \
     -movflags +faststart \
     "video/public/clips/${clip}.mp4"
 done
@@ -73,7 +73,7 @@ echo "==> All clips converted."
 # ── Step 5: Render final video with Remotion ──
 echo "==> Step 5: Rendering final video with Remotion..."
 cd video
-npx remotion render ForgeDemo --output=../demo.mp4 --codec=h264 --crf=18
+npx remotion render ForgeDemo --output=../demo.mp4 --codec=h264 --crf=12
 cd ..
 
 echo "=== Done: demo.mp4 ==="

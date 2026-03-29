@@ -7,25 +7,41 @@ type Props = {
 	children: React.ReactNode;
 };
 
+const EASE = Easing.bezier(0.25, 0.1, 0.25, 1);
+
 export const ZoomEffect: React.FC<Props> = ({ regions, children }) => {
 	const frame = useCurrentFrame();
 
-	// Calculate cumulative zoom from all regions
-	let scale = 1;
-	let originX = 960;
-	let originY = 540;
+	if (regions.length === 0) {
+		return <>{children}</>;
+	}
+
+	// Build a continuous timeline from all zoom regions.
+	// Between regions, hold the last region's scale.
+	// Before first region, scale is 1. After last, hold last scale.
+	const timelineFrames: number[] = [0];
+	const timelineScales: number[] = [1];
 
 	for (const region of regions) {
-		if (frame >= region.startFrame && frame <= region.endFrame) {
-			scale = interpolate(frame, [region.startFrame, region.endFrame], [scale, region.scale], {
-				easing: Easing.bezier(0.25, 0.1, 0.25, 1),
-				extrapolateLeft: 'clamp',
-				extrapolateRight: 'clamp',
-			});
-			originX = region.originX;
-			originY = region.originY;
-		} else if (frame > region.endFrame) {
-			scale = region.scale;
+		// Start of this region — hold previous scale up to this point
+		timelineFrames.push(region.startFrame);
+		timelineScales.push(timelineScales[timelineScales.length - 1]);
+		// End of this region — arrive at target scale
+		timelineFrames.push(region.endFrame);
+		timelineScales.push(region.scale);
+	}
+
+	const scale = interpolate(frame, timelineFrames, timelineScales, {
+		easing: EASE,
+		extrapolateLeft: 'clamp',
+		extrapolateRight: 'clamp',
+	});
+
+	// Use the origin of whichever region we're closest to
+	let originX = 960;
+	let originY = 540;
+	for (const region of regions) {
+		if (frame >= region.startFrame) {
 			originX = region.originX;
 			originY = region.originY;
 		}

@@ -9,12 +9,12 @@ import { ForgeDemo } from './ForgeDemo';
  */
 const DEFAULT_CLIP_DURATIONS = [
 	14 * 30, // Clip 1: ~14s
-	26 * 30, // Clip 2: ~26s
-	14 * 30, // Clip 3: ~14s
-	20 * 30, // Clip 4: ~20s
+	28 * 30, // Clip 2: ~30s (extra scroll + pauses)
+	16 * 30, // Clip 3: ~16s (chart animation visible)
+	22 * 30, // Clip 4: ~22s
 ];
 
-const FADE_FRAMES = 15;
+const FADE_FRAMES = 8;
 const FADE_TO_BLACK_FRAMES = 30;
 
 function calculateTotalDuration(clipDurations: number[]): number {
