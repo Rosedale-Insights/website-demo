@@ -1,6 +1,15 @@
 'use client';
 
-import { Cpu, Factory, FileText, Home, Lightbulb, Package, Settings } from 'lucide-react';
+import {
+	Cpu,
+	FileText,
+	Home,
+	Lightbulb,
+	Package,
+	ScanSearch,
+	Settings,
+	Wrench,
+} from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { recentQueries } from '@/lib/mock-data';
@@ -9,8 +18,9 @@ import { cn } from '@/lib/utils';
 const navItems = [
 	{ href: '/insights', label: 'Home', icon: Home },
 	{ href: '/delivery', label: 'Delivery', icon: Package },
-	{ href: '/shop-floor', label: 'Shop Floor', icon: Factory },
+	{ href: '/shop-floor', label: 'Maintenance', icon: Wrench },
 	{ href: '/quoting', label: 'Quoting', icon: FileText },
+	{ href: '/controller', label: 'Controller', icon: ScanSearch },
 	{ href: '/knowledge-base', label: 'Knowledge Base', icon: Lightbulb },
 ];
 

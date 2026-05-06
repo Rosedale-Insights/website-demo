@@ -1,4 +1,5 @@
 import { Sparkles } from 'lucide-react';
+import Link from 'next/link';
 import { homeBriefItems } from '@/lib/mock-data';
 
 export function IntelligenceBrief() {
@@ -16,12 +17,12 @@ export function IntelligenceBrief() {
 						<p className="font-semibold text-white">{item.title}</p>
 						<p className="mt-0.5 text-sm text-white/70">{item.description}</p>
 					</div>
-					<button
-						type="button"
+					<Link
+						href={item.href}
 						className="w-40 shrink-0 rounded-lg border border-white/20 bg-white/10 px-5 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-white/20"
 					>
 						{item.action}
-					</button>
+					</Link>
 				</div>
 			))}
 		</div>

@@ -16,15 +16,16 @@ The app is designed to be **recorded as a video walkthrough** using Playwright, 
 - **Package Manager**: pnpm (enforced — do NOT use npm or yarn)
 - **Formatting/Linting**: Biome (auto-runs via PostToolUse hook)
 
-## Pages (7 routes)
-All pages live under `app/(dashboard)/` which provides a shared sidebar + atmospheric background. Root `/` redirects to `/insights` (the Home page). Sidebar has 5 items: Home, Delivery, Shop Floor, Quoting, Knowledge Base.
+## Pages (8 routes)
+All pages live under `app/(dashboard)/` which provides a shared sidebar + atmospheric background. Root `/` redirects to `/insights` (the Home page). Sidebar has 6 items: Home, Delivery, Maintenance, Quoting, Controller, Knowledge Base.
 
 | Route | Page | Description |
 |-------|------|-------------|
 | `/insights` | Home | Greeting, cross-module intelligence brief, 4 key metric cards |
 | `/delivery` | Delivery Intelligence | Supplier OTD chart, delay root cause bar chart, at-risk PO table, supplier scorecard, agent feed |
-| `/shop-floor` | Shop Floor Monitor | Machine status table, OEE breakdown, maintenance timeline, shift overview, machine alerts |
+| `/shop-floor` | Maintenance Intelligence | PM schedule timeline (hero), machine health grid (8 CNC machines), Schedule PM modal (3-step: configure → AI analysis → review) |
 | `/quoting` | Quoting Tool | Enhanced quote table with filters/margins, Quote Builder modal (3-step: form → AI processing → review with cost breakdown, routing, similar jobs, margin slider) |
+| `/controller` | Vigilant Controller | Financial anomaly detection feed (8 findings), click-to-expand triage (evidence, AI summary, actions), savings summary sidebar |
 | `/knowledge-base` | Knowledge Base | Enhanced chat with inline citations [1][2][3], source citation cards, confidence badges, contributor attribution, query suggestions |
 | `/settings` | Settings (tabbed) | Profile, AI settings, Agents, Documents, Security — tab selected via `?tab=` query param |
 | `/agents/[id]` | Agent Config | Config form, guardrails toggles (breadcrumb links to `/settings?tab=agents`) |
@@ -66,7 +67,7 @@ All pages live under `app/(dashboard)/` which provides a shared sidebar + atmosp
 ## Directory Structure
 - `app/` — Routes, layouts (all under `(dashboard)` route group)
 - `components/` — Shared: `Sidebar`, `GlassCard`, `StatCard`, `PageHeader`
-- `components/{page}/` — Page-specific: `insights/`, `delivery/`, `shop-floor/`, `quoting/`, `knowledge/`, `documents/`, `agents/`, `settings/`
+- `components/{page}/` — Page-specific: `insights/`, `delivery/`, `maintenance/`, `quoting/`, `controller/`, `knowledge/`, `documents/`, `agents/`, `settings/`
 - `lib/mock-data.ts` — All mock data (documents, chat messages, agents, quotes, etc.)
 - `lib/utils.ts` — `cn()` helper
 - `scripts/` — Demo recording shell script
